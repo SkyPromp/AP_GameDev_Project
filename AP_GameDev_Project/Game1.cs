@@ -1,6 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
+using System.Collections;
 
 namespace AP_GameDev_Project
 {
@@ -8,6 +10,14 @@ namespace AP_GameDev_Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private enum states
+        {
+            START,
+            RUNNING,
+            PAUSED,
+            GAME_OVER
+        }
+        private states current_state;
 
         public Game1()
         {
@@ -21,6 +31,7 @@ namespace AP_GameDev_Project
             // TODO: Add your initialization logic here
 
             base.Initialize();
+            current_state = states.START;
         }
 
         protected override void LoadContent()
@@ -32,10 +43,25 @@ namespace AP_GameDev_Project
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            /*switch(this.current_state){
+                case states.START:
+                    throw new NotImplementedException();
+                    break;
+                case states.RUNNING:
+                    throw new NotImplementedException();
+                    break;
+                case states.PAUSED:
+                    throw new NotImplementedException();
+                    break;
+                case states.GAME_OVER:
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    throw new Exception(string.Format("Invalid game state: {0}", this.current_state));
+            }*/
 
             base.Update(gameTime);
         }
@@ -44,7 +70,11 @@ namespace AP_GameDev_Project
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            _spriteBatch.Begin();
+
+
+
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

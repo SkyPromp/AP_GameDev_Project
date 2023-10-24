@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,6 +11,8 @@ namespace AP_GameDev_Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private RunningStateHandler runningStateHandler;
+
         private enum states
         {
             START,
@@ -31,14 +34,14 @@ namespace AP_GameDev_Project
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            current_state = states.START;
+            current_state = states.RUNNING;  // Needs to start on START
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            Texture2D tilemap = Content.Load<Texture2D>("gamedev_tileset");
+            this.runningStateHandler = new RunningStateHandler(tilemap);
         }
 
         protected override void Update(GameTime gameTime)
@@ -46,12 +49,12 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            /*switch(this.current_state){
+            switch(this.current_state){
                 case states.START:
                     throw new NotImplementedException();
                     break;
                 case states.RUNNING:
-                    throw new NotImplementedException();
+                    runningStateHandler.Update(gameTime);
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();
@@ -61,7 +64,7 @@ namespace AP_GameDev_Project
                     break;
                 default:
                     throw new Exception(string.Format("Invalid game state: {0}", this.current_state));
-            }*/
+            }
 
             base.Update(gameTime);
         }
@@ -72,7 +75,23 @@ namespace AP_GameDev_Project
 
             _spriteBatch.Begin();
 
-
+            switch (this.current_state)
+            {
+                case states.START:
+                    throw new NotImplementedException();
+                    break;
+                case states.RUNNING:
+                    runningStateHandler.Draw(_spriteBatch);
+                    break;
+                case states.PAUSED:
+                    throw new NotImplementedException();
+                    break;
+                case states.GAME_OVER:
+                    throw new NotImplementedException();
+                    break;
+                default:
+                    throw new Exception(string.Format("Invalid game state: {0}", this.current_state));
+            }
 
             _spriteBatch.End();
 

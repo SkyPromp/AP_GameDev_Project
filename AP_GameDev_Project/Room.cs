@@ -16,25 +16,15 @@ namespace AP_GameDev_Project
         private readonly int tile_size;
 
         public Room(Texture2D tilemap ,int room_width, string tilesFilename, int tile_size=64) {
-            /*this.tiles = new List<Byte>()
+            try
             {
-                1, 1, 1, 1, 1,
-                1, 0, 0, 0, 1, 
-                1, 0, 0, 0, 1,
-                1, 1, 1, 1, 1, 
-            };*/
-
-            /*try
-            {*/
-            // Directory.GetCurrentDirectory()
-
-                tilesFilename = Path.Combine(Directory.GetParent(AppDomain.CurrentDomain.BaseDirectory).Parent.FullName, tilesFilename);
+                tilesFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, tilesFilename);
                 this.tiles = File.ReadAllBytes(tilesFilename).ToList();
 
-            /*} catch
+            } catch
             {
-                throw new Exception("File reading messed up");
-            }*/
+                throw new Exception("ERROR: File reading failed");
+            }
 
 
             this.tilemap = tilemap;

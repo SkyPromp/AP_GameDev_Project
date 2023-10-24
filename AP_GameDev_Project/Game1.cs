@@ -40,7 +40,7 @@ namespace AP_GameDev_Project
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            Texture2D tilemap = Content.Load<Texture2D>("gamedev_tileset");
+            Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             this.runningStateHandler = new RunningStateHandler(tilemap);
         }
 

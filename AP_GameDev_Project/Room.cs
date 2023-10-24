@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -46,7 +47,6 @@ namespace AP_GameDev_Project
                 int tilemap_x = pattern;
                 int tilemap_y = 0;
 
-                //spriteBatch.Draw(this.tilemap, new Vector2(screen_x, screen_y), new Rectangle(tilemap_x * this.tile_size, tilemap_y * this.tile_size, this.tile_size, this.tile_size), Color.White, rotation: Math.PI * angle, origin);
                 spriteBatch.Draw(
                     texture: this.tilemap,
                     position: new Vector2(screen_x + this.tile_size / 2, screen_y + this.tile_size / 2),  // The origin changes because of the rotation
@@ -67,9 +67,9 @@ namespace AP_GameDev_Project
 
             if (center_tile == (Byte) 0) return (-1, -1);
 
-            Byte left = i - 1 >= 0 ? this.tiles[i - 1] : (Byte) 0;
-            Byte right = i + 1 < this.tiles.Count ? this.tiles[i + 1] : (Byte) 0;
-            Byte top = i - this.tiles.Count >= 0 ? this.tiles[i - this.tiles.Count] : (Byte) 0;
+            Byte left = i - 1 >= 0 && i % this.room_width != 0 ? this.tiles[i - 1] : (Byte) 0;
+            Byte right = i + 1 < this.tiles.Count && i % this.room_width != this.room_width - 1 ? this.tiles[i + 1] : (Byte) 0;
+            Byte top = i - this.room_width >= 0 ? this.tiles[i - this.room_width] : (Byte) 0;
             Byte bottom = i + this.room_width < this.tiles.Count ? this.tiles[i + this.room_width] : (Byte) 0;
 
             left = (Byte)(left == center_tile ? 1 : 0);
@@ -78,7 +78,7 @@ namespace AP_GameDev_Project
             bottom = (Byte)(bottom == center_tile ? 1 : 0);
 
             int image = 0;
-            int rotate = 0;  // Multiply by PI/2
+            int rotate = 0;
 
             switch (left + right + top + bottom)
             {
@@ -108,28 +108,37 @@ namespace AP_GameDev_Project
                 case 2:
                     if(left == (Byte)0)
                     {
-                        if(right == left)
+                        if(right == left)  // Parallel
                         {
                             image = 2;
                             rotate = 1; // 90 grad
                         }
-                        else
+                        else if(top == (Byte)0)
                         {
                             image = 3;
                             rotate = 0;
+                        }
+                        else {
+                            image = 3;
+                            rotate = 3; 
                         }
                     }
                     else
                     {
-                        if (left == right)
+                        if (left == right)  // Parallel
                         {
                             image = 2;
                             rotate = 0;
                         }
-                        else
+                        else if(top == (Byte)0)
                         {
                             image = 3;
                             rotate = 1; // 90 grad
+                        }
+                        else
+                        {
+                            image = 3;
+                            rotate = 2;
                         }
                     }
                     break;

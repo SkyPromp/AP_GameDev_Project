@@ -40,24 +40,20 @@ namespace AP_GameDev_Project
                 int screen_y = (i / this.room_width) * this.tile_size;  // TODO Center
 
 
-
                 (int pattern, int angle) = this.GetPattern(i);
                 if (pattern == -1) continue;
                 
                 int tilemap_x = pattern;
                 int tilemap_y = 0;
 
-                Vector2 origin = new Vector2(this.tile_size / 2, this.tile_size / 2);
-
-                // TODO fix rotation doens't work properly
                 //spriteBatch.Draw(this.tilemap, new Vector2(screen_x, screen_y), new Rectangle(tilemap_x * this.tile_size, tilemap_y * this.tile_size, this.tile_size, this.tile_size), Color.White, rotation: Math.PI * angle, origin);
                 spriteBatch.Draw(
                     texture: this.tilemap,
-                    position: new Vector2(screen_x, screen_y),
+                    position: new Vector2(screen_x + this.tile_size / 2, screen_y + this.tile_size / 2),  // The origin changes because of the rotation
                     sourceRectangle: new Rectangle(tilemap_x * this.tile_size, tilemap_y * this.tile_size, this.tile_size, this.tile_size),
                     color: Color.White,
                     rotation: (float) Math.PI / 2.0f * (float) angle,
-                    origin: origin,
+                    origin: new Vector2(this.tile_size / 2, this.tile_size / 2),
                     scale: 1.0f,
                     effects: SpriteEffects.None,
                     layerDepth: 0

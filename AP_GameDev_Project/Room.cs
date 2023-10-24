@@ -111,7 +111,7 @@ namespace AP_GameDev_Project
                         if(right == left)  // Parallel
                         {
                             image = 2;
-                            rotate = 1; // 90 grad
+                            rotate = 1;
                         }
                         else if(top == (Byte)0)
                         {
@@ -133,7 +133,7 @@ namespace AP_GameDev_Project
                         else if(top == (Byte)0)
                         {
                             image = 3;
-                            rotate = 1; // 90 grad
+                            rotate = 1;
                         }
                         else
                         {

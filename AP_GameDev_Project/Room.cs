@@ -15,21 +15,22 @@ namespace AP_GameDev_Project
         private readonly Texture2D tilemap;
         private readonly int tile_size;
 
-        public Room(Texture2D tilemap ,int room_width, string tilesFilename, int tile_size=64) {
+        public Room(Texture2D tilemap, string tilesFilename, int tile_size=64) {
             try
             {
                 tilesFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, tilesFilename);
-                this.tiles = File.ReadAllBytes(tilesFilename).ToList();
+                List<Byte> bytelist = File.ReadAllBytes(tilesFilename).ToList();
+                this.room_width = BitConverter.ToInt16(bytelist.ToArray(), 0);
+                this.room_width = (Int16)((this.room_width << 8) + (this.room_width >> 8));  // use Big-Endian
+                bytelist.RemoveRange(0, 2);
+                this.tiles = bytelist;
 
             } catch
             {
                 throw new Exception("ERROR: File reading failed");
             }
 
-
             this.tilemap = tilemap;
-
-            this.room_width = room_width;
             this.tile_size = tile_size;
         }
 
@@ -37,8 +38,8 @@ namespace AP_GameDev_Project
         {
             for (int i = 0; i < this.tiles.Count; i++)
             {
-                int screen_x = (i % this.room_width) * this.tile_size + 64*3;  // TODO Center
-                int screen_y = (i / this.room_width) * this.tile_size + 64*3;  // TODO Center
+                int screen_x = (i % this.room_width) * this.tile_size;  // TODO Center
+                int screen_y = (i / this.room_width) * this.tile_size;  // TODO Center
 
 
                 (int pattern, int angle) = this.GetPattern(i);

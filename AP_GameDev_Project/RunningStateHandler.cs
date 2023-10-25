@@ -10,7 +10,7 @@ namespace AP_GameDev_Project
     {
         Room current_room;
         public RunningStateHandler(Texture2D tilemap) { 
-            this.current_room = new Room(tilemap, 5, "Rooms\\room1.room");
+            this.current_room = new Room(tilemap, "Rooms\\room1.room");
         }
 
         public void Update(GameTime gameTime)

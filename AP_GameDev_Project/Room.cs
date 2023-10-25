@@ -37,8 +37,8 @@ namespace AP_GameDev_Project
         {
             for (int i = 0; i < this.tiles.Count; i++)
             {
-                int screen_x = (i % this.room_width) * this.tile_size;  // TODO Center
-                int screen_y = (i / this.room_width) * this.tile_size;  // TODO Center
+                int screen_x = (i % this.room_width) * this.tile_size + 64*3;  // TODO Center
+                int screen_y = (i / this.room_width) * this.tile_size + 64*3;  // TODO Center
 
 
                 (int pattern, int angle) = this.GetPattern(i);
@@ -67,15 +67,12 @@ namespace AP_GameDev_Project
 
             if (center_tile == (Byte) 0) return (-1, -1);
 
-            Byte left = i - 1 >= 0 && i % this.room_width != 0 ? this.tiles[i - 1] : (Byte) 0;
-            Byte right = i + 1 < this.tiles.Count && i % this.room_width != this.room_width - 1 ? this.tiles[i + 1] : (Byte) 0;
-            Byte top = i - this.room_width >= 0 ? this.tiles[i - this.room_width] : (Byte) 0;
-            Byte bottom = i + this.room_width < this.tiles.Count ? this.tiles[i + this.room_width] : (Byte) 0;
+            Byte left = DoesTileMatch(this.getLeftIndex(i), center_tile);
+            Byte right = DoesTileMatch(this.getRightIndex(i), center_tile);
+            Byte top = DoesTileMatch(this.getTopIndex(i), center_tile); ;
+            Byte bottom = DoesTileMatch(this.getBottomIndex(i), center_tile);
 
-            left = (Byte)(left == center_tile ? 1 : 0);
-            right = (Byte)(right == center_tile ? 1 : 0);
-            top = (Byte)(top == center_tile ? 1 : 0);
-            bottom = (Byte)(bottom == center_tile ? 1 : 0);
+            Byte bottom_right = DoesTileMatch(this.getRightIndex(this.getBottomIndex(i)), center_tile);
 
             int image = 0;
             int rotate = 0;
@@ -115,8 +112,16 @@ namespace AP_GameDev_Project
                         }
                         else if(top == (Byte)0)
                         {
-                            image = 3;
-                            rotate = 0;
+                            if(bottom_right == (Byte)0)
+                            {
+                                image = 4;
+                                rotate = 0;
+                            }
+                            else
+                            {
+                                image = 3;
+                                rotate = 0;
+                            }
                         }
                         else {
                             image = 3;
@@ -143,7 +148,7 @@ namespace AP_GameDev_Project
                     }
                     break;
                 case 3:
-                    image = 4;
+                    image = 5;
 
                     if (left == (Byte)0)
                     {
@@ -163,12 +168,37 @@ namespace AP_GameDev_Project
                     }
                     break;
                 case 4:
-                    image = 5;
+                    image = 6;
                     rotate = 0;
                     break;
             }
 
             return (image, rotate);
+        }
+
+        private int getLeftIndex(int i)
+        {
+            return ((i - 1) % this.room_width) < ((i) % this.room_width) && i != -1 ? i - 1 : -1;
+        }
+
+        private int getRightIndex(int i)
+        {
+            return ((i + 1) % this.room_width) > ((i) % this.room_width) && i != -1 ? i + 1 : -1;
+        }
+
+        private int getTopIndex(int i)
+        {
+            return i - this.room_width >= 0 && i != -1 ? i - this.room_width : -1;
+        }
+
+        private int getBottomIndex(int i)
+        {
+            return i + this.room_width < tiles.Count && i != -1 ? i + this.room_width : -1;
+        }
+
+        private Byte DoesTileMatch(int i, Byte correct_tile)
+        {
+            return (Byte)(i != -1 && this.tiles[i] == correct_tile ? 1 : 0);
         }
     }
 }

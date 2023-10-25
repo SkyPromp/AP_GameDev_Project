@@ -6,4 +6,5 @@ For example:
 ```0005 0101 0101 0101 0000 0001 0100 0000 0101 0101 0101```  
 Will output a room of 5 tiled wide that looks like this:  
   
-![image](https://github.com/SkyPromp/AP_GameDev_Project/assets/44906497/172183cb-6b32-4b01-abd1-dbc2912742a1)
+![image](https://github.com/SkyPromp/AP_GameDev_Project/assets/44906497/075de4a9-192c-4a7e-9163-ec6244301df3)
+

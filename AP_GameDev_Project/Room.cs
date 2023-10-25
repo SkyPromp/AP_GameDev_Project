@@ -147,11 +147,11 @@ namespace AP_GameDev_Project
 
                     if (left == (Byte)0)
                     {
-                        rotate = 1;
+                        rotate = 3;
                     }
                     else if (right == (Byte)0)
                     {
-                        rotate = 3;
+                        rotate = 1;
                     }
                     else if (top == (Byte)0)
                     {

@@ -11,7 +11,7 @@ namespace AP_GameDev_Project
     internal class Room
     {
         List<Byte> tiles;
-        private int room_width;
+        private Int16 room_width;
         private readonly Texture2D tilemap;
         private readonly int tile_size;
 

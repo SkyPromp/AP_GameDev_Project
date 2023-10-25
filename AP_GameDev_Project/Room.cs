@@ -73,6 +73,9 @@ namespace AP_GameDev_Project
             Byte bottom = DoesTileMatch(this.getBottomIndex(i), center_tile);
 
             Byte bottom_right = DoesTileMatch(this.getRightIndex(this.getBottomIndex(i)), center_tile);
+            Byte bottom_left = DoesTileMatch(this.getLeftIndex(this.getBottomIndex(i)), center_tile);
+            Byte top_right = DoesTileMatch(this.getRightIndex(this.getTopIndex(i)), center_tile);
+            Byte top_left = DoesTileMatch(this.getLeftIndex(this.getTopIndex(i)), center_tile);
 
             int image = 0;
             int rotate = 0;
@@ -112,20 +115,28 @@ namespace AP_GameDev_Project
                         }
                         else if(top == (Byte)0)
                         {
+                            rotate = 0;
+
                             if(bottom_right == (Byte)0)
                             {
                                 image = 4;
-                                rotate = 0;
                             }
                             else
                             {
                                 image = 3;
-                                rotate = 0;
                             }
                         }
                         else {
-                            image = 3;
-                            rotate = 3; 
+                            rotate = 3;
+
+                            if (top_right == (Byte)0)
+                            {
+                                image = 4;
+                            }
+                            else
+                            {
+                                image = 3;
+                            }
                         }
                     }
                     else
@@ -137,13 +148,29 @@ namespace AP_GameDev_Project
                         }
                         else if(top == (Byte)0)
                         {
-                            image = 3;
                             rotate = 1;
+
+                            if (bottom_left == (Byte)0)
+                            {
+                                image = 4;
+                            }
+                            else
+                            {
+                                image = 3;
+                            }
                         }
                         else
                         {
-                            image = 3;
                             rotate = 2;
+
+                            if (top_left == (Byte)0)
+                            {
+                                image = 4;
+                            }
+                            else
+                            {
+                                image = 3;
+                            }
                         }
                     }
                     break;

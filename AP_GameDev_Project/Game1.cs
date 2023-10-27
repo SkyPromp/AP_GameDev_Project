@@ -8,7 +8,7 @@ namespace AP_GameDev_Project
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
+        private GraphicsDeviceManager graphics;
         private SpriteBatch _spriteBatch;
         private StartStateHandler startStateHandler;
         private RunningStateHandler runningStateHandler;
@@ -18,6 +18,7 @@ namespace AP_GameDev_Project
         {
             START,
             RUNNING,
+            MAPMAKING,
             PAUSED,
             GAME_OVER
         }
@@ -25,10 +26,10 @@ namespace AP_GameDev_Project
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
-            _graphics.IsFullScreen = true;
-            _graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
-            _graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
+            graphics = new GraphicsDeviceManager(this);
+            graphics.IsFullScreen = true;
+            graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
+            graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -36,12 +37,9 @@ namespace AP_GameDev_Project
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
             current_state = states.START;  // TODO Needs to start on START
-            this.mouseHandler = new MouseHandler();
-            this.mouseHandler.LeftClickHook = () => { Debug.WriteLine(this.mouseHandler.MousePos.ToString()); };
+            this.mouseHandler = MouseHandler.getInstance;
         }
 
         protected override void LoadContent()
@@ -57,15 +55,15 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            this.mouseHandler.Update();
-            Debug.WriteLine(Game1.current_state.ToString());
-
             switch(Game1.current_state){
                 case states.START:
-                    this.startStateHandler.Update(gameTime, mouseHandler);
+                    this.startStateHandler.Update(gameTime);
                     break;
                 case states.RUNNING:
                     this.runningStateHandler.Update(gameTime);
+                    break;
+                case states.MAPMAKING:
+                    throw new NotImplementedException();
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();
@@ -74,7 +72,7 @@ namespace AP_GameDev_Project
                     throw new NotImplementedException();
                     break;
                 default:
-                    throw new Exception(string.Format("Invalid game state: {0}", Game1.current_state));
+                    throw new InvalidOperationException(string.Format("Invalid game state: {0}", Game1.current_state));
             }
 
             base.Update(gameTime);
@@ -93,6 +91,9 @@ namespace AP_GameDev_Project
                     break;
                 case states.RUNNING:
                     runningStateHandler.Draw(_spriteBatch);
+                    break;
+                case states.MAPMAKING:
+                    throw new NotImplementedException();
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();

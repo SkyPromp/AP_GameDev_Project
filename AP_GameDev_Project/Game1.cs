@@ -1,9 +1,7 @@
-﻿
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Collections;
 
 namespace AP_GameDev_Project
 {
@@ -25,6 +23,9 @@ namespace AP_GameDev_Project
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
+            _graphics.IsFullScreen = true;
+            _graphics.PreferredBackBufferWidth = 1920;
+            _graphics.PreferredBackBufferHeight = 1080;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }

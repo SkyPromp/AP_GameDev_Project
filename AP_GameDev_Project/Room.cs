@@ -39,8 +39,13 @@ namespace AP_GameDev_Project
         {
             for (int i = 0; i < this.tiles.Count; i++)
             {
-                int screen_x = (i % this.room_width) * this.tile_size;  // TODO Center
-                int screen_y = (i / this.room_width) * this.tile_size;  // TODO Center
+                // Place the tile at the correct position relative to eachother
+                int screen_x = (i % this.room_width) * this.tile_size;
+                int screen_y = (i / this.room_width) * this.tile_size;
+
+                // Move reference point to place the room in the center of the screen
+                screen_x += (GlobalConstants.SCREEN_WIDTH - this.tile_size * this.room_width) / 2;
+                screen_y += (GlobalConstants.SCREEN_HEIGHT - this.tile_size * this.tiles.Count / this.room_width) / 2;
 
 
                 (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
@@ -49,6 +54,7 @@ namespace AP_GameDev_Project
                 int tilemap_x = pattern;
                 int tilemap_y = 0;
 
+                // TODO: Draw to a texture2D
                 spriteBatch.Draw(
                     texture: this.tilemap,
                     position: new Vector2(screen_x + this.tile_size / 2, screen_y + this.tile_size / 2),  // The origin changes because of the rotation

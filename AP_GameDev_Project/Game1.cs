@@ -24,8 +24,9 @@ namespace AP_GameDev_Project
         {
             _graphics = new GraphicsDeviceManager(this);
             _graphics.IsFullScreen = true;
-            _graphics.PreferredBackBufferWidth = 1920;
-            _graphics.PreferredBackBufferHeight = 1080;
+            _graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
+            _graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
+
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -35,7 +36,7 @@ namespace AP_GameDev_Project
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            current_state = states.RUNNING;  // Needs to start on START
+            current_state = states.RUNNING;  // TODO Needs to start on START
         }
 
         protected override void LoadContent()

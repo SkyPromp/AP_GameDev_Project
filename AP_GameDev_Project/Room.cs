@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AP_GameDev_Project.TileTypes;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,7 @@ namespace AP_GameDev_Project
                 int screen_y = (i / this.room_width) * this.tile_size;  // TODO Center
 
 
-                (int pattern, int angle) = this.GetPattern(i);
+                (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
                 if (pattern == -1) continue;
                 
                 int tilemap_x = pattern;
@@ -62,171 +63,39 @@ namespace AP_GameDev_Project
             }
         }
 
-        private (int, int) GetPattern(int i)
+        private ITileType GetPattern(int i)
         {
             Byte center_tile = this.tiles[i];
 
-            if (center_tile == (Byte) 0) return (-1, -1);
+            if (center_tile == (Byte) 0) return new BlankTileType();
 
-            Byte left = DoesTileMatch(this.getLeftIndex(i), center_tile);
-            Byte right = DoesTileMatch(this.getRightIndex(i), center_tile);
-            Byte top = DoesTileMatch(this.getTopIndex(i), center_tile); ;
-            Byte bottom = DoesTileMatch(this.getBottomIndex(i), center_tile);
+            TileHelper tileHelper = new TileHelper(room_width, tiles);
 
-            Byte bottom_right = DoesTileMatch(this.getRightIndex(this.getBottomIndex(i)), center_tile);
-            Byte bottom_left = DoesTileMatch(this.getLeftIndex(this.getBottomIndex(i)), center_tile);
-            Byte top_right = DoesTileMatch(this.getRightIndex(this.getTopIndex(i)), center_tile);
-            Byte top_left = DoesTileMatch(this.getLeftIndex(this.getTopIndex(i)), center_tile);
+            int left_i = tileHelper.getLeftIndex(i);
+            int right_i = tileHelper.getRightIndex(i);
+            int top_i = tileHelper.getTopIndex(i);
+            int bottom_i = tileHelper.getBottomIndex(i);
 
-            int image = 0;
-            int rotate = 0;
+            Byte left = tileHelper.DoesTileMatch(left_i, center_tile);
+            Byte right = tileHelper.DoesTileMatch(right_i, center_tile);
+            Byte top = tileHelper.DoesTileMatch(top_i, center_tile);
+            Byte bottom = tileHelper.DoesTileMatch(bottom_i, center_tile);
 
             switch (left + right + top + bottom)
             {
                 case 0:
-                    image = 0;
-                    rotate =0;
-                    break;
+                    return new ZeroSide();
                 case 1:
-                    image = 1;
-
-                    if (left == (Byte) 1)
-                    {
-                        rotate = 3;
-                    } else if (right == (Byte)1)
-                    {
-                        rotate = 1;
-                    } else if(top == (Byte)1)
-                    {
-                        rotate = 2;
-                    }
-                    else
-                    {
-                        rotate = 0;
-                    }
-
-                    break;
+                    return new OneSide();
                 case 2:
-                    if(left == (Byte)0)
-                    {
-                        if(right == left)  // Parallel
-                        {
-                            image = 2;
-                            rotate = 1;
-                        }
-                        else if(top == (Byte)0)
-                        {
-                            rotate = 0;
-
-                            if(bottom_right == (Byte)0)
-                            {
-                                image = 4;
-                            }
-                            else
-                            {
-                                image = 3;
-                            }
-                        }
-                        else {
-                            rotate = 3;
-
-                            if (top_right == (Byte)0)
-                            {
-                                image = 4;
-                            }
-                            else
-                            {
-                                image = 3;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (left == right)  // Parallel
-                        {
-                            image = 2;
-                            rotate = 0;
-                        }
-                        else if(top == (Byte)0)
-                        {
-                            rotate = 1;
-
-                            if (bottom_left == (Byte)0)
-                            {
-                                image = 4;
-                            }
-                            else
-                            {
-                                image = 3;
-                            }
-                        }
-                        else
-                        {
-                            rotate = 2;
-
-                            if (top_left == (Byte)0)
-                            {
-                                image = 4;
-                            }
-                            else
-                            {
-                                image = 3;
-                            }
-                        }
-                    }
-                    break;
+                    return new TwoSide();
                 case 3:
-                    image = 5;
-
-                    if (left == (Byte)0)
-                    {
-                        rotate = 3;
-                    }
-                    else if (right == (Byte)0)
-                    {
-                        rotate = 1;
-                    }
-                    else if (top == (Byte)0)
-                    {
-                        rotate = 0;
-                    }
-                    else
-                    {
-                        rotate = 2;
-                    }
-                    break;
+                    return new ThreeSide();
                 case 4:
-                    image = 6;
-                    rotate = 0;
-                    break;
+                    return new FourSide();
             }
 
-            return (image, rotate);
-        }
-
-        private int getLeftIndex(int i)
-        {
-            return ((i - 1) % this.room_width) < ((i) % this.room_width) && i != -1 ? i - 1 : -1;
-        }
-
-        private int getRightIndex(int i)
-        {
-            return ((i + 1) % this.room_width) > ((i) % this.room_width) && i != -1 ? i + 1 : -1;
-        }
-
-        private int getTopIndex(int i)
-        {
-            return i - this.room_width >= 0 && i != -1 ? i - this.room_width : -1;
-        }
-
-        private int getBottomIndex(int i)
-        {
-            return i + this.room_width < tiles.Count && i != -1 ? i + this.room_width : -1;
-        }
-
-        private Byte DoesTileMatch(int i, Byte correct_tile)
-        {
-            return (Byte)(i != -1 && this.tiles[i] == correct_tile ? 1 : 0);
+            throw new InvalidOperationException(string.Format("Unexpected sum of sides: ", left + right + top + bottom));
         }
     }
 }

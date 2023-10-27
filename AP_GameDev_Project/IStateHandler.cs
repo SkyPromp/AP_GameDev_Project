@@ -5,14 +5,7 @@ namespace AP_GameDev_Project
 {
     internal interface IStateHandler
     {
-        public void Update(GameTime gameTime)
-        {
-
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-
-        }
+        public void Update(GameTime gameTime, IInputHandler inputDevice);
+        public void Draw(SpriteBatch spriteBatch);
     }
 }

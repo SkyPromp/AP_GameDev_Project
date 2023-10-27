@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 
 namespace AP_GameDev_Project
 {
@@ -9,16 +10,18 @@ namespace AP_GameDev_Project
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private StartStateHandler startStateHandler;
         private RunningStateHandler runningStateHandler;
+        private MouseHandler mouseHandler;
 
-        private enum states
+        public enum states
         {
             START,
             RUNNING,
             PAUSED,
             GAME_OVER
         }
-        private states current_state;
+        public static states current_state;
 
         public Game1()
         {
@@ -36,13 +39,16 @@ namespace AP_GameDev_Project
             // TODO: Add your initialization logic here
 
             base.Initialize();
-            current_state = states.RUNNING;  // TODO Needs to start on START
+            current_state = states.START;  // TODO Needs to start on START
+            this.mouseHandler = new MouseHandler();
+            this.mouseHandler.LeftClickHook = () => { Debug.WriteLine(this.mouseHandler.MousePos.ToString()); };
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
+            this.startStateHandler = new StartStateHandler();
             this.runningStateHandler = new RunningStateHandler(tilemap);
         }
 
@@ -51,12 +57,15 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            switch(this.current_state){
+            this.mouseHandler.Update();
+            Debug.WriteLine(Game1.current_state.ToString());
+
+            switch(Game1.current_state){
                 case states.START:
-                    throw new NotImplementedException();
+                    this.startStateHandler.Update(gameTime, mouseHandler);
                     break;
                 case states.RUNNING:
-                    runningStateHandler.Update(gameTime);
+                    this.runningStateHandler.Update(gameTime);
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();
@@ -65,7 +74,7 @@ namespace AP_GameDev_Project
                     throw new NotImplementedException();
                     break;
                 default:
-                    throw new Exception(string.Format("Invalid game state: {0}", this.current_state));
+                    throw new Exception(string.Format("Invalid game state: {0}", Game1.current_state));
             }
 
             base.Update(gameTime);
@@ -77,10 +86,10 @@ namespace AP_GameDev_Project
 
             _spriteBatch.Begin();
 
-            switch (this.current_state)
+            switch (Game1.current_state)
             {
                 case states.START:
-                    throw new NotImplementedException();
+                    this.startStateHandler.Draw(_spriteBatch);
                     break;
                 case states.RUNNING:
                     runningStateHandler.Draw(_spriteBatch);
@@ -92,7 +101,7 @@ namespace AP_GameDev_Project
                     throw new NotImplementedException();
                     break;
                 default:
-                    throw new Exception(string.Format("Invalid game state: {0}", this.current_state));
+                    throw new Exception(string.Format("Invalid game state: {0}", Game1.current_state));
             }
 
             _spriteBatch.End();

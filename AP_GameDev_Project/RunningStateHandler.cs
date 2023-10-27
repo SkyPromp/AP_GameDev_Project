@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AP_GameDev_Project
 {
-    internal class RunningStateHandler: IStateHandler
+    internal class RunningStateHandler//: IStateHandler
     {
         Room current_room;
         public RunningStateHandler(Texture2D tilemap) { 

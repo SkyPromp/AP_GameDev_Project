@@ -12,7 +12,6 @@ namespace AP_GameDev_Project
         private SpriteBatch _spriteBatch;
         private StartStateHandler startStateHandler;
         private RunningStateHandler runningStateHandler;
-        private MouseHandler mouseHandler;
 
         public enum states
         {
@@ -38,8 +37,7 @@ namespace AP_GameDev_Project
         protected override void Initialize()
         {
             base.Initialize();
-            current_state = states.START;  // TODO Needs to start on START
-            this.mouseHandler = MouseHandler.getInstance;
+            current_state = states.START;
         }
 
         protected override void LoadContent()

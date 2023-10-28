@@ -13,6 +13,7 @@ namespace AP_GameDev_Project
         private SpriteBatch _spriteBatch;
         private StartStateHandler startStateHandler;
         private RunningStateHandler runningStateHandler;
+        private MapMakingStateHandler mapMakingStateHandler;
 
         public enum states
         {
@@ -47,6 +48,7 @@ namespace AP_GameDev_Project
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             this.startStateHandler = new StartStateHandler();
             this.runningStateHandler = new RunningStateHandler(tilemap);
+            this.mapMakingStateHandler = new MapMakingStateHandler();
         }
 
         protected override void Update(GameTime gameTime)
@@ -56,13 +58,19 @@ namespace AP_GameDev_Project
 
             switch(Game1.current_state){
                 case states.START:
+                    if (!this.startStateHandler.IsInit) this.startStateHandler.Init();
+
                     this.startStateHandler.Update(gameTime);
                     break;
                 case states.RUNNING:
+                    if (!this.runningStateHandler.IsInit) this.runningStateHandler.Init();
+
                     this.runningStateHandler.Update(gameTime);
                     break;
                 case states.MAPMAKING:
-                    throw new NotImplementedException();
+                    if (!this.mapMakingStateHandler.IsInit) this.mapMakingStateHandler.Init();
+
+                    this.mapMakingStateHandler.Update(gameTime);
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();
@@ -92,7 +100,7 @@ namespace AP_GameDev_Project
                     runningStateHandler.Draw(_spriteBatch);
                     break;
                 case states.MAPMAKING:
-                    throw new NotImplementedException();
+                    mapMakingStateHandler.Draw(_spriteBatch);
                     break;
                 case states.PAUSED:
                     throw new NotImplementedException();

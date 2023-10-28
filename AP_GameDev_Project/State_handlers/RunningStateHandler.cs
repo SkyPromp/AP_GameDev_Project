@@ -9,14 +9,22 @@ namespace AP_GameDev_Project.State_handlers
     internal class RunningStateHandler : IStateHandler
     {
         Room current_room;
+        private bool is_init;
+        public bool IsInit { get; }
+
         public RunningStateHandler(Texture2D tilemap)
         {
             current_room = new Room(tilemap, "Rooms\\room1.room");
         }
 
+        public void Init()
+        {
+            this.is_init = true;
+        }
+
         public void Update(GameTime gameTime)
         {
-            //throw new NotImplementedException();
+            
         }
 
         public void Draw(SpriteBatch spriteBatch)

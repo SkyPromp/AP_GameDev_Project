@@ -16,6 +16,7 @@ namespace AP_GameDev_Project.State_handlers
         private int tile_size;
 
         private List<Byte> tiles;
+        private Byte current_tile_brush;
 
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
@@ -40,6 +41,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
+            this.current_tile_brush = 1;
 
             // FIX Without Math.Ceiling
             int tile_amount = (int)Math.Ceiling(Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size) * Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size));
@@ -49,17 +51,31 @@ namespace AP_GameDev_Project.State_handlers
         public void Update(GameTime gameTime)
         {
             mouseHandler.Update();
+            // TODO: change current tile brush with keyboard
+
+            if (mouseHandler.MouseActive == 0) return;
+
+            int tile_row = (int) mouseHandler.MousePos.Y / this.tile_size;
+            int tile_column = (int) mouseHandler.MousePos.X / this.tile_size;
+            int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / this.tile_size;
 
             if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == 1)
             {
                 if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
                 {
-                    int tile_row = (int) mouseHandler.MousePos.Y / this.tile_size;
-                    int tile_column = (int) mouseHandler.MousePos.X / this.tile_size;
-                    int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / this.tile_size;
+                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, 
+                        message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
 
-                    Debug.WriteLine(string.Format("X:{0} Y:{1} Index:{2}", tile_column, tile_row, tile_index));
-                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
+                    this.tiles[tile_index] = this.current_tile_brush;
+                }
+            } else if ((mouseHandler.MouseActive & (short)MouseHandler.mouseEnum.RIGHT_CLICK) == 1)  // Else if because leftclick has priority
+            {
+                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
+                { // Avoid duplicated code?
+                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, 
+                        message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
+
+                    this.tiles[tile_index] = 0;
                 }
             }
         }
@@ -67,6 +83,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Draw(SpriteBatch spriteBatch)
         {
             this.DrawGrid(spriteBatch);
+            // TODO: Draw tiles
         }
 
         private void DrawGrid(SpriteBatch spriteBatch)
@@ -88,10 +105,12 @@ namespace AP_GameDev_Project.State_handlers
 
             if (GlobalConstants.SCREEN_WIDTH < GlobalConstants.SCREEN_HEIGHT)
             {
+                #pragma warning disable CS0162 // Unreachable code detected
                 for (int tile_i_pos = GlobalConstants.SCREEN_WIDTH - (GlobalConstants.SCREEN_WIDTH % this.tile_size); tile_i_pos < GlobalConstants.SCREEN_HEIGHT; tile_i_pos += this.tile_size)
                 {
                     this.DrawLine(vertices, new Vector2(0, tile_i_pos), new Vector2(GlobalConstants.SCREEN_WIDTH, tile_i_pos));
                 }
+                #pragma warning restore CS0162 // Unreachable code detected
             }
         }
 

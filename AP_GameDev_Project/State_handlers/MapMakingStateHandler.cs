@@ -15,18 +15,21 @@ namespace AP_GameDev_Project.State_handlers
         public bool IsInit { get { return this.is_init; } }
         private int tile_size;
 
+        private Texture2D tilemap;
         private List<Byte> tiles;
         private Byte current_tile_brush;
+        private Room room;
 
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
 
-        public MapMakingStateHandler(GraphicsDevice graphicsDevice, int tile_size=64) {
+        public MapMakingStateHandler(GraphicsDevice graphicsDevice, Texture2D tilemap,int tile_size=64) {
             this.is_init = false;
             this.mouseHandler = MouseHandler.getInstance;
             this.tile_size = tile_size;
             this.tiles = new List<Byte>();
+            this.tilemap = tilemap;
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -44,8 +47,13 @@ namespace AP_GameDev_Project.State_handlers
             this.current_tile_brush = 1;
 
             // FIX Without Math.Ceiling
-            int tile_amount = (int)Math.Ceiling(Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size) * Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size));
+            Int16 room_width = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);
+            Int16 room_height = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size);
+
+            int tile_amount = (int)Math.Ceiling((double)room_width * (double)room_height);
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
+
+            room = new Room(this.tilemap, this.tiles, room_width);
         }
 
         public void Update(GameTime gameTime)
@@ -83,7 +91,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Draw(SpriteBatch spriteBatch)
         {
             this.DrawGrid(spriteBatch);
-            // TODO: Draw tiles
+            if (this.room != null) this.room.Draw(spriteBatch);
         }
 
         private void DrawGrid(SpriteBatch spriteBatch)

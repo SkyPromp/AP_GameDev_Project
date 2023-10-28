@@ -34,6 +34,14 @@ namespace AP_GameDev_Project
             this.tile_size = tile_size;
         }
 
+        public Room(Texture2D tilemap, List<Byte> tiles, Int16 room_width, int tile_size=64)
+        {
+            this.room_width = room_width;
+            this.tiles = tiles;
+            this.tilemap = tilemap;
+            this.tile_size = tile_size;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < this.tiles.Count; i++)
@@ -43,8 +51,8 @@ namespace AP_GameDev_Project
                 int screen_y = (i / this.room_width) * this.tile_size;
 
                 // Move reference point to place the room in the center of the screen
-                screen_x += (GlobalConstants.SCREEN_WIDTH - this.tile_size * this.room_width) / 2;
-                screen_y += (GlobalConstants.SCREEN_HEIGHT - this.tile_size * this.tiles.Count / this.room_width) / 2;
+                //screen_x += (GlobalConstants.SCREEN_WIDTH - this.tile_size * this.room_width) / 2;
+                //screen_y += (GlobalConstants.SCREEN_HEIGHT - this.tile_size * this.tiles.Count / this.room_width) / 2;
 
 
                 (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);

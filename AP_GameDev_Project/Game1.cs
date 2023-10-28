@@ -48,7 +48,7 @@ namespace AP_GameDev_Project
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             this.startStateHandler = new StartStateHandler();
             this.runningStateHandler = new RunningStateHandler(tilemap);
-            this.mapMakingStateHandler = new MapMakingStateHandler();
+            this.mapMakingStateHandler = new MapMakingStateHandler(GraphicsDevice);
         }
 
         protected override void Update(GameTime gameTime)
@@ -69,7 +69,7 @@ namespace AP_GameDev_Project
                     break;
                 case states.MAPMAKING:
                     if (!this.mapMakingStateHandler.IsInit) this.mapMakingStateHandler.Init();
-
+                    
                     this.mapMakingStateHandler.Update(gameTime);
                     break;
                 case states.PAUSED:

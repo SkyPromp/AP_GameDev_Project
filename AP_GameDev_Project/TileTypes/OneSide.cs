@@ -20,11 +20,11 @@ namespace AP_GameDev_Project.TileTypes
 
             if (tileHelper.DoesTileMatch(left, correct_tile) == (Byte)1)
             {
-                rotate = 3;
+                rotate = 1;
             }
             else if (tileHelper.DoesTileMatch(right, correct_tile) == (Byte)1)
             {
-                rotate = 1;
+                rotate = 3;
             }
             else if (tileHelper.DoesTileMatch(top, correct_tile) == (Byte)1)
             {

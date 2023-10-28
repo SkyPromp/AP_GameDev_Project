@@ -71,7 +71,7 @@ namespace AP_GameDev_Project.Input_devices
 
             if (state.RightButton == ButtonState.Pressed)
             {
-                mouseActive |= (short)MouseHandler.mouseEnum.RIGHT_CLICK;
+                mouseActive |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
                 if (rightClickHook != null) rightClickHook();
             }
         }

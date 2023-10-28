@@ -68,7 +68,7 @@ namespace AP_GameDev_Project.State_handlers
             int tile_column = (int) mouseHandler.MousePos.X / this.tile_size;
             int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / this.tile_size;
 
-            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == 1)
+            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == (short) MouseHandler.mouseEnum.LEFT_CLICK)
             {
                 if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
                 {
@@ -77,7 +77,7 @@ namespace AP_GameDev_Project.State_handlers
 
                     this.tiles[tile_index] = this.current_tile_brush;
                 }
-            } else if ((mouseHandler.MouseActive & (short)MouseHandler.mouseEnum.RIGHT_CLICK) == 1)  // Else if because leftclick has priority
+            } else if ((mouseHandler.MouseActive & (short)MouseHandler.mouseEnum.RIGHT_CLICK) == (short)MouseHandler.mouseEnum.RIGHT_CLICK)  // Else if because leftclick has priority
             {
                 if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
                 { // Avoid duplicated code?

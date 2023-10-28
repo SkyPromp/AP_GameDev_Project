@@ -57,17 +57,11 @@ namespace AP_GameDev_Project.State_handlers
 
             for (int tile_i_pos = this.tile_size; tile_i_pos < GlobalConstants.SCREEN_WIDTH; tile_i_pos += this.tile_size)
             {
-                vertices[0].Position = new Vector3(tile_i_pos, 0, 0);
-                vertices[1].Position = new Vector3(tile_i_pos, GlobalConstants.SCREEN_HEIGHT, 0);
-
-                this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                this.DrawLine(vertices, new Vector2(tile_i_pos, 0), new Vector2(tile_i_pos, GlobalConstants.SCREEN_HEIGHT));
 
                 if(tile_i_pos < GlobalConstants.SCREEN_HEIGHT)
                 {
-                    vertices[0].Position = new Vector3(0, tile_i_pos, 0);
-                    vertices[1].Position = new Vector3(GlobalConstants.SCREEN_WIDTH, tile_i_pos, 0);
-
-                    this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                    this.DrawLine(vertices, new Vector2(0, tile_i_pos), new Vector2(GlobalConstants.SCREEN_WIDTH, tile_i_pos));
                 }
             }
 
@@ -75,12 +69,17 @@ namespace AP_GameDev_Project.State_handlers
             {
                 for (int tile_i_pos = GlobalConstants.SCREEN_WIDTH - (GlobalConstants.SCREEN_WIDTH % this.tile_size); tile_i_pos < GlobalConstants.SCREEN_HEIGHT; tile_i_pos += this.tile_size)
                 {
-                    vertices[0].Position = new Vector3(0, tile_i_pos, 0);
-                    vertices[1].Position = new Vector3(GlobalConstants.SCREEN_WIDTH, tile_i_pos, 0);
-
-                    this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                    this.DrawLine(vertices, new Vector2(0, tile_i_pos), new Vector2(GlobalConstants.SCREEN_WIDTH, tile_i_pos));
                 }
             }
+        }
+
+        private void DrawLine(VertexPositionColor[] vertices, Vector2 start, Vector2 end)
+        {
+            vertices[0].Position = new Vector3(start.X, start.Y, 0);
+            vertices[1].Position = new Vector3(end.X, end.Y, 0);
+
+            this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
         }
     }
 }

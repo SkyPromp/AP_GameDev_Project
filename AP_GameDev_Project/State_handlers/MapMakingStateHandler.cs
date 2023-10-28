@@ -60,6 +60,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             mouseHandler.Update();
             // TODO: change current tile brush with keyboard
+            // TODO: store to .room file with keyboard
 
             if (mouseHandler.MouseActive == 0) return;
 

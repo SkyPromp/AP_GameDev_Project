@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.TileTypes
 {
@@ -34,8 +34,9 @@ namespace AP_GameDev_Project.TileTypes
                 else if (top == (Byte)0)
                 {
                     rotate = 0;
-                    int bottom_right_i = tileHelper.getBottomIndex(right);
+                    int bottom_right_i = tileHelper.getBottomIndex(right_i);
                     Byte bottom_right = tileHelper.DoesTileMatch(bottom_right_i, correct_tile);
+
 
                     if (bottom_right == (Byte)0)
                     {
@@ -49,7 +50,7 @@ namespace AP_GameDev_Project.TileTypes
                 else
                 {
                     rotate = 3;
-                    int top_right_i = tileHelper.getTopIndex(right);
+                    int top_right_i = tileHelper.getTopIndex(right_i);
                     Byte top_right = tileHelper.DoesTileMatch(top_right_i, correct_tile);
 
                     if (top_right == (Byte)0)
@@ -72,7 +73,7 @@ namespace AP_GameDev_Project.TileTypes
                 else if (top == (Byte)0)
                 {
                     rotate = 1;
-                    int bottom_left_i = tileHelper.getBottomIndex(left);
+                    int bottom_left_i = tileHelper.getBottomIndex(left_i);
                     Byte bottom_left = tileHelper.DoesTileMatch(bottom_left_i, correct_tile);
 
                     if (bottom_left == (Byte)0)
@@ -87,7 +88,7 @@ namespace AP_GameDev_Project.TileTypes
                 else
                 {
                     rotate = 2;
-                    int top_left_i = tileHelper.getTopIndex(left);
+                    int top_left_i = tileHelper.getTopIndex(left_i);
                     Byte top_left = tileHelper.DoesTileMatch(top_left_i, correct_tile);
 
                     if (top_left == (Byte)0)

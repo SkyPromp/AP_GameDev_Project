@@ -10,7 +10,7 @@ namespace AP_GameDev_Project.State_handlers
         private readonly Rectangle mapMakeButtonRect;
         private MouseHandler mouseHandler;
         private bool is_init;
-        public bool IsInit {  get;}
+        public bool IsInit { get { return this.is_init; } }
 
         public StartStateHandler()
         {
@@ -28,7 +28,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             mouseHandler.Update();
 
-            if ((mouseHandler.MouseActive & 1) == 1)
+            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == 1)
             {
                 if (startButtonRect.Contains(mouseHandler.MousePos))
                 {

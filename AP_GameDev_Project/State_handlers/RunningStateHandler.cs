@@ -8,7 +8,7 @@ namespace AP_GameDev_Project.State_handlers
     {
         Room current_room;
         private bool is_init;
-        public bool IsInit { get; }
+        public bool IsInit { get { return this.is_init; } }
 
         public RunningStateHandler(Texture2D tilemap)
         {

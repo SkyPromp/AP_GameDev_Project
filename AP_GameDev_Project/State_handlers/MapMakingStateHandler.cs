@@ -1,8 +1,10 @@
 ﻿using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -10,16 +12,20 @@ namespace AP_GameDev_Project.State_handlers
     {
         private MouseHandler mouseHandler;
         private bool is_init;
-        public bool IsInit { get; }
+        public bool IsInit { get { return this.is_init; } }
         private int tile_size;
+
+        private List<Byte> tiles;
 
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
 
         public MapMakingStateHandler(GraphicsDevice graphicsDevice, int tile_size=64) {
+            this.is_init = false;
             this.mouseHandler = MouseHandler.getInstance;
             this.tile_size = tile_size;
+            this.tiles = new List<Byte>();
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -34,13 +40,28 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            mouseHandler.LeftClickHook = () => { Debug.WriteLine("MapMaker Left"); };
-            mouseHandler.RightClickHook = () => { Debug.WriteLine("MapMaker Right"); };
+
+            // FIX Without Math.Ceiling
+            int tile_amount = (int)Math.Ceiling(Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size) * Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size));
+            this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
         }
 
         public void Update(GameTime gameTime)
         {
             mouseHandler.Update();
+
+            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == 1)
+            {
+                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
+                {
+                    int tile_row = (int) mouseHandler.MousePos.Y / this.tile_size;
+                    int tile_column = (int) mouseHandler.MousePos.X / this.tile_size;
+                    int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / this.tile_size;
+
+                    Debug.WriteLine(string.Format("X:{0} Y:{1} Index:{2}", tile_column, tile_row, tile_index));
+                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -11,7 +11,15 @@ namespace AP_GameDev_Project.Input_devices
         private volatile static MouseHandler instance;
         private static object syncRoot = new object();
 
+        public enum mouseEnum: short
+        {
+            LEFT_CLICK=1,
+            RIGHT_CLICK=2,
+            MIDDLE_CLICK=4,
+        }
+
         private short mouseActive;
+
         public short MouseActive { get { return mouseActive; } }
 
         private Vector2 mousePos;
@@ -57,13 +65,13 @@ namespace AP_GameDev_Project.Input_devices
 
             if (state.LeftButton == ButtonState.Pressed)
             {
-                mouseActive |= 1;
+                mouseActive |= (short) MouseHandler.mouseEnum.LEFT_CLICK;
                 if (leftClickHook != null) leftClickHook();
             }
 
             if (state.RightButton == ButtonState.Pressed)
             {
-                mouseActive |= 2;
+                mouseActive |= (short)MouseHandler.mouseEnum.RIGHT_CLICK;
                 if (rightClickHook != null) rightClickHook();
             }
         }

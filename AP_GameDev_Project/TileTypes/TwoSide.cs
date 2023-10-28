@@ -1,9 +1,6 @@
-﻿using SharpDX.Direct3D9;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AP_GameDev_Project.TileTypes
 {
@@ -11,6 +8,8 @@ namespace AP_GameDev_Project.TileTypes
     {
         public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
         {
+            // Bugfix, wrong diagonal corners checked
+
             int image;
             int rotate;
             TileHelper tileHelper = new TileHelper(room_width, tiles);

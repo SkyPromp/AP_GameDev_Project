@@ -50,32 +50,37 @@ namespace AP_GameDev_Project.State_handlers
 
         private void DrawGrid(SpriteBatch spriteBatch)
         {
-            for (int x = this.tile_size; x < GlobalConstants.SCREEN_WIDTH; x += this.tile_size)
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            var vertices = new VertexPositionColor[2];
+            vertices[0].Color = Color.Black;
+            vertices[1].Color = Color.Black;
+
+            for (int tile_i_pos = this.tile_size; tile_i_pos < GlobalConstants.SCREEN_WIDTH; tile_i_pos += this.tile_size)
             {
-                basicEffect.CurrentTechnique.Passes[0].Apply();
-                var vertices = new VertexPositionColor[2];
-                vertices[0].Position = new Vector3(x, 0, 0);
-                vertices[0].Color = Color.Black;
-                vertices[1].Position = new Vector3(x, GlobalConstants.SCREEN_HEIGHT, 0);
-                vertices[1].Color = Color.Black;
+                vertices[0].Position = new Vector3(tile_i_pos, 0, 0);
+                vertices[1].Position = new Vector3(tile_i_pos, GlobalConstants.SCREEN_HEIGHT, 0);
 
                 this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+
+                if(tile_i_pos < GlobalConstants.SCREEN_HEIGHT)
+                {
+                    vertices[0].Position = new Vector3(0, tile_i_pos, 0);
+                    vertices[1].Position = new Vector3(GlobalConstants.SCREEN_WIDTH, tile_i_pos, 0);
+
+                    this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                }
             }
 
-            for (int y = this.tile_size; y < GlobalConstants.SCREEN_HEIGHT; y += this.tile_size)
+            if (GlobalConstants.SCREEN_WIDTH < GlobalConstants.SCREEN_HEIGHT)
             {
-                basicEffect.CurrentTechnique.Passes[0].Apply();
-                var vertices = new VertexPositionColor[2];
-                vertices[0].Position = new Vector3(0, y, 0);
-                vertices[0].Color = Color.Black;
-                vertices[1].Position = new Vector3(GlobalConstants.SCREEN_WIDTH, y, 0);
-                vertices[1].Color = Color.Black;
+                for (int tile_i_pos = GlobalConstants.SCREEN_WIDTH - (GlobalConstants.SCREEN_WIDTH % this.tile_size); tile_i_pos < GlobalConstants.SCREEN_HEIGHT; tile_i_pos += this.tile_size)
+                {
+                    vertices[0].Position = new Vector3(0, tile_i_pos, 0);
+                    vertices[1].Position = new Vector3(GlobalConstants.SCREEN_WIDTH, tile_i_pos, 0);
 
-                this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                    this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+                }
             }
-            
-            // MERGE INTO 1 FOR LOOP WITH Math.Min(width, height) and an if
         }
     }
 }
-

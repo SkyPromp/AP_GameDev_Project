@@ -4,13 +4,14 @@ using System;
 using System.Collections.Generic;
 
 
-namespace AP_GameDev_Project
+namespace AP_GameDev_Project.State_handlers
 {
-    internal class RunningStateHandler: IStateHandler
+    internal class RunningStateHandler : IStateHandler
     {
         Room current_room;
-        public RunningStateHandler(Texture2D tilemap) { 
-            this.current_room = new Room(tilemap, "Rooms\\room1.room");
+        public RunningStateHandler(Texture2D tilemap)
+        {
+            current_room = new Room(tilemap, "Rooms\\room1.room");
         }
 
         public void Update(GameTime gameTime)
@@ -20,7 +21,7 @@ namespace AP_GameDev_Project
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            this.current_room.Draw(spriteBatch);
+            current_room.Draw(spriteBatch);
         }
     }
 }

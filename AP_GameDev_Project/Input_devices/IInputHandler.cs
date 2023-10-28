@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AP_GameDev_Project
+namespace AP_GameDev_Project.Input_devices
 {
     internal interface IInputHandler
     {

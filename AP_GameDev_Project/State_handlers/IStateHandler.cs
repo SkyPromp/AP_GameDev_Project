@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace AP_GameDev_Project
+namespace AP_GameDev_Project.State_handlers
 {
     internal interface IStateHandler
     {

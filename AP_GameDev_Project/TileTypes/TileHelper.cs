@@ -52,9 +52,9 @@ namespace AP_GameDev_Project.TileTypes
             return i + this.room_width < this.tiles.Count && i != -1 ? i + this.room_width : -1;
         }
 
-        public Byte getTile(int i)
+        public bool IsCorrectTileAtPos(int pos)
         {
-            return (Byte)(i != -1 && this.tiles[i] == this.correct_tile ? 1 : 0);
+            return pos != -1 && this.tiles[pos] == this.correct_tile;
         }
 
         public int getRotatedCorner(int corner, int i, int rotation)

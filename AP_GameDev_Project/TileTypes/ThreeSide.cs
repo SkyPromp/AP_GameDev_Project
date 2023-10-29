@@ -12,9 +12,9 @@ namespace AP_GameDev_Project.TileTypes
             int right = this.tileHelper.getRightIndex(i);
             int top = this.tileHelper.getTopIndex(i);
 
-            if (this.tileHelper.getTile(left) == (Byte)0) return 3;
-            else if (this.tileHelper.getTile(right) == (Byte)0) return 1;
-            else if (this.tileHelper.getTile(top) == (Byte)0) return 0;
+            if (!this.tileHelper.IsCorrectTileAtPos(left)) return 3;
+            else if (!this.tileHelper.IsCorrectTileAtPos(right)) return 1;
+            else if (!this.tileHelper.IsCorrectTileAtPos(top)) return 0;
 
             return 2;
         }
@@ -24,12 +24,12 @@ namespace AP_GameDev_Project.TileTypes
             int bottom_left = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_LEFT, this.i, rotation);
             int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);
 
-            if (this.tileHelper.getTile(bottom_left) == (byte)0)
+            if (!this.tileHelper.IsCorrectTileAtPos(bottom_left))
             {
-                if (this.tileHelper.getTile(bottom_right) == (byte)0) return 8;
+                if (!this.tileHelper.IsCorrectTileAtPos(bottom_right)) return 8;
                 else return 6;
             }
-            else if (this.tileHelper.getTile(bottom_right) == (byte)0) return 7;
+            else if (!this.tileHelper.IsCorrectTileAtPos(bottom_right)) return 7;
 
             return 5;
         }

@@ -89,10 +89,10 @@ namespace AP_GameDev_Project
             int top_i = tileHelper.getTopIndex(i);
             int bottom_i = tileHelper.getBottomIndex(i);
 
-            Byte left = tileHelper.getTile(left_i);
-            Byte right = tileHelper.getTile(right_i);
-            Byte top = tileHelper.getTile(top_i);
-            Byte bottom = tileHelper.getTile(bottom_i);
+            int left = tileHelper.IsCorrectTileAtPos(left_i) ? 1 : 0;
+            int right = tileHelper.IsCorrectTileAtPos(right_i) ? 1 : 0;
+            int top = tileHelper.IsCorrectTileAtPos(top_i) ? 1 : 0;
+            int bottom = tileHelper.IsCorrectTileAtPos(bottom_i) ? 1 : 0;
 
             switch (left + right + top + bottom)
             {

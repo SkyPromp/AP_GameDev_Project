@@ -12,9 +12,9 @@ namespace AP_GameDev_Project.TileTypes
             int right = this.tileHelper.getRightIndex(this.i);
             int top = this.tileHelper.getTopIndex(this.i);
 
-            if (tileHelper.getTile(left) == (Byte)1) return 1;
-            else if (tileHelper.getTile(right) == (Byte)1) return 3;
-            else if (tileHelper.getTile(top) == (Byte)1) return 2;
+            if (tileHelper.IsCorrectTileAtPos(left)) return 1;
+            else if (tileHelper.IsCorrectTileAtPos(right)) return 3;
+            else if (tileHelper.IsCorrectTileAtPos(top)) return 2;
 
             return 0;
         }

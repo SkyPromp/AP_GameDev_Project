@@ -9,7 +9,24 @@ namespace AP_GameDev_Project.TileTypes
     {
         protected override int GetRotation()
         {
-            // TODO: get all corner variants
+            bool bottom_right = this.tileHelper.IsCorrectTileAtPos(this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, 0));
+            bool bottom_left = this.tileHelper.IsCorrectTileAtPos(this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_LEFT, this.i, 0));
+            bool top_right = this.tileHelper.IsCorrectTileAtPos(this.tileHelper.getRotatedCorner((int)TileHelper.corners.TOP_RIGHT, this.i, 0));
+            bool top_left = this.tileHelper.IsCorrectTileAtPos(this.tileHelper.getRotatedCorner((int)TileHelper.corners.TOP_LEFT, this.i, 0));
+
+            if (!bottom_left)
+            {
+                if (!top_left)
+                {
+                    if (!top_right) return 2;  // Check if rotating sprite 13 removes nested if
+                    return 1;
+                }
+                return 0;
+            } 
+            else if (!bottom_right) return 3;
+            else if (!top_right) return 2;
+            else if (!top_left) return 1;
+
             return 0;
         }
 

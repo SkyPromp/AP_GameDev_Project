@@ -11,10 +11,13 @@ namespace AP_GameDev_Project.TileTypes
     {
         private int room_width;
         private List<Byte> tiles;
-        public TileHelper(int room_width, List<byte> tiles)
+        private Byte correct_tile;
+
+        public TileHelper(int room_width, List<byte> tiles, int correct_i)
         {
             this.room_width = room_width;
             this.tiles = tiles;
+            this.correct_tile = this.tiles[correct_i];
         }
 
         public int getLeftIndex(int i)
@@ -37,9 +40,9 @@ namespace AP_GameDev_Project.TileTypes
             return i + this.room_width < this.tiles.Count && i != -1 ? i + this.room_width : -1;
         }
 
-        public Byte DoesTileMatch(int i, Byte correct_tile)
+        public Byte getTile(int i)
         {
-            return (Byte)(i != -1 && this.tiles[i] == correct_tile ? 1 : 0);
+            return (Byte)(i != -1 && this.tiles[i] == this.correct_tile ? 1 : 0);
         }
     }
 }

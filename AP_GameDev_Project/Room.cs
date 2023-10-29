@@ -82,17 +82,17 @@ namespace AP_GameDev_Project
 
             if (center_tile == (Byte) 0) return new BlankTileType();
 
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
+            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
 
             int left_i = tileHelper.getLeftIndex(i);
             int right_i = tileHelper.getRightIndex(i);
             int top_i = tileHelper.getTopIndex(i);
             int bottom_i = tileHelper.getBottomIndex(i);
 
-            Byte left = tileHelper.DoesTileMatch(left_i, center_tile);
-            Byte right = tileHelper.DoesTileMatch(right_i, center_tile);
-            Byte top = tileHelper.DoesTileMatch(top_i, center_tile);
-            Byte bottom = tileHelper.DoesTileMatch(bottom_i, center_tile);
+            Byte left = tileHelper.getTile(left_i);
+            Byte right = tileHelper.getTile(right_i);
+            Byte top = tileHelper.getTile(top_i);
+            Byte bottom = tileHelper.getTile(bottom_i);
 
             switch (left + right + top + bottom)
             {

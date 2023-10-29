@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace AP_GameDev_Project.TileTypes
 {
@@ -10,8 +7,10 @@ namespace AP_GameDev_Project.TileTypes
     {
         public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
         {
+            int image = 9;
+            int rotation = 0;
             // TODO, add corner variants
-            return (6, 0);
+            return (image, rotation);
         }
     }
 }

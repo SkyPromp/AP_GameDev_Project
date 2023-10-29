@@ -11,22 +11,21 @@ namespace AP_GameDev_Project.TileTypes
             // TODO, add corner variants
             int image = 1;
             int rotate = 0;
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
+            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
 
             int left = tileHelper.getLeftIndex(i);
             int right = tileHelper.getRightIndex(i);
             int top = tileHelper.getTopIndex(i);
-            Byte correct_tile = tiles[i];
 
-            if (tileHelper.DoesTileMatch(left, correct_tile) == (Byte)1)
+            if (tileHelper.getTile(left) == (Byte)1)
             {
                 rotate = 1;
             }
-            else if (tileHelper.DoesTileMatch(right, correct_tile) == (Byte)1)
+            else if (tileHelper.getTile(right) == (Byte)1)
             {
                 rotate = 3;
             }
-            else if (tileHelper.DoesTileMatch(top, correct_tile) == (Byte)1)
+            else if (tileHelper.getTile(top) == (Byte)1)
             {
                 rotate = 2;
             }

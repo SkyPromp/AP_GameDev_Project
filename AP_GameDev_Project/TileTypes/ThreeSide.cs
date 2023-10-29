@@ -1,9 +1,6 @@
-﻿using SharpDX.Direct3D9;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AP_GameDev_Project.TileTypes
 {
@@ -14,27 +11,44 @@ namespace AP_GameDev_Project.TileTypes
             int image = 5;
             int rotate = 2;
 
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
-
-            Byte correct_tile = tiles[i];
+            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
 
             int left = tileHelper.getLeftIndex(i);
             int right = tileHelper.getRightIndex(i);
             int top = tileHelper.getTopIndex(i);
+            int bottom = tileHelper.getBottomIndex(i);
 
-            if (tileHelper.DoesTileMatch(left, correct_tile) == (Byte)0)
+            if (tileHelper.getTile(left) == (Byte)0)
             {
                 rotate = 3;
+
+                // TODO get correct corner variant
             }
-            else if (tileHelper.DoesTileMatch(right, correct_tile) == (Byte)0)
+            else if (tileHelper.getTile(right) == (Byte)0)
             {
                 rotate = 1;
+
+                // TODO get correct corner variant
             }
-            else if (tileHelper.DoesTileMatch(top, correct_tile) == (Byte)0)
+            else if (tileHelper.getTile(top) == (Byte)0)
             {
                 rotate = 0;
-            }
 
+                if (tileHelper.getTile(tileHelper.getLeftIndex(bottom)) == (byte)0)
+                {
+                    if (tileHelper.getTile(tileHelper.getRightIndex(bottom)) == (byte)0)
+                    {
+                        image = 8;
+                    }
+                    else
+                    {
+                        image = 6;
+                    }
+                } else if (tileHelper.getTile(tileHelper.getRightIndex(bottom)) == (byte)0)
+                {
+                    image = 7;
+                }
+            }
 
             return (image, rotate);
         }

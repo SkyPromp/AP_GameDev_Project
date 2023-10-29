@@ -12,17 +12,15 @@ namespace AP_GameDev_Project.TileTypes
 
             int image;
             int rotate;
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
-
-            Byte correct_tile = tiles[i];
+            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
 
             int left_i = tileHelper.getLeftIndex(i);
             int right_i = tileHelper.getRightIndex(i);
             int top_i = tileHelper.getTopIndex(i);
 
-            Byte left = tileHelper.DoesTileMatch(left_i, correct_tile);
-            Byte right = tileHelper.DoesTileMatch(right_i, correct_tile);
-            Byte top = tileHelper.DoesTileMatch(top_i, correct_tile);
+            Byte left = tileHelper.getTile(left_i);
+            Byte right = tileHelper.getTile(right_i);
+            Byte top = tileHelper.getTile(top_i);
 
             if (left == (Byte)0)
             {
@@ -35,7 +33,7 @@ namespace AP_GameDev_Project.TileTypes
                 {
                     rotate = 0;
                     int bottom_right_i = tileHelper.getBottomIndex(right_i);
-                    Byte bottom_right = tileHelper.DoesTileMatch(bottom_right_i, correct_tile);
+                    Byte bottom_right = tileHelper.getTile(bottom_right_i);
 
 
                     if (bottom_right == (Byte)0)
@@ -51,7 +49,7 @@ namespace AP_GameDev_Project.TileTypes
                 {
                     rotate = 3;
                     int top_right_i = tileHelper.getTopIndex(right_i);
-                    Byte top_right = tileHelper.DoesTileMatch(top_right_i, correct_tile);
+                    Byte top_right = tileHelper.getTile(top_right_i);
 
                     if (top_right == (Byte)0)
                     {
@@ -74,7 +72,7 @@ namespace AP_GameDev_Project.TileTypes
                 {
                     rotate = 1;
                     int bottom_left_i = tileHelper.getBottomIndex(left_i);
-                    Byte bottom_left = tileHelper.DoesTileMatch(bottom_left_i, correct_tile);
+                    Byte bottom_left = tileHelper.getTile(bottom_left_i);
 
                     if (bottom_left == (Byte)0)
                     {
@@ -89,7 +87,7 @@ namespace AP_GameDev_Project.TileTypes
                 {
                     rotate = 2;
                     int top_left_i = tileHelper.getTopIndex(left_i);
-                    Byte top_left = tileHelper.DoesTileMatch(top_left_i, correct_tile);
+                    Byte top_left = tileHelper.getTile(top_left_i);
 
                     if (top_left == (Byte)0)
                     {

@@ -6,7 +6,7 @@ namespace AP_GameDev_Project.TileTypes
 {
     internal class ThreeSide : ATileType
     {
-        public override int GetRotation()
+        protected override int GetRotation()
         {
             int left = this.tileHelper.getLeftIndex(i);
             int right = this.tileHelper.getRightIndex(i);
@@ -19,7 +19,7 @@ namespace AP_GameDev_Project.TileTypes
             return 2;
         }
 
-        public override int GetImage(int rotation)
+        protected override int GetImage(int rotation)
         {
             int bottom_left = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_LEFT, this.i, rotation);
             int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);

@@ -5,12 +5,13 @@ namespace AP_GameDev_Project.TileTypes
 {
     internal class FourSide : ATileType
     {
-        public override int GetRotation()
+        protected override int GetRotation()
         {
+            // TODO: get all corner variants
             return 0;
         }
 
-        public override int GetImage(int rotation)
+        protected override int GetImage(int rotation)
         {
             // TODO: get all corner variants
             return 9;

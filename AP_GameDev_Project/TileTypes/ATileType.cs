@@ -21,7 +21,7 @@ namespace AP_GameDev_Project.TileTypes
             return (this.GetImage(rotate), rotate);
         }
 
-        public abstract int GetRotation();
-        public abstract int GetImage(int rotation);
+        protected abstract int GetRotation();
+        protected abstract int GetImage(int rotation);
     }
 }

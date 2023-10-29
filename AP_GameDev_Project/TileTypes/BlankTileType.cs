@@ -8,12 +8,12 @@ namespace AP_GameDev_Project.TileTypes
 {
     internal class BlankTileType : ATileType
     {
-        public override int GetRotation()
+        protected override int GetRotation()
         {
             return -1;
         }
 
-        public override int GetImage(int rotation)
+        protected override int GetImage(int rotation)
         {
             return -1;
         }

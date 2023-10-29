@@ -76,7 +76,7 @@ namespace AP_GameDev_Project
             }
         }
 
-        private ITileType GetPattern(int i)
+        private ATileType GetPattern(int i)
         {
             Byte center_tile = this.tiles[i];
 

@@ -4,103 +4,63 @@ using System.Diagnostics;
 
 namespace AP_GameDev_Project.TileTypes
 {
-    internal class TwoSide : ITileType
+    internal class TwoSide : ATileType
     {
-        public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
+        public override int GetRotation()
         {
-            // Bugfix, wrong diagonal corners checked
+            int left = this.tileHelper.getLeftIndex(this.i);
+            int right = this.tileHelper.getRightIndex(this.i);
+            int top = this.tileHelper.getTopIndex(this.i);
 
-            int image;
-            int rotate;
-            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
+            int rotation;
 
-            int left_i = tileHelper.getLeftIndex(i);
-            int right_i = tileHelper.getRightIndex(i);
-            int top_i = tileHelper.getTopIndex(i);
-
-            Byte left = tileHelper.getTile(left_i);
-            Byte right = tileHelper.getTile(right_i);
-            Byte top = tileHelper.getTile(top_i);
-
-            if (left == (Byte)0)
+            if (this.tileHelper.getTile(left) == (Byte)0)
             {
-                if (right == left)  // Parallel
+                if (this.tileHelper.getTile(top) == (Byte)0)
                 {
-                    image = 2;
-                    rotate = 1;
+                    rotation = 0;
                 }
-                else if (top == (Byte)0)
+                else
+                {  // Parallel and non-parallel options rotate the same in this case
+                    rotation = 3;
+                }
+            } else 
+            {
+                if (this.tileHelper.getTile(top) == (Byte)0)
                 {
-                    rotate = 0;
-                    int bottom_right_i = tileHelper.getBottomIndex(right_i);
-                    Byte bottom_right = tileHelper.getTile(bottom_right_i);
-
-
-                    if (bottom_right == (Byte)0)
+                    if(this.tileHelper.getTile(right) == (Byte)0)  // if non-parallel
                     {
-                        image = 4;
+                        rotation = 1;
                     }
                     else
                     {
-                        image = 3;
+                        rotation = 0;
                     }
                 }
                 else
                 {
-                    rotate = 3;
-                    int top_right_i = tileHelper.getTopIndex(right_i);
-                    Byte top_right = tileHelper.getTile(top_right_i);
-
-                    if (top_right == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
+                    rotation = 2;
                 }
             }
-            else
+
+            return rotation;
+        }
+
+        public override int GetImage(int rotation)
+        {
+            int left = this.tileHelper.getLeftIndex(this.i);
+            int right = this.tileHelper.getRightIndex(this.i);
+
+            if (this.tileHelper.getTile(left) == this.tileHelper.getTile(right)) return 2;
+
+            int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);
+
+            if (this.tileHelper.getTile(bottom_right) == (byte)0)
             {
-                if (left == right)  // Parallel
-                {
-                    image = 2;
-                    rotate = 0;
-                }
-                else if (top == (Byte)0)
-                {
-                    rotate = 1;
-                    int bottom_left_i = tileHelper.getBottomIndex(left_i);
-                    Byte bottom_left = tileHelper.getTile(bottom_left_i);
-
-                    if (bottom_left == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
-                else
-                {
-                    rotate = 2;
-                    int top_left_i = tileHelper.getTopIndex(left_i);
-                    Byte top_left = tileHelper.getTile(top_left_i);
-
-                    if (top_left == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
+                return 4;
             }
 
-            return (image, rotate);
+            return 3;
         }
     }
 }

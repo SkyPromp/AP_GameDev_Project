@@ -4,34 +4,24 @@ using System.Collections.Generic;
 
 namespace AP_GameDev_Project.TileTypes
 {
-    internal class OneSide : ITileType
+    internal class OneSide : ATileType
     {
-        public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
+        protected override int GetRotation()
         {
-            // TODO, add corner variants
-            int image = 1;
-            int rotate = 0;
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
+            int left = this.tileHelper.getLeftIndex(this.i);
+            int right = this.tileHelper.getRightIndex(this.i);
+            int top = this.tileHelper.getTopIndex(this.i);
 
-            int left = tileHelper.getLeftIndex(i);
-            int right = tileHelper.getRightIndex(i);
-            int top = tileHelper.getTopIndex(i);
-            Byte correct_tile = tiles[i];
+            if (tileHelper.IsCorrectTileAtPos(left)) return 1;
+            else if (tileHelper.IsCorrectTileAtPos(right)) return 3;
+            else if (tileHelper.IsCorrectTileAtPos(top)) return 2;
 
-            if (tileHelper.DoesTileMatch(left, correct_tile) == (Byte)1)
-            {
-                rotate = 1;
-            }
-            else if (tileHelper.DoesTileMatch(right, correct_tile) == (Byte)1)
-            {
-                rotate = 3;
-            }
-            else if (tileHelper.DoesTileMatch(top, correct_tile) == (Byte)1)
-            {
-                rotate = 2;
-            }
+            return 0;
+        }
 
-            return (image, rotate);
+        protected override int GetImage(int rotation)
+        {
+            return 1;
         }
     }
 }

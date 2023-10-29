@@ -6,11 +6,16 @@ using System.Threading.Tasks;
 
 namespace AP_GameDev_Project.TileTypes
 {
-    internal class ZeroSide : ITileType
+    internal class ZeroSide : ATileType
     {
-        public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
+        protected override int GetRotation()
         {
-            return (0, 0);
+            return 0;
+        }
+
+        protected override int GetImage(int rotation)
+        {
+            return 0;
         }
     }
 }

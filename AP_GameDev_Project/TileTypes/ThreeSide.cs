@@ -1,42 +1,37 @@
-﻿using SharpDX.Direct3D9;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AP_GameDev_Project.TileTypes
 {
-    internal class ThreeSide : ITileType
+    internal class ThreeSide : ATileType
     {
-        public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
+        protected override int GetRotation()
         {
-            int image = 5;
-            int rotate = 2;
+            int left = this.tileHelper.getLeftIndex(i);
+            int right = this.tileHelper.getRightIndex(i);
+            int top = this.tileHelper.getTopIndex(i);
 
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
+            if (!this.tileHelper.IsCorrectTileAtPos(left)) return 3;
+            else if (!this.tileHelper.IsCorrectTileAtPos(right)) return 1;
+            else if (!this.tileHelper.IsCorrectTileAtPos(top)) return 0;
 
-            Byte correct_tile = tiles[i];
+            return 2;
+        }
 
-            int left = tileHelper.getLeftIndex(i);
-            int right = tileHelper.getRightIndex(i);
-            int top = tileHelper.getTopIndex(i);
+        protected override int GetImage(int rotation)
+        {
+            int bottom_left = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_LEFT, this.i, rotation);
+            int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);
 
-            if (tileHelper.DoesTileMatch(left, correct_tile) == (Byte)0)
+            if (!this.tileHelper.IsCorrectTileAtPos(bottom_left))
             {
-                rotate = 3;
+                if (!this.tileHelper.IsCorrectTileAtPos(bottom_right)) return 8;
+                else return 6;
             }
-            else if (tileHelper.DoesTileMatch(right, correct_tile) == (Byte)0)
-            {
-                rotate = 1;
-            }
-            else if (tileHelper.DoesTileMatch(top, correct_tile) == (Byte)0)
-            {
-                rotate = 0;
-            }
+            else if (!this.tileHelper.IsCorrectTileAtPos(bottom_right)) return 7;
 
-
-            return (image, rotate);
+            return 5;
         }
     }
 }

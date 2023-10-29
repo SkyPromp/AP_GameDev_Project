@@ -4,105 +4,48 @@ using System.Diagnostics;
 
 namespace AP_GameDev_Project.TileTypes
 {
-    internal class TwoSide : ITileType
+    internal class TwoSide : ATileType
     {
-        public (int, int) GetileTile(int i, List<byte> tiles, int room_width)
+        protected override int GetRotation()
         {
-            // Bugfix, wrong diagonal corners checked
+            int left = this.tileHelper.getLeftIndex(this.i);
+            int right = this.tileHelper.getRightIndex(this.i);
+            int top = this.tileHelper.getTopIndex(this.i);
 
-            int image;
-            int rotate;
-            TileHelper tileHelper = new TileHelper(room_width, tiles);
+            int rotation;
 
-            Byte correct_tile = tiles[i];
-
-            int left_i = tileHelper.getLeftIndex(i);
-            int right_i = tileHelper.getRightIndex(i);
-            int top_i = tileHelper.getTopIndex(i);
-
-            Byte left = tileHelper.DoesTileMatch(left_i, correct_tile);
-            Byte right = tileHelper.DoesTileMatch(right_i, correct_tile);
-            Byte top = tileHelper.DoesTileMatch(top_i, correct_tile);
-
-            if (left == (Byte)0)
+            if (!this.tileHelper.IsCorrectTileAtPos(left))
             {
-                if (right == left)  // Parallel
-                {
-                    image = 2;
-                    rotate = 1;
-                }
-                else if (top == (Byte)0)
-                {
-                    rotate = 0;
-                    int bottom_right_i = tileHelper.getBottomIndex(right_i);
-                    Byte bottom_right = tileHelper.DoesTileMatch(bottom_right_i, correct_tile);
+                if (!this.tileHelper.IsCorrectTileAtPos(top)) rotation = 0;
+                // Parallel and non-parallel options rotate the same in this case
+                else rotation = 3;
 
-
-                    if (bottom_right == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
-                else
-                {
-                    rotate = 3;
-                    int top_right_i = tileHelper.getTopIndex(right_i);
-                    Byte top_right = tileHelper.DoesTileMatch(top_right_i, correct_tile);
-
-                    if (top_right == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
-            }
-            else
+            } else 
             {
-                if (left == right)  // Parallel
+                if (!this.tileHelper.IsCorrectTileAtPos(top))
                 {
-                    image = 2;
-                    rotate = 0;
+                    // if non-parallel
+                    if (!this.tileHelper.IsCorrectTileAtPos(right)) rotation = 1;
+                    else rotation = 0;
                 }
-                else if (top == (Byte)0)
-                {
-                    rotate = 1;
-                    int bottom_left_i = tileHelper.getBottomIndex(left_i);
-                    Byte bottom_left = tileHelper.DoesTileMatch(bottom_left_i, correct_tile);
-
-                    if (bottom_left == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
-                else
-                {
-                    rotate = 2;
-                    int top_left_i = tileHelper.getTopIndex(left_i);
-                    Byte top_left = tileHelper.DoesTileMatch(top_left_i, correct_tile);
-
-                    if (top_left == (Byte)0)
-                    {
-                        image = 4;
-                    }
-                    else
-                    {
-                        image = 3;
-                    }
-                }
+                else rotation = 2;
             }
 
-            return (image, rotate);
+            return rotation;
+        }
+
+        protected override int GetImage(int rotation)
+        {
+            int left = this.tileHelper.getLeftIndex(this.i);
+            int right = this.tileHelper.getRightIndex(this.i);
+
+            if (this.tileHelper.IsCorrectTileAtPos(left) == this.tileHelper.IsCorrectTileAtPos(right)) return 2;
+
+            int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);
+
+            if (!this.tileHelper.IsCorrectTileAtPos(bottom_right)) return 4;
+
+            return 3;
         }
     }
 }

@@ -16,31 +16,19 @@ namespace AP_GameDev_Project.TileTypes
 
             if (this.tileHelper.getTile(left) == (Byte)0)
             {
-                if (this.tileHelper.getTile(top) == (Byte)0)
-                {
-                    rotation = 0;
-                }
-                else
-                {  // Parallel and non-parallel options rotate the same in this case
-                    rotation = 3;
-                }
+                if (this.tileHelper.getTile(top) == (Byte)0) rotation = 0;
+                // Parallel and non-parallel options rotate the same in this case
+                else rotation = 3;
+
             } else 
             {
                 if (this.tileHelper.getTile(top) == (Byte)0)
                 {
-                    if(this.tileHelper.getTile(right) == (Byte)0)  // if non-parallel
-                    {
-                        rotation = 1;
-                    }
-                    else
-                    {
-                        rotation = 0;
-                    }
+                    // if non-parallel
+                    if (this.tileHelper.getTile(right) == (Byte)0) rotation = 1;
+                    else rotation = 0;
                 }
-                else
-                {
-                    rotation = 2;
-                }
+                else rotation = 2;
             }
 
             return rotation;
@@ -55,10 +43,7 @@ namespace AP_GameDev_Project.TileTypes
 
             int bottom_right = this.tileHelper.getRotatedCorner((int)TileHelper.corners.BOTTOM_RIGHT, this.i, rotation);
 
-            if (this.tileHelper.getTile(bottom_right) == (byte)0)
-            {
-                return 4;
-            }
+            if (this.tileHelper.getTile(bottom_right) == (byte)0) return 4;
 
             return 3;
         }

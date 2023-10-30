@@ -8,7 +8,7 @@ namespace AP_GameDev_Project.Utils
 {
     internal class Trimmer
     {
-        public static List<Byte> GetTrimmedRoom(List<Byte> tiles, int tile_size)
+        public static (List<Byte>, int) GetTrimmedRoom(List<Byte> tiles, int tile_size)
         {
             // Trim vertically
             int width = GlobalConstants.SCREEN_WIDTH / tile_size;
@@ -22,7 +22,7 @@ namespace AP_GameDev_Project.Utils
             (trimmed_room, width) = Trimmer.TrimSide(trimmed_room, width, (int i, int width) => { return i * width; });  // Left
             (trimmed_room, width) = Trimmer.TrimSide(trimmed_room, width, (int i, int width) => { return (i + 1) * width - 1; });  // Right
 
-            return trimmed_room;
+            return (trimmed_room, width);
         }
 
         private static (List<Byte>, int) TrimSide(List<Byte> trimmed_room, int width, Func<int, int, int> pick_index)

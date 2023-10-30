@@ -69,7 +69,9 @@ namespace AP_GameDev_Project.State_handlers
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                List<Byte> trimmed_tiles = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
+                List<Byte> trimmed_tiles;
+                int width;
+                (trimmed_tiles, width) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
                 // Write to file
             }
         }

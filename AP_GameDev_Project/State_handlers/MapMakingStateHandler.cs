@@ -72,7 +72,15 @@ namespace AP_GameDev_Project.State_handlers
                 List<Byte> trimmed_tiles;
                 int width;
                 (trimmed_tiles, width) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
+
                 // Write to file
+                Byte[] header = BitConverter.GetBytes(width);
+
+                trimmed_tiles.Insert(0, header[0]);
+                trimmed_tiles.Insert(0, header[1]);
+
+
+                FileSaver.SaveFile(trimmed_tiles);
             }
         }
 

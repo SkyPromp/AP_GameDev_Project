@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
@@ -13,8 +14,9 @@ namespace AP_GameDev_Project.Utils
         {
             try
             {
-                File.WriteAllBytes(string.Format("Rooms\\{0}.room", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss")), bytes.ToArray());
-                Debug.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
+                string filename = string.Format("Rooms\\{0}.room", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss"));
+                File.WriteAllBytes(filename, bytes.ToArray());
+                Debug.WriteLine(string.Format("Saving new .room file to: {0}", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, filename)));
             } catch 
             { 
                 throw new Exception(string.Format("Saving new room has failed, here are the raw bytes: {0}", bytes.ToArray().ToString()));

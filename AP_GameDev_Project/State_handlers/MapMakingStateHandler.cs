@@ -1,4 +1,5 @@
 ﻿using AP_GameDev_Project.Input_devices;
+using AP_GameDev_Project.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -68,75 +69,9 @@ namespace AP_GameDev_Project.State_handlers
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                // Trim this.tiles
-                List<Byte> trimmed_tiles = GetTrimmedRoom();
+                List<Byte> trimmed_tiles = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
                 // Write to file
             }
-        }
-
-        private List<Byte> GetTrimmedRoom() // TODO: inject function to generalize trimleft, trimtop, trimright
-        {  // TODO put in seperate class
-            // Trim vertically
-            int width = GlobalConstants.SCREEN_WIDTH / this.tile_size;
-
-            List<Byte> trimmed_room = this.TrimTop(new List<Byte>(this.tiles), width);
-            trimmed_room.Reverse();
-            trimmed_room = this.TrimTop(trimmed_room, width);
-            trimmed_room.Reverse();
-
-            // Trim horizontally
-            (trimmed_room, width) = this.TrimSide(trimmed_room, width, (int i, int width) => { return i * width; });  // Left
-            (trimmed_room, width) = this.TrimSide(trimmed_room, width, (int i, int width) => { return (i + 1) * width - 1; });  // Right
-
-            return trimmed_room;
-        }
-
-        private (List<Byte>, int) TrimSide(List<Byte> trimmed_room, int width, Func<int,int,int> pick_index)
-        {
-            int height = trimmed_room.Count / width;
-
-            while (trimmed_room.Count > 0)
-            {
-                bool is_empty = true;
-
-                for (int i = 0; i < height; i += 1)
-                {
-                    if (i >= trimmed_room.Count || trimmed_room[pick_index(i, width)] != (Byte)0)
-                    {
-                        is_empty = false;
-                        break;
-                    }
-                }
-
-                if (!is_empty) break;
-
-                for (int i = height - 1; i >= 0; i--) trimmed_room.RemoveAt(pick_index(i, width));
-                width--;
-            }
-
-            return (trimmed_room, width);
-        }
-
-        private List<Byte> TrimTop(List<Byte> trimmed_room, int width)
-        {
-            while (trimmed_room.Count > 0)
-            {
-                bool is_empty = true;
-
-                for (int i = 0; i < width; i++)
-                {
-                    if (i >= trimmed_room.Count || trimmed_room[i] != (Byte)0)
-                    {
-                        is_empty = false;
-                        break;
-                    }
-                }
-
-                if (!is_empty) break;
-                trimmed_room.RemoveRange(0, width);
-            }
-
-            return trimmed_room;
         }
 
         private void PlaceTile(MapMakingStateHandler mapMaker)

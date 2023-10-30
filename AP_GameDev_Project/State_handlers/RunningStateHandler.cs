@@ -12,7 +12,7 @@ namespace AP_GameDev_Project.State_handlers
 
         public RunningStateHandler(Texture2D tilemap)
         {
-            current_room = new Room(tilemap, "Rooms\\room1.room");
+            current_room = new Room(tilemap, "Rooms\\Room1.room");
         }
 
         public void Init()

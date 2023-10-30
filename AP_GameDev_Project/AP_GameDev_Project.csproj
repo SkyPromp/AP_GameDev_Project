@@ -19,7 +19,7 @@
     <Folder Include="Rooms\" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="Rooms\Room1.room">
+    <None Update="Rooms\**">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

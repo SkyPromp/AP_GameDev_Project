@@ -13,7 +13,7 @@ namespace AP_GameDev_Project.Utils
         {
             try
             {
-                File.WriteAllBytes("Rooms\\NewRoom.room", bytes.ToArray());
+                File.WriteAllBytes(string.Format("Rooms\\{0}.room", DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss")), bytes.ToArray());
                 Debug.WriteLine(AppDomain.CurrentDomain.BaseDirectory);
             } catch 
             { 

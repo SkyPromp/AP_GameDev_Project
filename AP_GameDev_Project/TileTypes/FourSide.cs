@@ -23,9 +23,9 @@ namespace AP_GameDev_Project.TileTypes
                 }
                 return 0;
             } 
-            else if (!bottom_right) return 3;
-            else if (!top_right) return 2;
-            else if (!top_left) return 1;
+            if (!bottom_right) return 3;
+            if (!top_right) return 2;
+            if (!top_left) return 1;
 
             return 0;
         }

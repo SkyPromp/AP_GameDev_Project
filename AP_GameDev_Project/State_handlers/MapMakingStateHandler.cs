@@ -75,7 +75,7 @@ namespace AP_GameDev_Project.State_handlers
         }
 
         private List<Byte> GetTrimmedRoom() // TODO: inject function to generalize trimleft, trimtop, trimright
-        {
+        {  // TODO put in seperate class
             // Trim vertically
             int base_width = GlobalConstants.SCREEN_WIDTH / this.tile_size;
 
@@ -85,13 +85,14 @@ namespace AP_GameDev_Project.State_handlers
             trimmed_room.Reverse();
 
             // Trim horizontally
-            trimmed_room = this.TrimLeft(trimmed_room, base_width);
-            trimmed_room = this.TrimRight(trimmed_room, base_width);
+            int width;
+            (trimmed_room, width) = this.TrimLeft(trimmed_room, base_width);
+            trimmed_room = this.TrimRight(trimmed_room, width);
 
             return trimmed_room;
         }
 
-        private List<Byte> TrimLeft(List<Byte> trimmed_room, int width)
+        private (List<Byte>,int) TrimLeft(List<Byte> trimmed_room, int width)
         {
             int height = trimmed_room.Count / width;
 
@@ -114,12 +115,33 @@ namespace AP_GameDev_Project.State_handlers
                 width--;
             }
 
-            return trimmed_room;
+            return (trimmed_room, width);
         }
 
         private List<Byte> TrimRight(List<Byte> trimmed_room, int width)
         {
+            int height = trimmed_room.Count / width;
 
+            while (trimmed_room.Count > 0)
+            {
+                bool is_empty = true;
+
+                for (int i = 0; i < height; i += 1)
+                {
+                    if (i >= trimmed_room.Count || trimmed_room[(i + 1) * width - 1] != (Byte)0)
+                    {
+                        is_empty = false;
+                        break;
+                    }
+                }
+
+                if (!is_empty) break;
+
+                for (int i = height - 1; i >= 0; i--) trimmed_room.RemoveAt((i + 1) * width - 1);
+                width--;
+            }
+
+            return trimmed_room;
         }
 
         private List<Byte> TrimTop(List<Byte> trimmed_room, int width)

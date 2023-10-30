@@ -53,39 +53,48 @@ namespace AP_GameDev_Project.State_handlers
             int tile_amount = (int)Math.Ceiling((double)room_width * (double)room_height);
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
 
-            room = new Room(this.tilemap, this.tiles, room_width);
+            this.room = new Room(this.tilemap, this.tiles, room_width);
+
+            this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this); };
+            this.mouseHandler.RightClickHook = () => { this.RemoveTile(this); };
         }
 
         public void Update(GameTime gameTime)
         {
-            mouseHandler.Update();
+            this.mouseHandler.Update();
             // TODO: change current tile brush with keyboard
             // TODO: store to .room file with keyboard
 
-            if (mouseHandler.MouseActive == 0) return;
+        }
 
-            int tile_row = (int) mouseHandler.MousePos.Y / this.tile_size;
-            int tile_column = (int) mouseHandler.MousePos.X / this.tile_size;
-            int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / this.tile_size;
-
-            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) != 0)
+        private void PlaceTile(MapMakingStateHandler mapMaker)
+        {
+            if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
             {
-                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
-                {
-                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, 
-                        message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
+                int tile_row = (int)mapMaker.mouseHandler.MousePos.Y / mapMaker.tile_size;
+                int tile_column = (int)mapMaker.mouseHandler.MousePos.X / mapMaker.tile_size;
+                int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / mapMaker.tile_size;
 
-                    this.tiles[tile_index] = this.current_tile_brush;
-                }
-            } else if ((mouseHandler.MouseActive & (short)MouseHandler.mouseEnum.RIGHT_CLICK) != 0)  // Else if because leftclick has priority
+                Debug.Assert((tile_column + 1) * (tile_row + 1) <= mapMaker.tiles.Count,
+                    message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, mapMaker.tiles.Count));
+
+                mapMaker.tiles[tile_index] = mapMaker.current_tile_brush;
+            }
+        }
+
+        // Refactor into PlaceTile
+        private void RemoveTile(MapMakingStateHandler mapMaker)
+        {
+            if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
             {
-                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
-                { // Avoid duplicated code?
-                    Debug.Assert((tile_column + 1) * (tile_row + 1) <= this.tiles.Count, 
-                        message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, this.tiles.Count));
+                int tile_row = (int)mapMaker.mouseHandler.MousePos.Y / mapMaker.tile_size;
+                int tile_column = (int)mapMaker.mouseHandler.MousePos.X / mapMaker.tile_size;
+                int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / mapMaker.tile_size;
 
-                    this.tiles[tile_index] = 0;
-                }
+                Debug.Assert((tile_column + 1) * (tile_row + 1) <= mapMaker.tiles.Count,
+                    message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, mapMaker.tiles.Count));
+
+                mapMaker.tiles[tile_index] = 0;
             }
         }
 

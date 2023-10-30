@@ -22,25 +22,27 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
+            this.mouseHandler.LeftClickHook = () => { this.MenuClickHandler(this); };
         }
 
         public void Update(GameTime gameTime)
         {
-            mouseHandler.Update();
+            this.mouseHandler.Update();
+        }
 
-            if ((mouseHandler.MouseActive & (short) MouseHandler.mouseEnum.LEFT_CLICK) == 1)
+        private void MenuClickHandler(StartStateHandler startState)
+        {
+            if (startState.startButtonRect.Contains(startState.mouseHandler.MousePos))
             {
-                if (startButtonRect.Contains(mouseHandler.MousePos))
-                {
-                    mouseHandler.LeftClickHook = null;
-                    mouseHandler.RightClickHook = null;
-                    Game1.current_state = Game1.states.RUNNING;
-                } else if (mapMakeButtonRect.Contains(mouseHandler.MousePos))
-                {
-                    mouseHandler.LeftClickHook = null;
-                    mouseHandler.RightClickHook = null;
-                    Game1.current_state = Game1.states.MAPMAKING;
-                }
+                startState.mouseHandler.LeftClickHook = null;
+                startState.mouseHandler.RightClickHook = null;
+                Game1.current_state = Game1.states.RUNNING;
+            }
+            else if (startState.mapMakeButtonRect.Contains(startState.mouseHandler.MousePos))
+            {
+                startState.mouseHandler.LeftClickHook = null;
+                startState.mouseHandler.RightClickHook = null;
+                Game1.current_state = Game1.states.MAPMAKING;
             }
         }
 

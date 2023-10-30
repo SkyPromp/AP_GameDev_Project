@@ -37,42 +37,42 @@ namespace AP_GameDev_Project.Input_devices
         {
             get
             {
-                if (instance == null)
+                if (MouseHandler.instance == null)
                 {
-                    lock (syncRoot)
+                    lock (MouseHandler.syncRoot)
                     {
-                        if (instance == null) instance = new MouseHandler();
+                        if (MouseHandler.instance == null) MouseHandler.instance = new MouseHandler();
                     }
                 }
 
-                return instance;
+                return MouseHandler.instance;
             }
         }
 
         public void Init()
         {
-            mouseActive = 0;
-            leftClickHook = null;
-            rightClickHook = null;
+            this.mouseActive = 0;
+            this.leftClickHook = null;
+            this.rightClickHook = null;
 
         }
 
         public void Update()
         {
             MouseState state = Mouse.GetState();
-            mousePos = new Vector2(state.X, state.Y);
-            mouseActive = 0;
+            this.mousePos = new Vector2(state.X, state.Y);
+            this.mouseActive = 0;
 
             if (state.LeftButton == ButtonState.Pressed)
             {
-                mouseActive |= (short) MouseHandler.mouseEnum.LEFT_CLICK;
-                if (leftClickHook != null) leftClickHook();
+                this.mouseActive |= (short) MouseHandler.mouseEnum.LEFT_CLICK;
+                if (this.leftClickHook != null) this.leftClickHook();
             }
 
             if (state.RightButton == ButtonState.Pressed)
             {
-                mouseActive |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
-                if (rightClickHook != null) rightClickHook();
+                this.mouseActive |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
+                if (this.rightClickHook != null) this.rightClickHook();
             }
         }
     }

@@ -46,9 +46,10 @@ namespace AP_GameDev_Project
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
+            SpriteFont font = Content.Load<SpriteFont>("Font");
             this.startStateHandler = new StartStateHandler();
             this.runningStateHandler = new RunningStateHandler(tilemap);
-            this.mapMakingStateHandler = new MapMakingStateHandler(GraphicsDevice, tilemap);
+            this.mapMakingStateHandler = new MapMakingStateHandler(GraphicsDevice, tilemap, font);
         }
 
         protected override void Update(GameTime gameTime)

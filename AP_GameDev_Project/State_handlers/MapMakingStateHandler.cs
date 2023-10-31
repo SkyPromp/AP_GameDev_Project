@@ -20,18 +20,24 @@ namespace AP_GameDev_Project.State_handlers
         private Texture2D tilemap;
         private List<Byte> tiles;
         private Byte current_tile_brush;
+        private bool show_current_brush;
+        private double toggle_font_cooldown;
+        private double change_brush_cooldown;
+        private SpriteFont font;
         private Room room;
 
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
 
-        public MapMakingStateHandler(GraphicsDevice graphicsDevice, Texture2D tilemap,int tile_size=64) {
+        public MapMakingStateHandler(GraphicsDevice graphicsDevice, Texture2D tilemap, SpriteFont font, int tile_size=64) {
             this.is_init = false;
             this.mouseHandler = MouseHandler.getInstance;
             this.tile_size = tile_size;
             this.tiles = new List<Byte>();
             this.tilemap = tilemap;
+            this.font = font;
+
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -47,6 +53,9 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.is_init = true;
             this.current_tile_brush = 1;
+            this.show_current_brush = false;
+            this.toggle_font_cooldown = 0;
+            this.change_brush_cooldown = 0;
 
             // FIX Without Math.Ceiling
             Int16 room_width = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);
@@ -58,14 +67,37 @@ namespace AP_GameDev_Project.State_handlers
             this.room = new Room(this.tilemap, this.tiles, room_width);
 
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this); };
-            this.mouseHandler.RightClickHook = () => { this.RemoveTile(this); };
+            this.mouseHandler.RightClickHook = () => { 
+                Byte old_brush = this.current_tile_brush;
+                this.current_tile_brush = 0;
+                this.PlaceTile(this); 
+                this.current_tile_brush = old_brush;
+            };
         }
 
         public void Update(GameTime gameTime)
         {
             this.mouseHandler.Update();
-            // TODO: change current tile brush with keyboard
-            // TODO: store to .room file with keyboard
+            if(this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.change_brush_cooldown >= 0) this.change_brush_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && this.change_brush_cooldown <= 0)
+            {
+                this.current_tile_brush++;
+                this.change_brush_cooldown = 0.5;
+            }
+
+            if(Keyboard.GetState().IsKeyDown(Keys.Down) && this.change_brush_cooldown <= 0)
+            {
+                this.current_tile_brush--;
+                this.change_brush_cooldown = 0.5;
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.B) && this.toggle_font_cooldown <= 0) 
+            {
+                this.show_current_brush = !this.show_current_brush;
+                this.toggle_font_cooldown = 0.5;
+            }
 
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
@@ -78,7 +110,6 @@ namespace AP_GameDev_Project.State_handlers
 
                 trimmed_tiles.Insert(0, header[0]);
                 trimmed_tiles.Insert(0, header[1]);
-
 
                 FileSaver.SaveFile(trimmed_tiles);
             }
@@ -99,26 +130,15 @@ namespace AP_GameDev_Project.State_handlers
             }
         }
 
-        // Refactor into PlaceTile
-        private void RemoveTile(MapMakingStateHandler mapMaker)
-        {
-            if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
-            {
-                int tile_row = (int)mapMaker.mouseHandler.MousePos.Y / mapMaker.tile_size;
-                int tile_column = (int)mapMaker.mouseHandler.MousePos.X / mapMaker.tile_size;
-                int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / mapMaker.tile_size;
-
-                Debug.Assert((tile_column + 1) * (tile_row + 1) <= mapMaker.tiles.Count,
-                    message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, mapMaker.tiles.Count));
-
-                mapMaker.tiles[tile_index] = 0;
-            }
-        }
-
         public void Draw(SpriteBatch spriteBatch)
         {
             this.DrawGrid(spriteBatch);
             if (this.room != null) this.room.Draw(spriteBatch);
+
+            if (this.show_current_brush)
+            {
+                spriteBatch.DrawString(this.font, this.current_tile_brush.ToString(), new Vector2(32, 32), Color.White);
+            }
         }
 
         private void DrawGrid(SpriteBatch spriteBatch)

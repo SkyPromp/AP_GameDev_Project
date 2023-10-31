@@ -137,7 +137,18 @@ namespace AP_GameDev_Project.State_handlers
 
             if (this.show_current_brush)
             {
-                spriteBatch.DrawString(this.font, this.current_tile_brush.ToString(), new Vector2(32, 32), Color.White);
+                if(this.current_tile_brush != (Byte)0)
+                {
+                    spriteBatch.Draw(
+                    texture: this.tilemap,
+                    position: new Vector2(this.tile_size / 2, this.tile_size / 2),
+                    sourceRectangle: new Rectangle(0, (this.current_tile_brush - 1) * this.tile_size, this.tile_size, this.tile_size),
+                    color: Color.White
+                    );
+                }
+
+                Vector2 half_text_size = this.font.MeasureString(this.current_tile_brush.ToString()) / 2;
+                spriteBatch.DrawString(this.font, this.current_tile_brush.ToString(), new Vector2(64 - half_text_size.X, 64 - half_text_size.Y), Color.White);
             }
         }
 

@@ -63,7 +63,6 @@ namespace AP_GameDev_Project.State_handlers
 
             int tile_amount = (int)Math.Ceiling((double)room_width * (double)room_height);
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
-
             this.room = new Room(this.tilemap, this.tiles, room_width);
 
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this); };

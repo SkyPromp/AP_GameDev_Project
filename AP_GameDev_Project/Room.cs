@@ -59,7 +59,7 @@ namespace AP_GameDev_Project
                 if (pattern == -1) continue;
                 
                 int tilemap_x = pattern;
-                int tilemap_y = 0;  // this.tiles[i] - 1;
+                int tilemap_y = this.tiles[i] - 1;
 
                 // TODO: Draw to a texture2D
                 spriteBatch.Draw(

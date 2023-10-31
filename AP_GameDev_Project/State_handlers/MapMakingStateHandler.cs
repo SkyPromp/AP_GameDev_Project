@@ -53,7 +53,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.is_init = true;
             this.current_tile_brush = 1;
-            this.show_current_brush = false;
+            this.show_current_brush = true;
             this.toggle_font_cooldown = 0;
             this.change_brush_cooldown = 0;
 

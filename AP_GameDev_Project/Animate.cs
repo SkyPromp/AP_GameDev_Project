@@ -16,6 +16,7 @@ namespace AP_GameDev_Project
         private double cooldown;
         private readonly Rectangle frame_size;
         private Texture2D spritemap;
+     
         public Animate(double animation_length, int total_frames, Rectangle frame_size, Texture2D spritemap) 
         {
             this.animation_length = animation_length;
@@ -23,6 +24,7 @@ namespace AP_GameDev_Project
             this.cooldown = animation_length / total_frames;
             this.current_frame = 0;
             this.frame_size = frame_size;
+            this.spritemap = spritemap;
         }
 
         public int Update(GameTime gameTime)

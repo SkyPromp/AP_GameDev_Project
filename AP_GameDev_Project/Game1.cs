@@ -28,7 +28,7 @@ namespace AP_GameDev_Project
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 
@@ -47,14 +47,16 @@ namespace AP_GameDev_Project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             SpriteFont font = Content.Load<SpriteFont>("Font");
+            Player player = new Player(new Animate(1, 1, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("blue_guy")), 5f);
+
             this.startStateHandler = new StartStateHandler();
-            this.runningStateHandler = new RunningStateHandler(tilemap);
+            this.runningStateHandler = new RunningStateHandler(tilemap, player);
             this.mapMakingStateHandler = new MapMakingStateHandler(GraphicsDevice, tilemap, font);
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            if (Keyboard.GetState().IsKeyDown(Keys.F4))
                 Exit();
 
             switch(Game1.current_state){

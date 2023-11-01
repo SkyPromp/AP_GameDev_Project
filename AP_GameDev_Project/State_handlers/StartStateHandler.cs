@@ -36,13 +36,17 @@ namespace AP_GameDev_Project.State_handlers
             {
                 startState.mouseHandler.LeftClickHook = null;
                 startState.mouseHandler.RightClickHook = null;
-                Game1.current_state = Game1.states.RUNNING;
+
+                Game1.current_state = Game1.States[Game1.states_enum.RUNNING];
+                Game1.InitCurrentState();
             }
             else if (startState.mapMakeButtonRect.Contains(startState.mouseHandler.MousePos))
             {
                 startState.mouseHandler.LeftClickHook = null;
                 startState.mouseHandler.RightClickHook = null;
-                Game1.current_state = Game1.states.MAPMAKING;
+
+                Game1.current_state = Game1.States[Game1.states_enum.MAPMAKING];
+                Game1.InitCurrentState();
             }
         }
 

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace AP_GameDev_Project
@@ -11,11 +12,10 @@ namespace AP_GameDev_Project
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch _spriteBatch;
-        private StartStateHandler startStateHandler;
-        private RunningStateHandler runningStateHandler;
-        private MapMakingStateHandler mapMakingStateHandler;
-
-        public enum states
+        public static IStateHandler current_state;
+        private static Dictionary<Game1.states_enum, IStateHandler> states;
+        public static Dictionary<Game1.states_enum, IStateHandler> States { get { return states; } }
+        public enum states_enum
         {
             START,
             RUNNING,
@@ -23,12 +23,11 @@ namespace AP_GameDev_Project
             PAUSED,
             GAME_OVER
         }
-        public static states current_state;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 
@@ -39,7 +38,6 @@ namespace AP_GameDev_Project
         protected override void Initialize()
         {
             base.Initialize();
-            current_state = states.START;
         }
 
         protected override void LoadContent()
@@ -47,11 +45,13 @@ namespace AP_GameDev_Project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             SpriteFont font = Content.Load<SpriteFont>("Font");
-            Player player = new Player(new Animate(1, 1, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("blue_guy")), 5f);
+            Player player = new Player(new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0")), 5f);
 
-            this.startStateHandler = new StartStateHandler();
-            this.runningStateHandler = new RunningStateHandler(tilemap, player);
-            this.mapMakingStateHandler = new MapMakingStateHandler(GraphicsDevice, tilemap, font);
+            Game1.states = new Dictionary<Game1.states_enum, IStateHandler>();
+            Game1.states.Add(Game1.states_enum.START, new StartStateHandler());
+            Game1.states.Add(Game1.states_enum.RUNNING, new RunningStateHandler(tilemap, player));
+            Game1.states.Add(Game1.states_enum.MAPMAKING, new MapMakingStateHandler(GraphicsDevice, tilemap, font));
+            Game1.current_state = Game1.states[Game1.states_enum.START];
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,31 +59,9 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.F4))
                 Exit();
 
-            switch(Game1.current_state){
-                case states.START:
-                    if (!this.startStateHandler.IsInit) this.startStateHandler.Init();
+            if (!Game1.current_state.IsInit) Game1.InitCurrentState();
 
-                    this.startStateHandler.Update(gameTime);
-                    break;
-                case states.RUNNING:
-                    if (!this.runningStateHandler.IsInit) this.runningStateHandler.Init();
-
-                    this.runningStateHandler.Update(gameTime);
-                    break;
-                case states.MAPMAKING:
-                    if (!this.mapMakingStateHandler.IsInit) this.mapMakingStateHandler.Init();
-                    
-                    this.mapMakingStateHandler.Update(gameTime);
-                    break;
-                case states.PAUSED:
-                    throw new NotImplementedException();
-                    break;
-                case states.GAME_OVER:
-                    throw new NotImplementedException();
-                    break;
-                default:
-                    throw new InvalidOperationException(string.Format("Invalid game state: {0}", Game1.current_state));
-            }
+            Game1.current_state.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -94,30 +72,16 @@ namespace AP_GameDev_Project
 
             _spriteBatch.Begin();
 
-            switch (Game1.current_state)
-            {
-                case states.START:
-                    this.startStateHandler.Draw(_spriteBatch);
-                    break;
-                case states.RUNNING:
-                    runningStateHandler.Draw(_spriteBatch);
-                    break;
-                case states.MAPMAKING:
-                    mapMakingStateHandler.Draw(_spriteBatch);
-                    break;
-                case states.PAUSED:
-                    throw new NotImplementedException();
-                    break;
-                case states.GAME_OVER:
-                    throw new NotImplementedException();
-                    break;
-                default:
-                    throw new Exception(string.Format("Invalid game state: {0}", Game1.current_state));
-            }
+            Game1.current_state.Draw(_spriteBatch);
 
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public static void InitCurrentState()
+        {
+            Game1.current_state.Init();
         }
     }
 }

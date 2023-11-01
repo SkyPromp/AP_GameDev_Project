@@ -32,7 +32,6 @@ namespace AP_GameDev_Project.State_handlers
 
         public MapMakingStateHandler(GraphicsDevice graphicsDevice, Texture2D tilemap, SpriteFont font, int tile_size=64) {
             this.is_init = false;
-            this.mouseHandler = MouseHandler.getInstance;
             this.tile_size = tile_size;
             this.tiles = new List<Byte>();
             this.tilemap = tilemap;
@@ -65,6 +64,7 @@ namespace AP_GameDev_Project.State_handlers
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
             this.room = new Room(this.tilemap, this.tiles, room_width);
 
+            this.mouseHandler = MouseHandler.getInstance;
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this); };
             this.mouseHandler.RightClickHook = () => { 
                 Byte old_brush = this.current_tile_brush;
@@ -78,7 +78,11 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.mouseHandler.Update();
 
-            //if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Game1.current_state = Game1.states.START;
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Game1.current_state = Game1.States[Game1.states_enum.START];
+                Game1.InitCurrentState();
+            }
 
             if (this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
             if (this.change_brush_cooldown >= 0) this.change_brush_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;

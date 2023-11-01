@@ -37,6 +37,12 @@ namespace AP_GameDev_Project.State_handlers
 
         private void HandleKeyboard()
         {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                Game1.current_state = Game1.States[Game1.states_enum.START];
+                Game1.InitCurrentState();
+            }
+
             Vector2 addSpeed = Vector2.Zero;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
@@ -60,7 +66,6 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             this.player.SpeedUp(addSpeed);
-            //if (Keyboard.GetState().IsKeyDown(Keys.Escape)) Game1.current_state = Game1.states.START;  // Doesn't work, because start isn't initialized
         }
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AP_GameDev_Project.State_handlers
 {
-    internal interface IStateHandler
+    public interface IStateHandler
     {
         public bool IsInit { get; }
         public void Init();

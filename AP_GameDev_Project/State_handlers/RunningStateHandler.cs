@@ -66,7 +66,7 @@ namespace AP_GameDev_Project.State_handlers
                 addSpeed += new Vector2(1, 0);
             }
 
-            this.player.SpeedUp(addSpeed);
+            this.player.SpeedUp(addSpeed / 3);
         }
     }
 }

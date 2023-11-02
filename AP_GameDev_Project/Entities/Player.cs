@@ -2,9 +2,11 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.VisualStyles;
 
 namespace AP_GameDev_Project.Entities
 {
@@ -15,35 +17,78 @@ namespace AP_GameDev_Project.Entities
         public readonly float max_speed;
         private Vector2 speed;
         private float speed_damping_factor;
+        private readonly Rectangle normalized_hitbox;
+        public Rectangle GetHitbox { get
+            {
+                return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
+            } }
 
-        public Player(Animate stand_animation, float max_speed, float speed_damping_factor = 0.95f)
+        public Player(Vector2 position, Animate stand_animation, float max_speed, float speed_damping_factor=0.95f)
         {
+            this.position = position;
             this.stand_animation = stand_animation;
-            speed = Vector2.Zero;
+            this.speed = Vector2.Zero;
             this.max_speed = max_speed;
             this.speed_damping_factor = speed_damping_factor;
+            this.normalized_hitbox = new Rectangle(56, 35, 35, 142);
         }
 
         public void Update(GameTime gameTime)
         {
-            speed *= speed_damping_factor;
-            stand_animation.Update(gameTime);
-            position += speed;
+            this.speed *= this.speed_damping_factor;
+            if(Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
+            if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
+            this.stand_animation.Update(gameTime);
+            this.position += speed;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            stand_animation.Draw(spriteBatch, position);
+            this.stand_animation.Draw(spriteBatch, this.position);
         }
 
         public void SpeedUp(Vector2 add_speed)
         {
-            speed += add_speed;
+            this.speed += add_speed;
 
-            if (speed.Length() >= max_speed)
+            if (this.speed.Length() >= this.max_speed)
             {
-                speed = Vector2.Normalize(speed) * max_speed;
+                this.speed = Vector2.Normalize(this.speed) * this.max_speed;
+            }
+        }
+
+        public void HandleCollison(Rectangle wall)
+        {
+            Vector2 xtest = new Vector2(this.position.X, this.position.Y);
+            Vector2 ytest = new Vector2(this.position.X, this.position.Y);
+
+            if (this.speed.X < 0 && wall.X + wall.Width > this.position.X + this.normalized_hitbox.X) // Left
+            {
+                xtest.X = wall.X + wall.Width - this.normalized_hitbox.X;
+            } else if (this.speed.X > 0 && wall.X < this.position.X + this.normalized_hitbox.X + this.normalized_hitbox.Width)  // Right
+            {
+                xtest.X = wall.X - this.normalized_hitbox.Width - this.normalized_hitbox.X;
+            }
+
+            if (this.speed.Y < 0 && wall.Y + wall.Height > this.position.Y + this.normalized_hitbox.Y)  // Top
+            {
+                ytest.Y = wall.Y + wall.Height - this.normalized_hitbox.Y;
+            }
+            else if (this.speed.Y > 0 && wall.Y < this.position.Y + this.normalized_hitbox.Y + this.normalized_hitbox.Height)  // Bottom
+            {
+                ytest.Y = wall.Y - this.normalized_hitbox.Height - this.normalized_hitbox.Y;
+            }
+
+            if(((xtest != this.position) && (this.position - xtest).Length() < (this.position - ytest).Length()) || ((ytest == this.position)))
+            {
+                this.position = xtest;
+                this.speed.X = 0;
+            }
+            else
+            {
+                this.position = ytest;
+                this.speed.Y = 0;
             }
         }
     }

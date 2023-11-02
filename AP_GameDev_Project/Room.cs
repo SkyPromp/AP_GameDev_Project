@@ -42,6 +42,24 @@ namespace AP_GameDev_Project
             this.tile_size = tile_size;
         }
 
+        public List<Rectangle> GetHitboxes()  // TODO Refactor away List<Byte>
+        {
+            List<Rectangle> result = new List<Rectangle>();
+
+            for (int i = 0; i < this.tiles.Count; i++)
+            {
+                int screen_x = (i % this.room_width) * this.tile_size;
+                int screen_y = (i / this.room_width) * this.tile_size;
+
+                (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
+                if (pattern == -1) continue;
+
+                result.Add(new Rectangle(screen_x, screen_y, this.tile_size, this.tile_size));
+            }
+
+            return result;
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < this.tiles.Count; i++)

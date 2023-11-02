@@ -2,7 +2,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -12,11 +13,13 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private Player player;
+        private List<Bullet> bullets;
 
         public RunningStateHandler(Texture2D tilemap, Player player)
         {
-            this.current_room = new Room(tilemap, "Rooms\\Room1.room");
+            this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
             this.player = player;
+            this.bullets = new List<Bullet>();
         }
 
         public void Init()
@@ -27,7 +30,16 @@ namespace AP_GameDev_Project.State_handlers
         public void Update(GameTime gameTime)
         {
             this.HandleKeyboard();
-            player.Update(gameTime);
+            this.player.Update(gameTime);
+
+            foreach(Rectangle hitbox in this.current_room.GetHitboxes())
+            {
+                if (hitbox.Intersects(this.player.GetHitbox))
+                {
+                    Debug.WriteLine("Collision");
+                    this.player.HandleCollison(hitbox);
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AP_GameDev_Project.Input_devices;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 
@@ -13,10 +14,12 @@ namespace AP_GameDev_Project.Entities
         private readonly float bullet_speed;
         private double bullet_max_cooldown;
         private double bullet_cooldown;
+        private readonly MouseHandler mouseHandler;
         
         public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, float speed_damping_factor=0.95f): base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), speed_damping_factor)
         {
             this.bullets = new List<Bullet>();
+            this.mouseHandler = MouseHandler.getInstance;
             this.base_bullet = base_bullet;
             this.bullet_speed = 10f;
             this.bullet_max_cooldown = 0.2f;
@@ -40,14 +43,16 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public void Attack(Vector2 angle)
+        public void Attack()
         {
             if (this.bullet_cooldown <= 0)
             {
-                Rectangle hitbox = base.GetHitbox;
+                Rectangle hitbox = this.GetHitbox;
                 Vector2 center = new Vector2(hitbox.X + hitbox.Width / 2, hitbox.Y + hitbox.Height / 2);
+                Vector2 bullet_position = center + new Vector2(this.mouseHandler.MousePos.X < center.X ? -40 : 40, -7);
+                Vector2 angle = Vector2.Normalize(this.mouseHandler.MousePos - bullet_position);
 
-                this.bullets.Add(new Bullet(center + new Vector2(angle.X < 0 ? -40: 40, -7), angle * this.bullet_speed, this.base_bullet));
+                this.bullets.Add(new Bullet(bullet_position, angle * this.bullet_speed, this.base_bullet));
                 this.bullet_cooldown = this.bullet_max_cooldown;
             }
         }

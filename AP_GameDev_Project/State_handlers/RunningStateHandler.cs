@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Reflection.Metadata;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -29,9 +30,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => {
-                this.player.Attack(Vector2.Normalize(this.mouseHandler.MousePos - this.player.Position));
-            };
+            this.mouseHandler.LeftClickHook = () => { this.player.Attack(); };
         }
 
         public void Update(GameTime gameTime)

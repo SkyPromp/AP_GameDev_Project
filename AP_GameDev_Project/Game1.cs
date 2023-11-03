@@ -46,11 +46,18 @@ namespace AP_GameDev_Project
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             SpriteFont font = Content.Load<SpriteFont>("Font");
             Bullet base_bullet = new Bullet(Vector2.Zero, Vector2.Zero, Content.Load<Texture2D>("bullet"));
-            Player player = new Player(new Vector2(180, 180), new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0")), 5f, base_bullet);
+
+            List<AEntity> base_enemies = new List<AEntity>();
+            Animate enemy_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
+            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy_standstill, 5f, new Rectangle(28, 12, 8, 38), 5);
+            base_enemies.Add(base_enemy1);
+
+            Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0"));
+            Player player = new Player(new Vector2(180, 180), player_standstill, 5f, base_bullet);
 
             Game1.states = new Dictionary<Game1.states_enum, IStateHandler>();
             Game1.states.Add(Game1.states_enum.START, new StartStateHandler());
-            Game1.states.Add(Game1.states_enum.RUNNING, new RunningStateHandler(tilemap, player));
+            Game1.states.Add(Game1.states_enum.RUNNING, new RunningStateHandler(tilemap, player, base_enemies));
             Game1.states.Add(Game1.states_enum.MAPMAKING, new MapMakingStateHandler(GraphicsDevice, tilemap, font));
             Game1.current_state = Game1.states[Game1.states_enum.START];
         }

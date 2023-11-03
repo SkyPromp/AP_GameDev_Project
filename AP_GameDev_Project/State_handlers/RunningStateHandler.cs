@@ -3,6 +3,7 @@ using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -15,15 +16,21 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private Player player;
-        private List<AEntity> Enemies;
+        private List<AEntity> base_enemies;
+        private List<AEntity> enemies;
         private MouseHandler mouseHandler;
 
-        public RunningStateHandler(Texture2D tilemap, Player player)
+        public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
             this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
             this.player = player;
             this.mouseHandler = MouseHandler.getInstance;
-            this.Enemies = new List<AEntity>();
+            this.base_enemies = base_enemies;
+            this.enemies = new List<AEntity>();
+
+            // TEST (REMOVE)
+            this.enemies.Add(this.base_enemies[0]);
+            // END TEST
         }
 
         public void Init()
@@ -38,30 +45,53 @@ namespace AP_GameDev_Project.State_handlers
             this.HandleKeyboard();
             this.player.Update(gameTime);
 
-            foreach(AEntity enemy in this.Enemies)
+            foreach(AEntity enemy in this.enemies)
             {
                 enemy.Update(gameTime);
             }
 
             List<Bullet> bullets = new List<Bullet>(this.player.Bullets);
+            List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
             foreach(Rectangle hitbox in this.current_room.GetHitboxes())
             {
                 if (hitbox.Intersects(this.player.GetHitbox))
                 {
-                    Debug.WriteLine("Collision");
                     this.player.HandleCollison(hitbox);
                 }
 
                 foreach(Bullet bullet in this.player.Bullets)
                 {
-                    if (hitbox.Intersects(bullet.GetHitbox))
+                    Rectangle bullet_hitbox = bullet.GetHitbox;
+
+                    if (hitbox.Intersects(bullet_hitbox))
                     {
                         bullets.Remove(bullet);
+                    }
+
+                    foreach (AEntity enemy in this.enemies)
+                    {
+                        if (bullet_hitbox.Intersects(enemy.GetHitbox))
+                        {
+                            int health = enemy.DoDamage();
+                            if (health <= 0) 
+                            {
+                                enemies_new.Remove(enemy);
+                            }
+                        }
+                    }
+                }
+
+                foreach(AEntity enemy in this.enemies)
+                {
+                    if (hitbox.Intersects(enemy.GetHitbox))
+                    {
+                        enemy.HandleCollison(hitbox);
                     }
                 }
             }
 
+            this.enemies = enemies_new;
             this.player.Bullets = bullets;
         }
 
@@ -70,7 +100,7 @@ namespace AP_GameDev_Project.State_handlers
             current_room.Draw(spriteBatch);
             player.Draw(spriteBatch);
 
-            foreach (AEntity enemy in this.Enemies)
+            foreach (AEntity enemy in this.enemies)
             {
                 enemy.Draw(spriteBatch);
             }

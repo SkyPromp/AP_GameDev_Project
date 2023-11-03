@@ -1,4 +1,5 @@
 ﻿using AP_GameDev_Project.Entities;
+using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -14,21 +15,27 @@ namespace AP_GameDev_Project.State_handlers
         public bool IsInit { get { return this.is_init; } }
         private Player player;
         private List<Bullet> bullets;
+        private MouseHandler mouseHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player)
         {
             this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
             this.player = player;
             this.bullets = new List<Bullet>();
+            this.mouseHandler = MouseHandler.getInstance;
         }
 
         public void Init()
         {
             this.is_init = true;
+            this.mouseHandler.LeftClickHook = () => {
+                this.player.Attack(Vector2.Normalize(this.mouseHandler.MousePos - this.player.Position));
+            };
         }
 
         public void Update(GameTime gameTime)
         {
+            this.mouseHandler.Update();
             this.HandleKeyboard();
             this.player.Update(gameTime);
 

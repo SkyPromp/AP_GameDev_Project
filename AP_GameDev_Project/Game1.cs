@@ -46,7 +46,8 @@ namespace AP_GameDev_Project
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             SpriteFont font = Content.Load<SpriteFont>("Font");
-            Player player = new Player(new Vector2(180, 180), new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0")), 5f);
+            Bullet base_bullet = new Bullet(Vector2.Zero, Vector2.Zero, Content.Load<Texture2D>("bullet"));
+            Player player = new Player(new Vector2(180, 180), new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0")), 5f, base_bullet);
 
             Game1.states = new Dictionary<Game1.states_enum, IStateHandler>();
             Game1.states.Add(Game1.states_enum.START, new StartStateHandler());

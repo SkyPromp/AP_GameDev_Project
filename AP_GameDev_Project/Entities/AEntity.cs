@@ -12,8 +12,11 @@ namespace AP_GameDev_Project.Entities
     {
         private readonly Animate stand_animation;
         private Vector2 position;
-        public readonly float max_speed;
+        public Vector2 Position { get { return this.position; } }
+
+        private readonly float max_speed;
         private Vector2 speed;
+        protected Vector2 Speed { get { return this.speed; } }
         private float speed_damping_factor;
         private readonly Rectangle normalized_hitbox;
         public Rectangle GetHitbox
@@ -34,7 +37,7 @@ namespace AP_GameDev_Project.Entities
             this.normalized_hitbox = normalized_hitbox;
         }
 
-        public void Update(GameTime gameTime)
+        public virtual void Update(GameTime gameTime)
         {
             this.speed *= this.speed_damping_factor;
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
@@ -44,7 +47,7 @@ namespace AP_GameDev_Project.Entities
             this.position += speed;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
             this.stand_animation.Draw(spriteBatch, this.position);
         }

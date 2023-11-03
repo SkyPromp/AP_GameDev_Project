@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations;
 
 namespace AP_GameDev_Project.Entities
 {
@@ -14,15 +14,19 @@ namespace AP_GameDev_Project.Entities
         private readonly float bullet_speed;
         private double bullet_max_cooldown;
         private double bullet_cooldown;
+
         private readonly MouseHandler mouseHandler;
+
+        private readonly int max_health;
         
-        public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, float speed_damping_factor=0.95f): base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), speed_damping_factor)
+        public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, int max_health=3, float speed_damping_factor=0.95f): base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), max_health, speed_damping_factor)
         {
             this.bullets = new List<Bullet>();
             this.mouseHandler = MouseHandler.getInstance;
             this.base_bullet = base_bullet;
             this.bullet_speed = 10f;
             this.bullet_max_cooldown = 0.2f;
+            this.max_health = max_health;
         }
 
         public override void Update(GameTime gameTime)
@@ -55,6 +59,13 @@ namespace AP_GameDev_Project.Entities
                 this.bullets.Add(new Bullet(bullet_position, angle * this.bullet_speed, this.base_bullet));
                 this.bullet_cooldown = this.bullet_max_cooldown;
             }
+        }
+
+        public void Heal(int heal_amount=1)
+        {
+            base.health += heal_amount;
+            
+            if(base.health > this.max_health) base.health = this.max_health;
         }
     }
 }

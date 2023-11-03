@@ -8,6 +8,9 @@ namespace AP_GameDev_Project.Entities
     internal class AEntity
     {
         private readonly Animate stand_animation;
+
+        protected int health;
+
         private Vector2 position;
         public Vector2 Position { get { return this.position; } }
 
@@ -15,6 +18,7 @@ namespace AP_GameDev_Project.Entities
         private Vector2 speed;
         protected Vector2 Speed { get { return this.speed; } }
         private float speed_damping_factor;
+
         private readonly Rectangle normalized_hitbox;
         public Rectangle GetHitbox
         {
@@ -24,7 +28,7 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, float speed_damping_factor=0.95f)
+        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, int base_health=5, float speed_damping_factor=0.95f)
         {
             this.position = position;
             this.stand_animation = stand_animation;
@@ -32,6 +36,7 @@ namespace AP_GameDev_Project.Entities
             this.max_speed = max_speed;
             this.speed_damping_factor = speed_damping_factor;
             this.normalized_hitbox = normalized_hitbox;
+            this.health = base_health;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -92,6 +97,13 @@ namespace AP_GameDev_Project.Entities
                 this.position = ytest;
                 this.speed.Y = 0;
             }
+        }
+
+        public int DoDamage(int damage)
+        {
+            this.health -= damage;
+
+            return this.health;
         }
     }
 }

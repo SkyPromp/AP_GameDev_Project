@@ -38,6 +38,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.HandleKeyboard();
             this.player.Update(gameTime);
+            List<Bullet> bullets = new List<Bullet>(this.player.Bullets);
 
             foreach(Rectangle hitbox in this.current_room.GetHitboxes())
             {
@@ -46,7 +47,17 @@ namespace AP_GameDev_Project.State_handlers
                     Debug.WriteLine("Collision");
                     this.player.HandleCollison(hitbox);
                 }
+
+                foreach(Bullet bullet in this.player.Bullets)
+                {
+                    if (hitbox.Intersects(bullet.GetHitbox))
+                    {
+                        bullets.Remove(bullet);
+                    }
+                }
             }
+
+            this.player.Bullets = bullets;
         }
 
         public void Draw(SpriteBatch spriteBatch)

@@ -7,7 +7,8 @@ namespace AP_GameDev_Project.Entities
 {
     internal class Player: AEntity
     {
-        List<Bullet> bullets;
+        private List<Bullet> bullets;
+        public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
         private readonly Bullet base_bullet;
         private readonly float bullet_speed;
         private double bullet_max_cooldown;
@@ -15,7 +16,7 @@ namespace AP_GameDev_Project.Entities
         
         public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, float speed_damping_factor=0.95f): base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), speed_damping_factor)
         {
-            bullets = new List<Bullet>();
+            this.bullets = new List<Bullet>();
             this.base_bullet = base_bullet;
             this.bullet_speed = 10f;
             this.bullet_max_cooldown = 0.2f;
@@ -25,7 +26,7 @@ namespace AP_GameDev_Project.Entities
         {
             base.Update(gameTime);
 
-            if (this.bullet_cooldown > 0) bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.bullet_cooldown > 0) this.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
             foreach (Bullet bullet in this.bullets) bullet.Update(gameTime);
         }
 
@@ -46,7 +47,7 @@ namespace AP_GameDev_Project.Entities
                 Rectangle hitbox = base.GetHitbox;
                 Vector2 center = new Vector2(hitbox.X + hitbox.Width / 2, hitbox.Y + hitbox.Height / 2);
 
-                bullets.Add(new Bullet(center + new Vector2(angle.X < 0 ? -40: 40, -7), angle * this.bullet_speed, this.base_bullet));
+                this.bullets.Add(new Bullet(center + new Vector2(angle.X < 0 ? -40: 40, -7), angle * this.bullet_speed, this.base_bullet));
                 this.bullet_cooldown = this.bullet_max_cooldown;
             }
         }

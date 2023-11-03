@@ -12,11 +12,20 @@ namespace AP_GameDev_Project.Entities
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
 
+        public Rectangle GetHitbox
+        {
+            get
+            {
+                return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
+            }
+        }
+
         public Bullet(Vector2 position, Vector2 speed, Texture2D texture) 
         { 
             this.position = position;
             this.speed = speed;
             this.texture = texture;
+            this.normalized_hitbox = new Rectangle(-2, -2, 4, 4);
         }
 
         public Bullet(Vector2 position, Vector2 speed, Bullet base_bullet)
@@ -24,6 +33,14 @@ namespace AP_GameDev_Project.Entities
             this.position = position;
             this.speed = speed;
             this.texture = base_bullet.texture;
+        }
+
+        public Bullet(Bullet bullet)
+        {
+            this.position = bullet.position;
+            this.speed = bullet.speed;
+            this.texture = bullet.texture;
+            this.normalized_hitbox = bullet.normalized_hitbox;
         }
 
         public void Update(GameTime gameTime)

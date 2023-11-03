@@ -35,14 +35,6 @@ namespace AP_GameDev_Project.Entities
             this.texture = base_bullet.texture;
         }
 
-        public Bullet(Bullet bullet)
-        {
-            this.position = bullet.position;
-            this.speed = bullet.speed;
-            this.texture = bullet.texture;
-            this.normalized_hitbox = bullet.normalized_hitbox;
-        }
-
         public void Update(GameTime gameTime)
         {
             this.position += this.speed;

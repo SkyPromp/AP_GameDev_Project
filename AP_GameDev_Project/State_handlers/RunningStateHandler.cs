@@ -3,6 +3,7 @@ using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -14,15 +15,15 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private Player player;
-        private List<Bullet> bullets;
+        private List<AEntity> Enemies;
         private MouseHandler mouseHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player)
         {
             this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
             this.player = player;
-            this.bullets = new List<Bullet>();
             this.mouseHandler = MouseHandler.getInstance;
+            this.Enemies = new List<AEntity>();
         }
 
         public void Init()
@@ -38,6 +39,12 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.HandleKeyboard();
             this.player.Update(gameTime);
+
+            foreach(AEntity enemy in this.Enemies)
+            {
+                enemy.Update(gameTime);
+            }
+
             List<Bullet> bullets = new List<Bullet>(this.player.Bullets);
 
             foreach(Rectangle hitbox in this.current_room.GetHitboxes())
@@ -64,6 +71,11 @@ namespace AP_GameDev_Project.State_handlers
         {
             current_room.Draw(spriteBatch);
             player.Draw(spriteBatch);
+
+            foreach (AEntity enemy in this.Enemies)
+            {
+                enemy.Draw(spriteBatch);
+            }
         }
 
         private void HandleKeyboard()

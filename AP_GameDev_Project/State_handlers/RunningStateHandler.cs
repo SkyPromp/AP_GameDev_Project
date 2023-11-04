@@ -68,18 +68,6 @@ namespace AP_GameDev_Project.State_handlers
                     {
                         bullets.Remove(bullet);
                     }
-
-                    foreach (AEntity enemy in this.enemies)
-                    {
-                        if (bullet_hitbox.Intersects(enemy.GetHitbox))
-                        {
-                            int health = enemy.DoDamage();
-                            if (health <= 0) 
-                            {
-                                enemies_new.Remove(enemy);
-                            }
-                        }
-                    }
                 }
 
                 foreach(AEntity enemy in this.enemies)
@@ -87,6 +75,23 @@ namespace AP_GameDev_Project.State_handlers
                     if (hitbox.Intersects(enemy.GetHitbox))
                     {
                         enemy.HandleCollison(hitbox);
+                    }
+                }
+            }
+
+            foreach (Bullet bullet in this.player.Bullets)
+            {
+                Rectangle bullet_hitbox = bullet.GetHitbox;
+
+                foreach (AEntity enemy in this.enemies)
+                {
+                    if (bullet_hitbox.Intersects(enemy.GetHitbox))
+                    {
+                        int health = enemy.DoDamage();
+                        if (health <= 0)
+                        {
+                            enemies_new.Remove(enemy);
+                        }
                     }
                 }
             }

@@ -76,7 +76,7 @@ namespace AP_GameDev_Project
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Wheat);
 
             _spriteBatch.Begin();
 

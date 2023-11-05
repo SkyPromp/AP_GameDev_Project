@@ -75,11 +75,21 @@ namespace AP_GameDev_Project.State_handlers
                     }
                 }
 
-                foreach(AEntity enemy in this.enemies)
+                foreach (Enemy1 enemy in this.enemies)  // Abstract to AEntity
                 {
                     if (hitbox.Intersects(enemy.GetHitbox))
                     {
                         enemy.HandleCollison(hitbox);
+                    }
+
+                    foreach (Bullet bullet in enemy.Bullets)
+                    {
+                        Rectangle bullet_hitbox = bullet.GetHitbox;
+
+                        if (hitbox.Intersects(bullet_hitbox))
+                        {
+                            bullets.Remove(bullet);
+                        }
                     }
                 }
             }

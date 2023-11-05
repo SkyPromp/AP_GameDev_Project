@@ -39,7 +39,7 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public void Attack(Vector2 player_center)
+        public override void Attack(Vector2 player_center)
         {
             if (this.bullet_cooldown <= 0)  // TODO: if no walls
             {

@@ -55,7 +55,7 @@ namespace AP_GameDev_Project.State_handlers
                 enemy.Attack(player_center);  // Add condition
             }
 
-            List<Bullet> bullets = new List<Bullet>(this.player.Bullets);
+            List<Bullet> player_bullets = new List<Bullet>(this.player.Bullets);
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
             foreach(Rectangle hitbox in this.current_room.GetHitboxes())
@@ -71,7 +71,7 @@ namespace AP_GameDev_Project.State_handlers
 
                     if (hitbox.Intersects(bullet_hitbox))
                     {
-                        bullets.Remove(bullet);
+                        player_bullets.Remove(bullet);
                     }
                 }
 
@@ -82,15 +82,15 @@ namespace AP_GameDev_Project.State_handlers
                         enemy.HandleCollison(hitbox);
                     }
 
-                    foreach (Bullet bullet in enemy.Bullets)
+                    /*foreach (Bullet bullet in enemy.Bullets)
                     {
                         Rectangle bullet_hitbox = bullet.GetHitbox;
 
                         if (hitbox.Intersects(bullet_hitbox))
                         {
-                            bullets.Remove(bullet);
+                            player_bullets.Remove(bullet);
                         }
-                    }
+                    }*/
                 }
             }
 
@@ -112,7 +112,7 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             this.enemies = enemies_new;
-            this.player.Bullets = bullets;
+            this.player.Bullets = player_bullets;
         }
 
         public void Draw(SpriteBatch spriteBatch)

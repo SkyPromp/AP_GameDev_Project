@@ -82,7 +82,7 @@ namespace AP_GameDev_Project.State_handlers
                         enemy.HandleCollison(hitbox);
                     }
 
-                    /*foreach (Bullet bullet in enemy.Bullets)
+                    /*foreach (Bullet bullet in enemy.Bullets)  // find way to store and remove bullets efficiently
                     {
                         Rectangle bullet_hitbox = bullet.GetHitbox;
 

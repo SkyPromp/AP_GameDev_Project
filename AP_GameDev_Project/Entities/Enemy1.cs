@@ -41,7 +41,7 @@ namespace AP_GameDev_Project.Entities
 
         public void Attack(Vector2 player_center)
         {
-            if (this.bullet_cooldown <= 0)
+            if (this.bullet_cooldown <= 0)  // TODO: if no walls
             {
                 Rectangle enemy_hitbox = base.GetHitbox;
                 Vector2 enemy_center = new Vector2(enemy_hitbox.X + enemy_hitbox.Width / 2, enemy_hitbox.Y + enemy_hitbox.Height / 2);

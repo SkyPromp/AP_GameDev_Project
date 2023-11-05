@@ -45,9 +45,14 @@ namespace AP_GameDev_Project.State_handlers
             this.HandleKeyboard();
             this.player.Update(gameTime);
 
+            Rectangle player_hitbox = this.player.GetHitbox;
+            Vector2 player_center = new Vector2(player_hitbox.X + player_hitbox.Width / 2 , player_hitbox.Y + player_hitbox.Height / 2);
+
+
             foreach(AEntity enemy in this.enemies)
             {
                 enemy.Update(gameTime);
+                enemy.Attack(player_center);  // Add condition
             }
 
             List<Bullet> bullets = new List<Bullet>(this.player.Bullets);

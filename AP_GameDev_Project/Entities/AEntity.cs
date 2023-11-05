@@ -105,5 +105,7 @@ namespace AP_GameDev_Project.Entities
 
             return this.health;
         }
+
+        public abstract void Attack(Vector2 player_center);
     }
 }

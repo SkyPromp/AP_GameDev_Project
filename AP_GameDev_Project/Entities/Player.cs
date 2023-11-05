@@ -67,5 +67,10 @@ namespace AP_GameDev_Project.Entities
             
             if(base.health > this.max_health) base.health = this.max_health;
         }
+
+        public override void Attack(Vector2 player_center)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 namespace AP_GameDev_Project.Entities
 {
-    internal class AEntity
+    internal abstract class AEntity
     {
         private readonly Animate stand_animation;
 

@@ -47,7 +47,7 @@ namespace AP_GameDev_Project.Entities
                 Vector2 enemy_center = new Vector2(enemy_hitbox.X + enemy_hitbox.Width / 2, enemy_hitbox.Y + enemy_hitbox.Height / 2);
                 Vector2 weapon_offset = new Vector2(base.Position.X < player_center.X ? -19.5f: 19.5f, -7);
                 Vector2 bullet_position = weapon_offset + enemy_center;
-                Vector2 angle = Vector2.Normalize(bullet_position - player_center);    // TODO: correct bullet_position to the center of the bullet?
+                Vector2 angle = Vector2.Normalize(player_center - bullet_position);    // TODO: correct bullet_position to the center of the bullet?
 
                 this.bullets.Add(new Bullet(bullet_position, angle * this.bullet_speed, this.base_bullet));
                 this.bullet_cooldown = this.bullet_max_cooldown;

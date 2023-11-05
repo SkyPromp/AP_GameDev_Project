@@ -53,8 +53,8 @@ namespace AP_GameDev_Project.Entities
             {
                 Rectangle hitbox = this.GetHitbox;
                 Vector2 center = new Vector2(hitbox.X + hitbox.Width / 2, hitbox.Y + hitbox.Height / 2);
-                Vector2 bullet_position = center + new Vector2(this.mouseHandler.MousePos.X < center.X ? -40 : 40, -7);
-                Vector2 angle = Vector2.Normalize(this.mouseHandler.MousePos - bullet_position);
+                Vector2 bullet_position = center + new Vector2(this.mouseHandler.MousePos.X < center.X ? -40 : 40, -7);  
+                Vector2 angle = Vector2.Normalize(this.mouseHandler.MousePos - bullet_position);  // TODO: correct bullet_position to the center of the bullet?
 
                 this.bullets.Add(new Bullet(bullet_position, angle * this.bullet_speed, this.base_bullet));
                 this.bullet_cooldown = this.bullet_max_cooldown;

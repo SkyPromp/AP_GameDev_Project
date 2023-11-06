@@ -19,7 +19,8 @@ namespace AP_GameDev_Project.State_handlers
         private List<AEntity> base_enemies;
         private List<AEntity> enemies;
         private MouseHandler mouseHandler;
-        private bool is_debug_mode;
+        private readonly double max_debug_cooldown;
+        private double debug_cooldown;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
@@ -28,7 +29,8 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.enemies = new List<AEntity>();
-            this.is_debug_mode = false;
+            this.max_debug_cooldown = 0.3;
+            this.debug_cooldown = 0;
 
             // TEST (REMOVE)
             this.enemies.Add(this.base_enemies[0]);
@@ -43,6 +45,8 @@ namespace AP_GameDev_Project.State_handlers
 
         public void Update(GameTime gameTime)
         {
+            if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
             this.mouseHandler.Update();
             this.HandleKeyboard();
             this.player.Update(gameTime);
@@ -123,21 +127,27 @@ namespace AP_GameDev_Project.State_handlers
         {
             current_room.Draw(spriteBatch);
             player.Draw(spriteBatch);
-            if (this.is_debug_mode) player.DrawHitbox(spriteBatch.GraphicsDevice);
 
-            foreach (AEntity enemy in this.enemies)
-            {
-                enemy.Draw(spriteBatch);
-                if (this.is_debug_mode) enemy.DrawHitbox(spriteBatch.GraphicsDevice);
-            }
+            foreach (AEntity enemy in this.enemies) enemy.Draw(spriteBatch);
         }
 
-        private void HandleKeyboard()  // TODO add debug toggle button
+        private void HandleKeyboard()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 Game1.current_state = Game1.States[Game1.states_enum.START];
                 Game1.InitCurrentState();
+            }
+
+            if (Keyboard.GetState().IsKeyDown(Keys.F3) && this.debug_cooldown <= 0)
+            {
+                this.debug_cooldown = this.max_debug_cooldown;
+                this.player.do_draw_hitbox = !this.player.do_draw_hitbox;
+
+                foreach(AEntity enemy in this.enemies)
+                {
+                    enemy.do_draw_hitbox = !enemy.do_draw_hitbox;
+                }
             }
 
             Vector2 addSpeed = Vector2.Zero;

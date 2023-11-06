@@ -29,6 +29,7 @@ namespace AP_GameDev_Project.Entities
                 return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
             }
         }
+        public bool do_draw_hitbox;
 
         protected List<Bullet> bullets;
         public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
@@ -49,6 +50,7 @@ namespace AP_GameDev_Project.Entities
             this.speed_damping_factor = speed_damping_factor;
 
             this.normalized_hitbox = normalized_hitbox;
+            this.do_draw_hitbox = false;
 
             this.health = base_health;
 
@@ -79,9 +81,16 @@ namespace AP_GameDev_Project.Entities
             {
                 bullet.Draw(spriteBatch);
             }
+
+            if (this.do_draw_hitbox)
+            {
+                spriteBatch.End();  // Required to draw the hitbox on top
+                spriteBatch.Begin();
+                this.DrawHitbox(spriteBatch.GraphicsDevice);
+            }
         }
 
-        public void DrawHitbox(GraphicsDevice graphicsDevice)
+        private void DrawHitbox(GraphicsDevice graphicsDevice)
         {
             Rectangle hitbox = this.GetHitbox;
 

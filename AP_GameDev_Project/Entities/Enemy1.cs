@@ -12,16 +12,6 @@ namespace AP_GameDev_Project.Entities
         {
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-
-            foreach (Bullet bullet in this.bullets)
-            {
-                bullet.Draw(spriteBatch);
-            }
-        }
-
         public override void Attack(Vector2 player_center)
         {
             if (base.bullet_cooldown <= 0)  // TODO: if no walls

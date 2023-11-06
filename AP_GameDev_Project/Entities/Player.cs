@@ -19,16 +19,6 @@ namespace AP_GameDev_Project.Entities
             this.max_health = max_health;
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            base.Draw(spriteBatch);
-
-            foreach (Bullet bullet in base.bullets)
-            {
-                bullet.Draw(spriteBatch);
-            }
-        }
-
         public void Attack()
         {
             if (base.bullet_cooldown <= 0)

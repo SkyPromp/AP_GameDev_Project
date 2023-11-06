@@ -71,6 +71,11 @@ namespace AP_GameDev_Project.Entities
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             this.stand_animation.Draw(spriteBatch, this.position);
+
+            foreach (Bullet bullet in this.bullets)
+            {
+                bullet.Draw(spriteBatch);
+            }
         }
 
         public void SpeedUp(Vector2 add_speed)

@@ -37,7 +37,6 @@ namespace AP_GameDev_Project.State_handlers
             this.tilemap = tilemap;
             this.font = font;
 
-
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
             basicEffect = new BasicEffect(graphicsDevice);

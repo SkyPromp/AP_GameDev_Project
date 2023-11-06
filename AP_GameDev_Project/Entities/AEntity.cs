@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
 
@@ -78,6 +79,34 @@ namespace AP_GameDev_Project.Entities
             {
                 bullet.Draw(spriteBatch);
             }
+        }
+
+        public void DrawHitbox(GraphicsDevice graphicsDevice)
+        {
+            Rectangle hitbox = this.GetHitbox;
+
+            // DRAW VERTICES SETUP
+            BasicEffect basicEffect = new BasicEffect(graphicsDevice);
+            basicEffect.VertexColorEnabled = true;
+            basicEffect.Projection = Matrix.CreateOrthographicOffCenter
+            (0, graphicsDevice.Viewport.Width,     // left, right
+            graphicsDevice.Viewport.Height, 0,    // bottom, top
+            0, 1);
+
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            var vertices = new VertexPositionColor[5];
+            vertices[0].Position = new Vector3(hitbox.X, hitbox.Y, 0);
+            vertices[0].Color = Color.Red;
+            vertices[1].Position = new Vector3(hitbox.X + hitbox.Width, hitbox.Y, 0);
+            vertices[1].Color = Color.Red;
+            vertices[2].Position = new Vector3(hitbox.X + hitbox.Width, hitbox.Y + hitbox.Height, 0);
+            vertices[2].Color = Color.Red;
+            vertices[3].Position = new Vector3(hitbox.X, hitbox.Y + hitbox.Height, 0);
+            vertices[3].Color = Color.Red;
+            vertices[4] = vertices[0];
+
+            graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 4);
+
         }
 
         public void SpeedUp(Vector2 add_speed)

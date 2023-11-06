@@ -19,6 +19,7 @@ namespace AP_GameDev_Project.State_handlers
         private List<AEntity> base_enemies;
         private List<AEntity> enemies;
         private MouseHandler mouseHandler;
+        private bool is_debug_mode;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
@@ -27,6 +28,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.enemies = new List<AEntity>();
+            this.is_debug_mode = false;
 
             // TEST (REMOVE)
             this.enemies.Add(this.base_enemies[0]);
@@ -121,14 +123,16 @@ namespace AP_GameDev_Project.State_handlers
         {
             current_room.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            if (this.is_debug_mode) player.DrawHitbox(spriteBatch.GraphicsDevice);
 
             foreach (AEntity enemy in this.enemies)
             {
                 enemy.Draw(spriteBatch);
+                if (this.is_debug_mode) enemy.DrawHitbox(spriteBatch.GraphicsDevice);
             }
         }
 
-        private void HandleKeyboard()
+        private void HandleKeyboard()  // TODO add debug toggle button
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {

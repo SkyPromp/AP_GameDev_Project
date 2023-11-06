@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AP_GameDev_Project
 {
@@ -40,7 +36,7 @@ namespace AP_GameDev_Project
             return this.current_frame;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip_texture=false)
         {
             Rectangle drawRect = this.frame_size;  // Refactor this away by removing this.current_frame
             drawRect.X = drawRect.Width * this.current_frame;
@@ -49,8 +45,13 @@ namespace AP_GameDev_Project
             texture: this.spritemap,
             position: position,
             sourceRectangle: drawRect,
-            color: Color.White
-            );
+            color: Color.White,
+            rotation: 0,
+            origin: Vector2.Zero,
+            scale: 1.0f,
+            effects: flip_texture ? SpriteEffects.FlipHorizontally : SpriteEffects.None,
+            layerDepth: 0
+            ); ;
         }
     }
 }

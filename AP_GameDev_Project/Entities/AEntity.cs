@@ -8,6 +8,7 @@ namespace AP_GameDev_Project.Entities
     internal abstract class AEntity
     {
         private readonly Animate stand_animation;
+        protected bool flip_texture;
 
         protected int health;
 
@@ -40,6 +41,7 @@ namespace AP_GameDev_Project.Entities
             this.position = position;
 
             this.stand_animation = stand_animation;
+            this.flip_texture = false;
 
             this.speed = Vector2.Zero;
             this.max_speed = max_speed;
@@ -70,7 +72,7 @@ namespace AP_GameDev_Project.Entities
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            this.stand_animation.Draw(spriteBatch, this.position);
+            this.stand_animation.Draw(spriteBatch, this.position, this.flip_texture);
 
             foreach (Bullet bullet in this.bullets)
             {

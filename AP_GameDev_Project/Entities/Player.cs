@@ -1,8 +1,6 @@
 ﻿using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-
 
 namespace AP_GameDev_Project.Entities
 {
@@ -17,6 +15,14 @@ namespace AP_GameDev_Project.Entities
         {
             this.mouseHandler = MouseHandler.getInstance;
             this.max_health = max_health;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            Rectangle hitbox = base.GetHitbox;
+            base.flip_texture = mouseHandler.MousePos.X < hitbox.X + hitbox.Width / 2;
+
+            base.Update(gameTime);
         }
 
         public void Attack()

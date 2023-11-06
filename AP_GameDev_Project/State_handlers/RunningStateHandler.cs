@@ -85,7 +85,7 @@ namespace AP_GameDev_Project.State_handlers
 
                     foreach (Bullet bullet in enemy.Bullets)
                     {
-                        if (hitbox.Intersects(bullet.GetHitbox)) enemy_removed_bullets[enemy.Bullets.Count - 1].Add(bullet);
+                        if (hitbox.Intersects(bullet.GetHitbox)) enemy_removed_bullets[enemies.IndexOf(enemy)].Add(bullet);
                     }
                 }
             }

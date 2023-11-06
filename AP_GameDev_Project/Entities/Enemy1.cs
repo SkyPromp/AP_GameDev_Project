@@ -1,7 +1,5 @@
-﻿using AP_GameDev_Project.Input_devices;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+
 
 namespace AP_GameDev_Project.Entities
 {
@@ -14,7 +12,7 @@ namespace AP_GameDev_Project.Entities
 
         public override void Attack(Vector2 player_center)
         {
-            if (base.bullet_cooldown <= 0)  // TODO: if no walls
+            if (base.bullet_cooldown <= 0)  // TODO: if no walls using ray marching
             {
                 Rectangle enemy_hitbox = base.GetHitbox;
                 Vector2 enemy_center = new Vector2(enemy_hitbox.X + enemy_hitbox.Width / 2, enemy_hitbox.Y + enemy_hitbox.Height / 2);

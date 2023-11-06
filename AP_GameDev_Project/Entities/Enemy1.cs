@@ -12,13 +12,6 @@ namespace AP_GameDev_Project.Entities
         {
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            base.Update(gameTime);
-
-            if (base.bullet_cooldown > 0) base.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (Bullet bullet in base.bullets) bullet.Update(gameTime);
-        }
         public override void Draw(SpriteBatch spriteBatch)
         {
             base.Draw(spriteBatch);

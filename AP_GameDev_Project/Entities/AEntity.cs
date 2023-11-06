@@ -63,6 +63,9 @@ namespace AP_GameDev_Project.Entities
 
             this.stand_animation.Update(gameTime);
             this.position += speed;
+
+            if (this.bullet_cooldown > 0) this.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            foreach (Bullet bullet in this.bullets) bullet.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

@@ -97,14 +97,10 @@ namespace AP_GameDev_Project.State_handlers
 
             for(int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
             {
-                List<Bullet> correct_bullets = new List<Bullet>(this.enemies[enemy_index].Bullets);
-
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
                 {
-                    correct_bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
+                    this.enemies[enemy_index].Bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
                 }
-
-                this.enemies[enemy_index].Bullets = correct_bullets;
             }
 
             foreach (Bullet bullet in this.player.Bullets)

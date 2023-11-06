@@ -50,12 +50,24 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.HandleKeyboard();
             this.player.Update(gameTime);
+            this.HandleCollision(gameTime);
+        }
 
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            current_room.Draw(spriteBatch);
+            player.Draw(spriteBatch);
+
+            foreach (AEntity enemy in this.enemies) enemy.Draw(spriteBatch);
+        }
+
+        private void HandleCollision(GameTime gameTime)
+        {
             Rectangle player_hitbox = this.player.GetHitbox;
-            Vector2 player_center = new Vector2(player_hitbox.X + player_hitbox.Width / 2 , player_hitbox.Y + player_hitbox.Height / 2);
+            Vector2 player_center = new Vector2(player_hitbox.X + player_hitbox.Width / 2, player_hitbox.Y + player_hitbox.Height / 2);
 
 
-            foreach(AEntity enemy in this.enemies)
+            foreach (AEntity enemy in this.enemies)
             {
                 enemy.Update(gameTime);
                 enemy.Attack(player_center);  // Add condition
@@ -68,14 +80,14 @@ namespace AP_GameDev_Project.State_handlers
 
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
-            foreach(Rectangle hitbox in this.current_room.GetHitboxes())
+            foreach (Rectangle hitbox in this.current_room.GetHitboxes())
             {
                 if (hitbox.Intersects(this.player.GetHitbox))
                 {
                     this.player.HandleCollison(hitbox);
                 }
 
-                foreach(Bullet bullet in this.player.Bullets)
+                foreach (Bullet bullet in this.player.Bullets)
                 {
                     Rectangle bullet_hitbox = bullet.GetHitbox;
 
@@ -96,7 +108,7 @@ namespace AP_GameDev_Project.State_handlers
                 }
             }
 
-            for(int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
+            for (int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
             {
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
                 {
@@ -121,14 +133,6 @@ namespace AP_GameDev_Project.State_handlers
 
             this.enemies = enemies_new;
             this.player.Bullets = player_bullets;
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            current_room.Draw(spriteBatch);
-            player.Draw(spriteBatch);
-
-            foreach (AEntity enemy in this.enemies) enemy.Draw(spriteBatch);
         }
 
         private void HandleKeyboard()

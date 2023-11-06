@@ -56,6 +56,15 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             List<Bullet> player_bullets = new List<Bullet>(this.player.Bullets);
+            List<List<Bullet>> enemy_bullets = new List<List<Bullet>>();
+            List<List<Bullet>> enemy_removed_bullets = new List<List<Bullet>>();
+
+            foreach (AEntity enemy in this.enemies) 
+            { 
+                enemy_bullets.Add(enemy.Bullets);
+                enemy_removed_bullets.Add(new List<Bullet>());
+            }
+
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
             foreach(Rectangle hitbox in this.current_room.GetHitboxes())
@@ -82,16 +91,28 @@ namespace AP_GameDev_Project.State_handlers
                         enemy.HandleCollison(hitbox);
                     }
 
-                    /*foreach (Bullet bullet in enemy.Bullets)  // find way to store and remove bullets efficiently
+                    foreach (Bullet bullet in enemy_bullets[this.enemies.IndexOf(enemy)])
                     {
                         Rectangle bullet_hitbox = bullet.GetHitbox;
 
                         if (hitbox.Intersects(bullet_hitbox))
                         {
-                            player_bullets.Remove(bullet);
+                            enemy_removed_bullets[enemy_bullets.Count - 1].Add(bullet);
                         }
-                    }*/
+                    }
                 }
+            }
+
+            for(int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
+            {
+                List<Bullet> correct_bullets = new List<Bullet>(enemy_bullets[enemy_index]);
+
+                for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
+                {
+                    correct_bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
+                }
+
+                this.enemies[enemy_index].Bullets = correct_bullets;
             }
 
             foreach (Bullet bullet in this.player.Bullets)

@@ -19,7 +19,8 @@ namespace AP_GameDev_Project.Entities
 
         private readonly int max_health;
         
-        public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, int max_health=3, float speed_damping_factor=0.95f): base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), max_health, speed_damping_factor)
+        public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, int max_health=3, float speed_damping_factor=0.95f) : 
+            base(position, stand_animation, max_speed, new Rectangle(56, 35, 35, 142), base_bullet, 10f, 0.2f, max_health, speed_damping_factor)
         {
             this.bullets = new List<Bullet>();
             this.mouseHandler = MouseHandler.getInstance;

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-
+using System.Collections.Generic;
 
 namespace AP_GameDev_Project.Entities
 {
@@ -28,15 +28,31 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, int base_health=5, float speed_damping_factor=0.95f)
+        protected List<Bullet> bullets;
+        public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
+        protected readonly Bullet base_bullet;
+        protected readonly float bullet_speed;
+        protected double bullet_max_cooldown;
+        protected double bullet_cooldown;
+
+        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, Bullet base_bullet, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
         {
             this.position = position;
+
             this.stand_animation = stand_animation;
+
             this.speed = Vector2.Zero;
             this.max_speed = max_speed;
             this.speed_damping_factor = speed_damping_factor;
+
             this.normalized_hitbox = normalized_hitbox;
+
             this.health = base_health;
+
+            this.bullets = new List<Bullet>();
+            this.base_bullet = base_bullet;
+            this.bullet_speed = bullet_speed;
+            this.bullet_max_cooldown = bullet_max_cooldown;
         }
 
         public virtual void Update(GameTime gameTime)

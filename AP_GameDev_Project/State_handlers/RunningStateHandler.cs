@@ -56,14 +56,9 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             List<Bullet> player_bullets = new List<Bullet>(this.player.Bullets);
-            List<List<Bullet>> enemy_bullets = new List<List<Bullet>>();
             List<List<Bullet>> enemy_removed_bullets = new List<List<Bullet>>();
 
-            foreach (AEntity enemy in this.enemies) 
-            { 
-                enemy_bullets.Add(enemy.Bullets);
-                enemy_removed_bullets.Add(new List<Bullet>());
-            }
+            foreach (AEntity enemy in this.enemies) enemy_removed_bullets.Add(new List<Bullet>());
 
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
@@ -84,28 +79,25 @@ namespace AP_GameDev_Project.State_handlers
                     }
                 }
 
-                foreach (Enemy1 enemy in this.enemies)  // Abstract to AEntity
+                foreach (AEntity enemy in this.enemies)
                 {
                     if (hitbox.Intersects(enemy.GetHitbox))
                     {
                         enemy.HandleCollison(hitbox);
                     }
 
-                    foreach (Bullet bullet in enemy_bullets[this.enemies.IndexOf(enemy)])
+                    foreach (Bullet bullet in enemy.Bullets)
                     {
                         Rectangle bullet_hitbox = bullet.GetHitbox;
 
-                        if (hitbox.Intersects(bullet_hitbox))
-                        {
-                            enemy_removed_bullets[enemy_bullets.Count - 1].Add(bullet);
-                        }
+                        if (hitbox.Intersects(bullet_hitbox)) enemy_removed_bullets[enemy.Bullets.Count - 1].Add(bullet);
                     }
                 }
             }
 
             for(int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
             {
-                List<Bullet> correct_bullets = new List<Bullet>(enemy_bullets[enemy_index]);
+                List<Bullet> correct_bullets = new List<Bullet>(this.enemies[enemy_index].Bullets);
 
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
                 {
@@ -124,10 +116,8 @@ namespace AP_GameDev_Project.State_handlers
                     if (bullet_hitbox.Intersects(enemy.GetHitbox))
                     {
                         int health = enemy.DoDamage();
-                        if (health <= 0)
-                        {
-                            enemies_new.Remove(enemy);
-                        }
+
+                        if (health <= 0) enemies_new.Remove(enemy);
                     }
                 }
             }

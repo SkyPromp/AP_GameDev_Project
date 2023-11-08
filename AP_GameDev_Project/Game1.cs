@@ -52,7 +52,7 @@ namespace AP_GameDev_Project
             Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy_standstill, 5f, new Rectangle(22, 10, 17, 43), 5, base_bullet);
             base_enemies.Add(base_enemy1);
 
-            Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still0"));
+            Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
             Player player = new Player(new Vector2(180, 180), player_standstill, 5f, base_bullet);
 
             Game1.states = new Dictionary<Game1.states_enum, IStateHandler>();

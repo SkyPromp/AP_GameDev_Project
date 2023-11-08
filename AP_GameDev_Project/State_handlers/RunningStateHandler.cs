@@ -63,8 +63,7 @@ namespace AP_GameDev_Project.State_handlers
 
         private void HandleCollision(GameTime gameTime)
         {
-            Rectangle player_hitbox = this.player.GetHitbox;
-            Vector2 player_center = new Vector2(player_hitbox.X + player_hitbox.Width / 2, player_hitbox.Y + player_hitbox.Height / 2);
+            Vector2 player_center = this.player.GetCenter;
 
 
             foreach (AEntity enemy in this.enemies)

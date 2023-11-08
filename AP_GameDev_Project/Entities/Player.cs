@@ -29,8 +29,7 @@ namespace AP_GameDev_Project.Entities
         {
             if (base.bullet_cooldown <= 0)
             {
-                Rectangle hitbox = this.GetHitbox;
-                Vector2 center = new Vector2(hitbox.X + hitbox.Width / 2, hitbox.Y + hitbox.Height / 2);
+                Vector2 center = base.GetCenter;
                 Vector2 bullet_position = center + new Vector2(this.mouseHandler.MousePos.X < center.X ? -40 : 40, -7);  
                 Vector2 angle = Vector2.Normalize(this.mouseHandler.MousePos - bullet_position);  // TODO: correct bullet_position to the center of the bullet?
 

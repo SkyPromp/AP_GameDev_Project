@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SharpDX.Direct3D9;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.Entities
 {
@@ -29,6 +30,14 @@ namespace AP_GameDev_Project.Entities
                 return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
             }
         }
+        public Vector2 GetCenter
+        {
+            get 
+            {
+                return new Vector2(this.position.X + this.normalized_hitbox.X + this.normalized_hitbox.Width / 2, this.position.Y + this.normalized_hitbox.Y + this.normalized_hitbox.Height / 2);
+            }
+        }
+
         public bool do_draw_hitbox;
 
         protected List<Bullet> bullets;

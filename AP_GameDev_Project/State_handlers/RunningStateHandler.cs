@@ -21,6 +21,7 @@ namespace AP_GameDev_Project.State_handlers
         private MouseHandler mouseHandler;
         private readonly double max_debug_cooldown;
         private double debug_cooldown;
+        private StateHandler stateHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
@@ -30,6 +31,7 @@ namespace AP_GameDev_Project.State_handlers
             this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
+            this.stateHandler = StateHandler.getInstance;
 
             // TEST (REMOVE)
             this.entities.Add(player);
@@ -108,8 +110,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                Game1.current_state = Game1.States[Game1.states_enum.START];
-                Game1.InitCurrentState();
+                stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && this.debug_cooldown <= 0)

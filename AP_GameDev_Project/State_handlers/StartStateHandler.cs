@@ -1,6 +1,7 @@
 ﻿using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics.Contracts;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -11,6 +12,7 @@ namespace AP_GameDev_Project.State_handlers
         private MouseHandler mouseHandler;
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
+        private StateHandler stateHandler;
 
         public StartStateHandler()
         {
@@ -18,6 +20,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mapMakeButtonRect = new Rectangle(0, 540, 1920, 540);
             this.mouseHandler = MouseHandler.getInstance;
             this.is_init = false;
+            this.stateHandler = StateHandler.getInstance;
         }
         public void Init()
         {
@@ -37,16 +40,14 @@ namespace AP_GameDev_Project.State_handlers
                 startState.mouseHandler.LeftClickHook = null;
                 startState.mouseHandler.RightClickHook = null;
 
-                Game1.current_state = Game1.States[Game1.states_enum.RUNNING];
-                Game1.InitCurrentState();
+                stateHandler.SetCurrentState(StateHandler.states_enum.RUNNING).Init();
             }
             else if (startState.mapMakeButtonRect.Contains(startState.mouseHandler.MousePos))
             {
                 startState.mouseHandler.LeftClickHook = null;
                 startState.mouseHandler.RightClickHook = null;
 
-                Game1.current_state = Game1.States[Game1.states_enum.MAPMAKING];
-                Game1.InitCurrentState();
+                stateHandler.SetCurrentState(StateHandler.states_enum.MAPMAKING).Init();
             }
         }
 

@@ -39,6 +39,10 @@ namespace AP_GameDev_Project.Entities
                 base.bullet_cooldown = base.bullet_max_cooldown;
             }
         }
+        public override void Attack(Vector2 player_center)
+        {
+            throw new System.NotImplementedException();
+        }
 
         public void Heal(int heal_amount=1)
         {
@@ -47,10 +51,6 @@ namespace AP_GameDev_Project.Entities
             if(base.health > this.max_health) base.health = this.max_health;
         }
 
-        public override void Attack(Vector2 player_center)
-        {
-            throw new System.NotImplementedException();
-        }
 
         public override int DoDamage(int damage=1)
         {

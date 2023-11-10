@@ -10,29 +10,30 @@ using System.Threading.Tasks;
 
 namespace AP_GameDev_Project.Input_devices
 {
-    internal class RunKeyboardHandler
+    internal class RunningKeyboardHandler
     {
         private readonly StateHandler stateHandler;
 
-        public RunKeyboardHandler() 
+        public RunningKeyboardHandler() 
         {
             this.stateHandler = StateHandler.getInstance;
         }
 
-        public List<AEntity> HandleKeyboard(RunningStateHandler runningState, List<AEntity> entities)
+        public bool is_debug()
+        {
+            return Keyboard.GetState().IsKeyDown(Keys.F3);
+        }
+
+        public void HandleState()
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
+        }
 
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && runningState.Debug_cooldown <= 0)
-            {
-                runningState.Debug_cooldown = runningState.Max_debug_cooldown;
-
-                foreach (AEntity entity in entities) entity.show_hitbox = !entity.show_hitbox;
-            }
-
+        public Vector2 Move()
+        {
             Vector2 addSpeed = Vector2.Zero;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
@@ -55,9 +56,7 @@ namespace AP_GameDev_Project.Input_devices
                 addSpeed += new Vector2(1, 0);
             }
 
-            entities[0].SpeedUp(addSpeed / 3);
-
-            return entities;
+            return addSpeed / 3;
         }
     }
 }

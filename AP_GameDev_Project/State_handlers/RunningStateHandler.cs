@@ -24,7 +24,7 @@ namespace AP_GameDev_Project.State_handlers
         private double debug_cooldown;
         public double Debug_cooldown { get { return this.debug_cooldown; } set { this.debug_cooldown = value; } }
         
-        private RunKeyboardHandler keyboardHandler;
+        private RunningKeyboardEventHandler keyboardHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
@@ -34,7 +34,7 @@ namespace AP_GameDev_Project.State_handlers
             this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
-            this.keyboardHandler = new RunKeyboardHandler();
+            this.keyboardHandler = new RunningKeyboardEventHandler(new RunningKeyboardHandler(), this);
 
             // TEST (REMOVE)
             this.entities.Add(player);
@@ -53,7 +53,8 @@ namespace AP_GameDev_Project.State_handlers
             if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
             this.mouseHandler.Update();
-            this.entities = this.keyboardHandler.HandleKeyboard(this, this.entities);
+            this.keyboardHandler.Update();
+            //this.entities = this.keyboardHandler.HandleKeyboard(this, this.entities);
             this.HandleCollision(gameTime);
         }
 
@@ -62,6 +63,16 @@ namespace AP_GameDev_Project.State_handlers
             current_room.Draw(spriteBatch);
 
             foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
+        }
+
+        public void MovePlayer(Vector2 speed)
+        {
+            this.Player.SpeedUp(speed);
+        }
+
+        public void ToggleDebug()
+        {
+            foreach(AEntity entity in this.entities) entity.show_hitbox = !entity.show_hitbox;
         }
 
         private void HandleCollision(GameTime gameTime)

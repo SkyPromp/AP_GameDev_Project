@@ -81,13 +81,13 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.mouseHandler.Update();
 
+            if (this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            if (this.change_brush_cooldown >= 0) this.change_brush_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
-
-            if (this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.change_brush_cooldown >= 0) this.change_brush_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up) && this.change_brush_cooldown <= 0)
             {

@@ -20,8 +20,11 @@ namespace AP_GameDev_Project.State_handlers
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
         private readonly double max_debug_cooldown;
+        public double Max_debug_cooldown { get { return this.max_debug_cooldown; } }
         private double debug_cooldown;
+        public double Debug_cooldown { get { return this.debug_cooldown; } set { this.debug_cooldown = value; } }
         private StateHandler stateHandler;
+        private RunKeyboardHandler keyboardHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
@@ -32,6 +35,7 @@ namespace AP_GameDev_Project.State_handlers
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
             this.stateHandler = StateHandler.getInstance;
+            this.keyboardHandler = new RunKeyboardHandler();
 
             // TEST (REMOVE)
             this.entities.Add(player);
@@ -50,7 +54,7 @@ namespace AP_GameDev_Project.State_handlers
             if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
             this.mouseHandler.Update();
-            this.HandleKeyboard();
+            this.entities = this.keyboardHandler.HandleKeyboard(this, this.entities);
             this.HandleCollision(gameTime);
         }
 
@@ -124,45 +128,6 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             this.entities = entities_new;
-        }
-
-        private void HandleKeyboard()
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.F3) && this.debug_cooldown <= 0)
-            {
-                this.debug_cooldown = this.max_debug_cooldown;
-
-                foreach(AEntity enemy in this.entities) enemy.do_draw_hitbox = !enemy.do_draw_hitbox;
-            }
-
-            Vector2 addSpeed = Vector2.Zero;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
-            {
-                addSpeed += new Vector2(0, -1);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
-            {
-                addSpeed += new Vector2(0, 1);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
-            {
-                addSpeed += new Vector2(-1, 0);
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
-            {
-                addSpeed += new Vector2(1, 0);
-            }
-
-            this.Player.SpeedUp(addSpeed / 3);
         }
     }
 }

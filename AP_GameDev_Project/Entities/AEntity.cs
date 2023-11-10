@@ -38,7 +38,7 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public bool do_draw_hitbox;
+        public bool show_hitbox;
 
         protected List<Bullet> bullets;
         public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
@@ -59,7 +59,7 @@ namespace AP_GameDev_Project.Entities
             this.speed_damping_factor = speed_damping_factor;
 
             this.normalized_hitbox = normalized_hitbox;
-            this.do_draw_hitbox = false;
+            this.show_hitbox = false;
 
             this.health = base_health;
 
@@ -91,7 +91,7 @@ namespace AP_GameDev_Project.Entities
                 bullet.Draw(spriteBatch);
             }
 
-            if (this.do_draw_hitbox)
+            if (this.show_hitbox)
             {
                 spriteBatch.End();  // Required to draw the hitbox on top
                 spriteBatch.Begin();

@@ -65,13 +65,6 @@ namespace AP_GameDev_Project.State_handlers
         {
             Vector2 player_center = this.player.GetCenter;
 
-
-            foreach (AEntity enemy in this.enemies)
-            {
-                enemy.Update(gameTime);
-                enemy.Attack(player_center);  // Add condition
-            }
-
             List<Bullet> player_bullets = new List<Bullet>(this.player.Bullets);
             List<List<Bullet>> enemy_removed_bullets = new List<List<Bullet>>();
 
@@ -79,24 +72,12 @@ namespace AP_GameDev_Project.State_handlers
 
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
-            foreach (Rectangle hitbox in this.current_room.GetHitboxes())
+            foreach (AEntity enemy in this.enemies)
             {
-                if (hitbox.Intersects(this.player.GetHitbox))
-                {
-                    this.player.HandleCollison(hitbox);
-                }
+                enemy.Update(gameTime);
+                enemy.Attack(player_center);  // Add condition
 
-                foreach (Bullet bullet in this.player.Bullets)
-                {
-                    Rectangle bullet_hitbox = bullet.GetHitbox;
-
-                    if (hitbox.Intersects(bullet_hitbox))
-                    {
-                        player_bullets.Remove(bullet);
-                    }
-                }
-
-                foreach (AEntity enemy in this.enemies)
+                foreach (Rectangle hitbox in this.current_room.GetHitboxes())
                 {
                     if (hitbox.Intersects(enemy.GetHitbox)) enemy.HandleCollison(hitbox);
 
@@ -105,28 +86,31 @@ namespace AP_GameDev_Project.State_handlers
                         if (hitbox.Intersects(bullet.GetHitbox)) enemy_removed_bullets[enemies.IndexOf(enemy)].Add(bullet);
                     }
                 }
-            }
 
-            for (int enemy_index = 0; enemy_index < this.enemies.Count; enemy_index++)
-            {
+                int enemy_index = this.enemies.IndexOf(enemy);
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
                 {
                     this.enemies[enemy_index].Bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
                 }
-            }
 
-            foreach (Bullet bullet in this.player.Bullets)
-            {
-                Rectangle bullet_hitbox = bullet.GetHitbox;
-
-                foreach (AEntity enemy in this.enemies)
+                foreach (Bullet bullet in this.player.Bullets)
                 {
-                    if (bullet_hitbox.Intersects(enemy.GetHitbox))
+                    if (bullet.GetHitbox.Intersects(enemy.GetHitbox))
                     {
                         int health = enemy.DoDamage();
 
                         if (health <= 0) enemies_new.Remove(enemy);
                     }
+                }
+            }
+
+            foreach (Rectangle hitbox in this.current_room.GetHitboxes())  // Use previous foreach to generalize AEntity
+            {
+                if (hitbox.Intersects(this.player.GetHitbox)) this.player.HandleCollison(hitbox);
+
+                foreach (Bullet bullet in this.player.Bullets)
+                {
+                    if (hitbox.Intersects(bullet.GetHitbox)) player_bullets.Remove(bullet);
                 }
             }
 

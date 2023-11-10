@@ -2,11 +2,11 @@
 using AP_GameDev_Project.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -21,10 +21,9 @@ namespace AP_GameDev_Project.State_handlers
         private List<Byte> tiles;
         private Byte current_tile_brush;
         private bool show_current_brush;
-        private double toggle_font_cooldown;
-        private double change_brush_cooldown;
         private SpriteFont font;
         private Room room;
+        private MapMakingKeyboardEventHandler keyboardHandler;
 
         private StateHandler stateHandler;
 
@@ -38,8 +37,8 @@ namespace AP_GameDev_Project.State_handlers
             this.tiles = new List<Byte>();
             this.tilemap = tilemap;
             this.font = font;
-
             this.stateHandler = StateHandler.getInstance;
+            this.keyboardHandler = new MapMakingKeyboardEventHandler(this);
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -56,8 +55,6 @@ namespace AP_GameDev_Project.State_handlers
             this.is_init = true;
             this.current_tile_brush = 1;
             this.show_current_brush = true;
-            this.toggle_font_cooldown = 0;
-            this.change_brush_cooldown = 0;
 
             // FIX Without Math.Ceiling
             Int16 room_width = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);
@@ -81,46 +78,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.mouseHandler.Update();
 
-            if (this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.change_brush_cooldown >= 0) this.change_brush_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.Up) && this.change_brush_cooldown <= 0)
-            {
-                this.current_tile_brush++;
-                this.change_brush_cooldown = 0.5;
-            }
-
-            if(Keyboard.GetState().IsKeyDown(Keys.Down) && this.change_brush_cooldown <= 0)
-            {
-                this.current_tile_brush--;
-                this.change_brush_cooldown = 0.5;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.B) && this.toggle_font_cooldown <= 0) 
-            {
-                this.show_current_brush = !this.show_current_brush;
-                this.toggle_font_cooldown = 0.5;
-            }
-
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                List<Byte> trimmed_tiles;
-                int width;
-                (trimmed_tiles, width) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
-
-                // Write to file
-                Byte[] header = BitConverter.GetBytes(width);
-
-                trimmed_tiles.Insert(0, header[0]);
-                trimmed_tiles.Insert(0, header[1]);
-
-                FileSaver.SaveFile(trimmed_tiles);
-            }
+            this.keyboardHandler.Update(gameTime);
         }
 
         private void PlaceTile(MapMakingStateHandler mapMaker)
@@ -194,6 +152,31 @@ namespace AP_GameDev_Project.State_handlers
             vertices[1].Position = new Vector3(end.X, end.Y, 0);
 
             this.graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 1);
+        }
+
+        public void ChangeBrush(Byte delta)
+        {
+            this.current_tile_brush += delta;
+        }
+
+        public void ToggleFont()
+        {
+            this.show_current_brush = !this.show_current_brush;
+        }
+
+        public void SaveFile()
+        {
+            List<Byte> trimmed_tiles;
+            int width;
+            (trimmed_tiles, width) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
+
+            // Write to file
+            Byte[] header = BitConverter.GetBytes(width);
+
+            trimmed_tiles.Insert(0, header[0]);
+            trimmed_tiles.Insert(0, header[1]);
+
+            FileSaver.SaveFile(trimmed_tiles);
         }
     }
 }

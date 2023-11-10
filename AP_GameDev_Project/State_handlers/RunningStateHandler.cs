@@ -2,10 +2,8 @@
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 
 namespace AP_GameDev_Project.State_handlers
@@ -34,7 +32,7 @@ namespace AP_GameDev_Project.State_handlers
             this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
-            this.keyboardHandler = new RunningKeyboardEventHandler(new RunningKeyboardHandler(), this);
+            this.keyboardHandler = new RunningKeyboardEventHandler(this);
 
             // TEST (REMOVE)
             this.entities.Add(player);

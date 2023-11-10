@@ -18,7 +18,7 @@ namespace AP_GameDev_Project
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 

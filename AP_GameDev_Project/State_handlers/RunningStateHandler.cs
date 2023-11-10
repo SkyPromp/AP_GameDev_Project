@@ -92,10 +92,10 @@ namespace AP_GameDev_Project.State_handlers
 
                 entity.Attack(player_center);  // Add condition
 
+                // Check if player hits enemies
                 List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
 
-                // Check if player hits enemies
-                foreach (Bullet bullet in this.Player.Bullets)  // Remove hit bullet
+                foreach (Bullet bullet in this.Player.Bullets)
                 {
                     if (bullet.GetHitbox.Intersects(entity.GetHitbox))
                     {
@@ -107,10 +107,10 @@ namespace AP_GameDev_Project.State_handlers
 
                 this.Player.Bullets = player_bullets;
 
+                // Check if enemies hit player
                 entity_bullets = new List<Bullet>(entity.Bullets);
 
-                // Check if enemies hit player
-                foreach (Bullet bullet in entity.Bullets)  // Remove hit bullet
+                foreach (Bullet bullet in entity.Bullets)
                 {
                     if (bullet.GetHitbox.Intersects(this.Player.GetHitbox))
                     {

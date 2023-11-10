@@ -26,6 +26,8 @@ namespace AP_GameDev_Project.State_handlers
         private SpriteFont font;
         private Room room;
 
+        private StateHandler stateHandler;
+
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
@@ -36,6 +38,8 @@ namespace AP_GameDev_Project.State_handlers
             this.tiles = new List<Byte>();
             this.tilemap = tilemap;
             this.font = font;
+
+            this.stateHandler = StateHandler.getInstance;
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -79,8 +83,7 @@ namespace AP_GameDev_Project.State_handlers
 
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                Game1.current_state = Game1.States[Game1.states_enum.START];
-                Game1.InitCurrentState();
+                stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
 
             if (this.toggle_font_cooldown >= 0) this.toggle_font_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;

@@ -23,7 +23,7 @@ namespace AP_GameDev_Project.State_handlers
         public double Max_debug_cooldown { get { return this.max_debug_cooldown; } }
         private double debug_cooldown;
         public double Debug_cooldown { get { return this.debug_cooldown; } set { this.debug_cooldown = value; } }
-        private StateHandler stateHandler;
+        
         private RunKeyboardHandler keyboardHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
@@ -34,7 +34,6 @@ namespace AP_GameDev_Project.State_handlers
             this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
-            this.stateHandler = StateHandler.getInstance;
             this.keyboardHandler = new RunKeyboardHandler();
 
             // TEST (REMOVE)

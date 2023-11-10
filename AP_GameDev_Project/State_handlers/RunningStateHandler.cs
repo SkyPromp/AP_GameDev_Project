@@ -16,7 +16,6 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private List<AEntity> base_enemies;
-        private List<AEntity> enemies;
         private List<AEntity> entities;
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
@@ -28,15 +27,13 @@ namespace AP_GameDev_Project.State_handlers
             this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
-            this.enemies = new List<AEntity>();
             this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
 
             // TEST (REMOVE)
-            this.enemies.Add(this.base_enemies[0]);
             this.entities.Add(player);
-            foreach (AEntity enemy in this.enemies) this.entities.Add(enemy);
+            foreach (AEntity enemy in base_enemies) this.entities.Add(enemy);
             // END TEST
         }
 
@@ -79,10 +76,7 @@ namespace AP_GameDev_Project.State_handlers
 
                     foreach (Bullet bullet in entity.Bullets)
                     {
-                        if (hitbox.Intersects(bullet.GetHitbox))
-                        {
-                            entity_bullets.Remove(bullet);
-                        }
+                        if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
                     }
                 }
 
@@ -121,12 +115,8 @@ namespace AP_GameDev_Project.State_handlers
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && this.debug_cooldown <= 0)
             {
                 this.debug_cooldown = this.max_debug_cooldown;
-                this.Player.do_draw_hitbox = !this.Player.do_draw_hitbox;
 
-                foreach(AEntity enemy in this.enemies)
-                {
-                    enemy.do_draw_hitbox = !enemy.do_draw_hitbox;
-                }
+                foreach(AEntity enemy in this.entities) enemy.do_draw_hitbox = !enemy.do_draw_hitbox;
             }
 
             Vector2 addSpeed = Vector2.Zero;

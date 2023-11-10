@@ -9,12 +9,14 @@ namespace AP_GameDev_Project.Entities
         private readonly MouseHandler mouseHandler;
 
         private readonly int max_health;
+        private bool has_invincibility;
         
         public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, int max_health=3, float speed_damping_factor=0.95f) : 
             base(position, stand_animation, max_speed, new Rectangle(45, 35, 35, 142), base_bullet, 10f, 0.2f, max_health, speed_damping_factor)
         {
             this.mouseHandler = MouseHandler.getInstance;
             this.max_health = max_health;
+            this.has_invincibility = true;  // TODO set to false
         }
 
         public override void Update(GameTime gameTime)
@@ -48,6 +50,13 @@ namespace AP_GameDev_Project.Entities
         public override void Attack(Vector2 player_center)
         {
             throw new System.NotImplementedException();
+        }
+
+        public override int DoDamage(int damage=1)
+        {
+            if(!this.has_invincibility) base.DoDamage(damage);
+            
+            return base.health;
         }
     }
 }

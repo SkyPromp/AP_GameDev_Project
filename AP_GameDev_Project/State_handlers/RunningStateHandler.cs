@@ -92,15 +92,35 @@ namespace AP_GameDev_Project.State_handlers
 
                 entity.Attack(player_center);  // Add condition
 
+                List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
+
+                // Check if player hits enemies
                 foreach (Bullet bullet in this.Player.Bullets)  // Remove hit bullet
                 {
                     if (bullet.GetHitbox.Intersects(entity.GetHitbox))
                     {
                         int health = entity.DoDamage();
-
+                        player_bullets.Remove(bullet);
                         if (health <= 0) entities_new.Remove(entity);
                     }
                 }
+
+                this.Player.Bullets = player_bullets;
+
+                entity_bullets = new List<Bullet>(entity.Bullets);
+
+                // Check if enemies hit player
+                foreach (Bullet bullet in entity.Bullets)  // Remove hit bullet
+                {
+                    if (bullet.GetHitbox.Intersects(this.Player.GetHitbox))
+                    {
+                        int health = this.Player.DoDamage();
+                        entity_bullets.Remove(bullet);
+                        if (health <= 0) throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
+                    }
+                }
+
+                entity.Bullets = entity_bullets;
             }
 
             this.entities = entities_new;

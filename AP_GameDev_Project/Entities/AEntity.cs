@@ -172,7 +172,7 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public int DoDamage(int damage=1)
+        public virtual int DoDamage(int damage=1)
         {
             this.health -= damage;
 

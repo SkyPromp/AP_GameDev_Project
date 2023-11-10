@@ -25,8 +25,6 @@ namespace AP_GameDev_Project.State_handlers
         private Room room;
         private MapMakingKeyboardEventHandler keyboardHandler;
 
-        private StateHandler stateHandler;
-
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
@@ -37,7 +35,6 @@ namespace AP_GameDev_Project.State_handlers
             this.tiles = new List<Byte>();
             this.tilemap = tilemap;
             this.font = font;
-            this.stateHandler = StateHandler.getInstance;
             this.keyboardHandler = new MapMakingKeyboardEventHandler(this);
 
             // DRAW VERTICES SETUP
@@ -65,23 +62,17 @@ namespace AP_GameDev_Project.State_handlers
             this.room = new Room(this.tilemap, this.tiles, room_width);
 
             this.mouseHandler = MouseHandler.getInstance;
-            this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this); };
-            this.mouseHandler.RightClickHook = () => { 
-                Byte old_brush = this.current_tile_brush;
-                this.current_tile_brush = 0;
-                this.PlaceTile(this); 
-                this.current_tile_brush = old_brush;
-            };
+            this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this, this.current_tile_brush); };
+            this.mouseHandler.RightClickHook = () => { this.PlaceTile(this, 0); };
         }
 
         public void Update(GameTime gameTime)
         {
             this.mouseHandler.Update();
-
             this.keyboardHandler.Update(gameTime);
         }
 
-        private void PlaceTile(MapMakingStateHandler mapMaker)
+        private void PlaceTile(MapMakingStateHandler mapMaker, Byte brush)
         {
             if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
             {
@@ -92,7 +83,7 @@ namespace AP_GameDev_Project.State_handlers
                 Debug.Assert((tile_column + 1) * (tile_row + 1) <= mapMaker.tiles.Count,
                     message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, mapMaker.tiles.Count));
 
-                mapMaker.tiles[tile_index] = mapMaker.current_tile_brush;
+                mapMaker.tiles[tile_index] = brush;
             }
         }
 

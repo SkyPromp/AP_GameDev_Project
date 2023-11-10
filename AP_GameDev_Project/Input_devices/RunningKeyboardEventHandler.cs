@@ -1,5 +1,5 @@
 ﻿using AP_GameDev_Project.State_handlers;
-
+using Microsoft.Xna.Framework;
 
 namespace AP_GameDev_Project.Input_devices
 {
@@ -18,8 +18,10 @@ namespace AP_GameDev_Project.Input_devices
             this.max_debug_cooldown = 0.3;
         }
 
-        public void Update() // TODO update cooldowns
+        public void Update(GameTime gameTime)
         {
+            if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+
             if (this.debug_cooldown <= 0 && this.keyboardHandler.is_debug())
             {
                 this.debug_cooldown = this.max_debug_cooldown;

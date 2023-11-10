@@ -17,11 +17,6 @@ namespace AP_GameDev_Project.State_handlers
         private List<AEntity> entities;
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
-        private readonly double max_debug_cooldown;
-        public double Max_debug_cooldown { get { return this.max_debug_cooldown; } }
-        private double debug_cooldown;
-        public double Debug_cooldown { get { return this.debug_cooldown; } set { this.debug_cooldown = value; } }
-        
         private RunningKeyboardEventHandler keyboardHandler;
 
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
@@ -30,8 +25,6 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.entities = new List<AEntity>();
-            this.max_debug_cooldown = 0.3;
-            this.debug_cooldown = 0;
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
 
             // TEST (REMOVE)
@@ -48,11 +41,8 @@ namespace AP_GameDev_Project.State_handlers
 
         public void Update(GameTime gameTime)
         {
-            if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-
             this.mouseHandler.Update();
-            this.keyboardHandler.Update();
-            //this.entities = this.keyboardHandler.HandleKeyboard(this, this.entities);
+            this.keyboardHandler.Update(gameTime);
             this.HandleCollision(gameTime);
         }
 

@@ -37,6 +37,12 @@
 /processorParam:TextureFormat=Color
 /build:bullet.png
 
+#begin deathsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:deathsound.wav
+
 #begin enemy1_stand_still_0.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -67,6 +73,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gamedev_tilemap.png
+
+#begin shootsound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:shootsound.wav
 
 #begin stand_still1.png
 /importer:TextureImporter

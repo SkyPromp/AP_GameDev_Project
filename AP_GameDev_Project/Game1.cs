@@ -14,6 +14,7 @@ namespace AP_GameDev_Project
         private SpriteBatch _spriteBatch;
 
         private StateHandler stateHandler;
+        private ContentManager contentManager;
 
         public Game1()
         {
@@ -28,30 +29,37 @@ namespace AP_GameDev_Project
 
         protected override void Initialize()
         {
-            stateHandler = StateHandler.getInstance;
-            stateHandler.InitStateHandler();
+            this.stateHandler = StateHandler.getInstance;
+            this.stateHandler.InitStateHandler();
+            this.contentManager = ContentManager.getInstance;
+
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
             Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
             SpriteFont font = Content.Load<SpriteFont>("Font");
             Bullet base_bullet = new Bullet(Vector2.Zero, Vector2.Zero, Content.Load<Texture2D>("bullet"));
 
             List<AEntity> base_enemies = new List<AEntity>();
-            Animate enemy_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
-            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy_standstill, 5f, new Rectangle(22, 10, 17, 43), 5, base_bullet);
+            Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
+            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy1_standstill, 5f, new Rectangle(22, 10, 17, 43), 5, base_bullet);
             base_enemies.Add(base_enemy1);
 
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
             Player player = new Player(new Vector2(180, 180), player_standstill, 5f, base_bullet);
 
-            stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
-            stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(tilemap, player, base_enemies));
-            stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(GraphicsDevice, tilemap, font));
-            stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
+            this.contentManager.Font = font;
+            this.contentManager.AddTexture("TILEMAP", tilemap);
+            this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
+            this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
+
+            this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
+            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(tilemap, player, base_enemies));
+            this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice, tilemap, font));
+            this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }
 
         protected override void Update(GameTime gameTime)
@@ -59,22 +67,22 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.F4))
                 Exit();
 
-            if (!stateHandler.IsInit) stateHandler.Init();
+            if (!this.stateHandler.IsInit) this.stateHandler.Init();
 
-            stateHandler.Update(gameTime);
+            this.stateHandler.Update(gameTime);
 
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Wheat);
+            this.GraphicsDevice.Clear(Color.Wheat);
 
-            _spriteBatch.Begin();
+            this._spriteBatch.Begin();
 
-            stateHandler.Draw(_spriteBatch);
+            this.stateHandler.Draw(_spriteBatch);
 
-            _spriteBatch.End();
+            this._spriteBatch.End();
 
             base.Draw(gameTime);
         }

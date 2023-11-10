@@ -18,6 +18,7 @@ namespace AP_GameDev_Project.State_handlers
         private Player player;
         private List<AEntity> base_enemies;
         private List<AEntity> enemies;
+        private List<AEntity> entities;
         private MouseHandler mouseHandler;
         private readonly double max_debug_cooldown;
         private double debug_cooldown;
@@ -72,10 +73,9 @@ namespace AP_GameDev_Project.State_handlers
 
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
-            foreach (AEntity enemy in this.enemies)
+            foreach (AEntity enemy in this.entities)
             {
                 enemy.Update(gameTime);
-                enemy.Attack(player_center);  // Add condition
 
                 foreach (Rectangle hitbox in this.current_room.GetHitboxes())
                 {
@@ -86,6 +86,8 @@ namespace AP_GameDev_Project.State_handlers
                         if (hitbox.Intersects(bullet.GetHitbox)) enemy_removed_bullets[enemies.IndexOf(enemy)].Add(bullet);
                     }
                 }
+
+                enemy.Attack(player_center);  // Add condition
 
                 int enemy_index = this.enemies.IndexOf(enemy);
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)

@@ -15,10 +15,10 @@ namespace AP_GameDev_Project.State_handlers
         private Room current_room;
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
-        private Player player;
         private List<AEntity> base_enemies;
         private List<AEntity> enemies;
         private List<AEntity> entities;
+        private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
         private readonly double max_debug_cooldown;
         private double debug_cooldown;
@@ -26,7 +26,6 @@ namespace AP_GameDev_Project.State_handlers
         public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
         {
             this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
-            this.player = player;
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.enemies = new List<AEntity>();
@@ -36,7 +35,7 @@ namespace AP_GameDev_Project.State_handlers
 
             // TEST (REMOVE)
             this.enemies.Add(this.base_enemies[0]);
-            this.entities.Add(this.player);
+            this.entities.Add(player);
             foreach (AEntity enemy in this.enemies) this.entities.Add(enemy);
             // END TEST
         }
@@ -44,7 +43,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => { this.player.Attack(); };
+            this.mouseHandler.LeftClickHook = () => { this.Player.Attack(); };
         }
 
         public void Update(GameTime gameTime)
@@ -65,20 +64,14 @@ namespace AP_GameDev_Project.State_handlers
 
         private void HandleCollision(GameTime gameTime)
         {
-            Vector2 player_center = this.player.GetCenter;
-
-            List<Bullet> player_bullets = new List<Bullet>(this.player.Bullets);
-            List<List<Bullet>> enemy_removed_bullets = new List<List<Bullet>>();
-
-            foreach (AEntity enemy in this.enemies) enemy_removed_bullets.Add(new List<Bullet>());
-
-            List<AEntity> enemies_new = new List<AEntity>(this.enemies);
-
+            Vector2 player_center = this.Player.GetCenter;
+            List<AEntity> entities_new = new List<AEntity>(this.entities);
             bool is_player = true;
 
             foreach (AEntity entity in this.entities)
             {
                 entity.Update(gameTime);
+                List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
                 foreach (Rectangle hitbox in this.current_room.GetHitboxes())
                 {
@@ -88,11 +81,12 @@ namespace AP_GameDev_Project.State_handlers
                     {
                         if (hitbox.Intersects(bullet.GetHitbox))
                         {
-                            if (!is_player) enemy_removed_bullets[enemies.IndexOf(entity)].Add(bullet);
-                            else player_bullets.Remove(bullet);
+                            entity_bullets.Remove(bullet);
                         }
                     }
                 }
+
+                entity.Bullets = entity_bullets;
 
                 if (is_player)
                 {
@@ -102,28 +96,18 @@ namespace AP_GameDev_Project.State_handlers
 
                 entity.Attack(player_center);  // Add condition
 
-                int enemy_index = this.entities.IndexOf(entity) - 1;
-                for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
-                {
-                    this.enemies[enemy_index].Bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
-                }
-
-                foreach (Bullet bullet in this.player.Bullets)
+                foreach (Bullet bullet in this.Player.Bullets)  // Remove hit bullet
                 {
                     if (bullet.GetHitbox.Intersects(entity.GetHitbox))
                     {
                         int health = entity.DoDamage();
 
-                        if (health <= 0) enemies_new.Remove(entity);
+                        if (health <= 0) entities_new.Remove(entity);
                     }
                 }
             }
 
-            this.enemies = enemies_new;
-            this.player.Bullets = player_bullets;
-            this.entities.Clear();
-            this.entities.Add(this.player);
-            foreach (AEntity enemy in this.enemies) this.entities.Add(enemy);
+            this.entities = entities_new;
         }
 
         private void HandleKeyboard()
@@ -137,7 +121,7 @@ namespace AP_GameDev_Project.State_handlers
             if (Keyboard.GetState().IsKeyDown(Keys.F3) && this.debug_cooldown <= 0)
             {
                 this.debug_cooldown = this.max_debug_cooldown;
-                this.player.do_draw_hitbox = !this.player.do_draw_hitbox;
+                this.Player.do_draw_hitbox = !this.Player.do_draw_hitbox;
 
                 foreach(AEntity enemy in this.enemies)
                 {
@@ -167,7 +151,7 @@ namespace AP_GameDev_Project.State_handlers
                 addSpeed += new Vector2(1, 0);
             }
 
-            this.player.SpeedUp(addSpeed / 3);
+            this.Player.SpeedUp(addSpeed / 3);
         }
     }
 }

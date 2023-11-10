@@ -30,11 +30,14 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.enemies = new List<AEntity>();
+            this.entities = new List<AEntity>();
             this.max_debug_cooldown = 0.3;
             this.debug_cooldown = 0;
 
             // TEST (REMOVE)
             this.enemies.Add(this.base_enemies[0]);
+            this.entities.Add(this.player);
+            foreach (AEntity enemy in this.enemies) this.entities.Add(enemy);
             // END TEST
         }
 
@@ -50,16 +53,14 @@ namespace AP_GameDev_Project.State_handlers
 
             this.mouseHandler.Update();
             this.HandleKeyboard();
-            this.player.Update(gameTime);
             this.HandleCollision(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             current_room.Draw(spriteBatch);
-            player.Draw(spriteBatch);
 
-            foreach (AEntity enemy in this.enemies) enemy.Draw(spriteBatch);
+            foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
         }
 
         private void HandleCollision(GameTime gameTime)
@@ -73,23 +74,35 @@ namespace AP_GameDev_Project.State_handlers
 
             List<AEntity> enemies_new = new List<AEntity>(this.enemies);
 
-            foreach (AEntity enemy in this.entities)
+            bool is_player = true;
+
+            foreach (AEntity entity in this.entities)
             {
-                enemy.Update(gameTime);
+                entity.Update(gameTime);
 
                 foreach (Rectangle hitbox in this.current_room.GetHitboxes())
                 {
-                    if (hitbox.Intersects(enemy.GetHitbox)) enemy.HandleCollison(hitbox);
+                    if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);
 
-                    foreach (Bullet bullet in enemy.Bullets)
+                    foreach (Bullet bullet in entity.Bullets)
                     {
-                        if (hitbox.Intersects(bullet.GetHitbox)) enemy_removed_bullets[enemies.IndexOf(enemy)].Add(bullet);
+                        if (hitbox.Intersects(bullet.GetHitbox))
+                        {
+                            if (!is_player) enemy_removed_bullets[enemies.IndexOf(entity)].Add(bullet);
+                            else player_bullets.Remove(bullet);
+                        }
                     }
                 }
 
-                enemy.Attack(player_center);  // Add condition
+                if (is_player)
+                {
+                    is_player = false;
+                    continue;
+                }
 
-                int enemy_index = this.enemies.IndexOf(enemy);
+                entity.Attack(player_center);  // Add condition
+
+                int enemy_index = this.entities.IndexOf(entity) - 1;
                 for (int bullet_index = enemy_removed_bullets[enemy_index].Count - 1; bullet_index >= 0; bullet_index--)
                 {
                     this.enemies[enemy_index].Bullets.Remove(enemy_removed_bullets[enemy_index][bullet_index]);
@@ -97,27 +110,20 @@ namespace AP_GameDev_Project.State_handlers
 
                 foreach (Bullet bullet in this.player.Bullets)
                 {
-                    if (bullet.GetHitbox.Intersects(enemy.GetHitbox))
+                    if (bullet.GetHitbox.Intersects(entity.GetHitbox))
                     {
-                        int health = enemy.DoDamage();
+                        int health = entity.DoDamage();
 
-                        if (health <= 0) enemies_new.Remove(enemy);
+                        if (health <= 0) enemies_new.Remove(entity);
                     }
-                }
-            }
-
-            foreach (Rectangle hitbox in this.current_room.GetHitboxes())  // Use previous foreach to generalize AEntity
-            {
-                if (hitbox.Intersects(this.player.GetHitbox)) this.player.HandleCollison(hitbox);
-
-                foreach (Bullet bullet in this.player.Bullets)
-                {
-                    if (hitbox.Intersects(bullet.GetHitbox)) player_bullets.Remove(bullet);
                 }
             }
 
             this.enemies = enemies_new;
             this.player.Bullets = player_bullets;
+            this.entities.Clear();
+            this.entities.Add(this.player);
+            foreach (AEntity enemy in this.enemies) this.entities.Add(enemy);
         }
 
         private void HandleKeyboard()

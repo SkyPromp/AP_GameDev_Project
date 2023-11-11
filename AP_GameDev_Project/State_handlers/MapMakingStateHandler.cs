@@ -59,8 +59,8 @@ namespace AP_GameDev_Project.State_handlers
             this.show_current_brush = true;
 
             // FIX Without Math.Ceiling
-            Int16 room_width = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);
-            Int16 room_height = (Int16) Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size);
+            UInt16 room_width = (UInt16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);
+            UInt16 room_height = (UInt16) Math.Ceiling((double)GlobalConstants.SCREEN_HEIGHT / this.tile_size);
 
             int tile_amount = (int)Math.Ceiling((double)room_width * (double)room_height);
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();

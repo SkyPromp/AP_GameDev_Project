@@ -26,6 +26,8 @@ namespace AP_GameDev_Project.State_handlers
         private MapMakingKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
 
+        private int player_spawnpoint;
+
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
@@ -38,6 +40,7 @@ namespace AP_GameDev_Project.State_handlers
             this.tilemap = this.contentManager.GetTextures["TILEMAP"];
             this.font = this.contentManager.Font;
             this.keyboardHandler = new MapMakingKeyboardEventHandler(this);
+            this.player_spawnpoint = -1;
 
             // DRAW VERTICES SETUP
             this.graphicsDevice = graphicsDevice;
@@ -66,6 +69,8 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this, this.current_tile_brush); };
             this.mouseHandler.RightClickHook = () => { this.PlaceTile(this, 0); };
+            this.mouseHandler.MiddleClickHook = () => { this.PlaceSpawnpoint(this); };
+            // middle click to place player
         }
 
         public void Update(GameTime gameTime)
@@ -74,25 +79,47 @@ namespace AP_GameDev_Project.State_handlers
             this.keyboardHandler.Update(gameTime);
         }
 
-        private void PlaceTile(MapMakingStateHandler mapMaker, Byte brush)
+        private void PlaceTile(MapMakingStateHandler map_maker, Byte brush)
         {
             if (this.mouseHandler.IsOnScreen)
             {
-                int tile_row = (int)mapMaker.mouseHandler.MousePos.Y / mapMaker.tile_size;
-                int tile_column = (int)mapMaker.mouseHandler.MousePos.X / mapMaker.tile_size;
-                int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / mapMaker.tile_size;
+                int tile_row = (int)map_maker.mouseHandler.MousePos.Y / map_maker.tile_size;
+                int tile_column = (int)map_maker.mouseHandler.MousePos.X / map_maker.tile_size;
+                int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / map_maker.tile_size;
 
-                Debug.Assert((tile_column + 1) * (tile_row + 1) <= mapMaker.tiles.Count,
-                    message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, mapMaker.tiles.Count));
+                Debug.Assert((tile_column + 1) * (tile_row + 1) <= map_maker.tiles.Count,
+                    message: string.Format("Error: Tile X:{0} Y:{1} is out of scope {2}", tile_column, tile_row, map_maker.tiles.Count));
 
-                mapMaker.tiles[tile_index] = brush;
+                map_maker.tiles[tile_index] = brush;
             }
+        }
+
+        private void PlaceSpawnpoint(MapMakingStateHandler map_maker)
+        {
+            int tile_row = (int)map_maker.mouseHandler.MousePos.Y / map_maker.tile_size;
+            int tile_column = (int)map_maker.mouseHandler.MousePos.X / map_maker.tile_size;
+            int tile_index = tile_column + tile_row * GlobalConstants.SCREEN_WIDTH / map_maker.tile_size;
+
+            this.player_spawnpoint = tile_index;
+        }
+
+        private Vector2 IndexToXY(int index)
+        {
+            int width = GlobalConstants.SCREEN_WIDTH / this.tile_size;
+            return new Vector2(index % width, index / width);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             this.DrawGrid(spriteBatch);
             if (this.room != null) this.room.Draw(spriteBatch);
+
+            if (this.player_spawnpoint != -1)
+            {
+                Vector2 tile_center_coords = IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
+                Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
+                spriteBatch.Draw(this.contentManager.GetTextures["PLAYER_STANDSTILL"], tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 142), sprite_rectangle, Color.White);
+            }
 
             if (this.show_current_brush)
             {

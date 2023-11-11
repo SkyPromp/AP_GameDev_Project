@@ -11,8 +11,8 @@ namespace AP_GameDev_Project.Entities
         private readonly int max_health;
         private bool has_invincibility;
         
-        public Player(Vector2 position, Animate stand_animation, float max_speed, int max_health=3, float speed_damping_factor=0.99f) : 
-            base(position, stand_animation, max_speed, new Rectangle(45, 35, 35, 142), 10f, 0.2f, max_health, speed_damping_factor)
+        public Player(Vector2 position, float max_speed=5f, int max_health=3, float speed_damping_factor=0.10f) : 
+            base(position, max_speed, new Rectangle(45, 35, 35, 142), 10f, 0.2f, max_health, speed_damping_factor)
         {
             this.contentManager = ContentManager.getInstance;
             base.stand_animation = this.contentManager.GetAnimations["PLAYER_STANDSTILL"];

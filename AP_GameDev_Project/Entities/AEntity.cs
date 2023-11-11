@@ -47,11 +47,10 @@ namespace AP_GameDev_Project.Entities
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
+        public AEntity(Vector2 position, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
         {
             this.position = position;
 
-            this.stand_animation = stand_animation;
             this.flip_texture = false;
 
             this.speed = Vector2.Zero;
@@ -70,7 +69,7 @@ namespace AP_GameDev_Project.Entities
 
         public virtual void Update(GameTime gameTime)
         {
-            this.speed *= this.speed_damping_factor;
+            this.speed *= (1 - this.speed_damping_factor);
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
@@ -128,7 +127,7 @@ namespace AP_GameDev_Project.Entities
 
         public void SpeedUp(Vector2 add_speed)
         {
-            this.speed += add_speed;
+            this.speed += add_speed * (1 + this.speed_damping_factor);
 
             if (this.speed.Length() >= this.max_speed)
             {

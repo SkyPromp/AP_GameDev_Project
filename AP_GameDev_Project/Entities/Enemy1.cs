@@ -7,8 +7,8 @@ namespace AP_GameDev_Project.Entities
     {
         private ContentManager contentManager;
 
-        public Enemy1(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, int base_health, float speed_damping_factor=0.95f) : 
-            base(position, stand_animation, max_speed, normalized_hitbox, 10f, 1f, base_health, speed_damping_factor)
+        public Enemy1(Vector2 position, float max_speed, int base_health, float speed_damping_factor=0.95f) : 
+            base(position, max_speed, new Rectangle(22, 10, 17, 43), 10f, 1f, base_health, speed_damping_factor)
         {
             this.contentManager = ContentManager.getInstance;
             base.stand_animation = this.contentManager.GetAnimations["ENEMY1_STANDSTILL"];

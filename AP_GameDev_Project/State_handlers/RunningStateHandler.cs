@@ -15,26 +15,25 @@ namespace AP_GameDev_Project.State_handlers
         private Room current_room;
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
-        private List<AEntity> base_enemies;
         private List<AEntity> entities;
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
 
-        public RunningStateHandler(List<AEntity> base_enemies)
+        public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
             this.current_room = new Room(this.contentManager.GetTextures["TILEMAP"], "Rooms\\BigRoom.room");
             this.mouseHandler = MouseHandler.getInstance;
-            this.base_enemies = base_enemies;
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
 
             // TEST (REMOVE)
-            Player player = new Player(new Vector2(180, 180), this.contentManager.GetAnimations["PLAYER_STANDSTILL"], 5f);
+            Player player = new Player(new Vector2(180, 180), 5f);
             this.entities.Add(player);
-            foreach (AEntity enemy in base_enemies) this.entities.Add(enemy);
+            Enemy1 enemy1 = new Enemy1(new Vector2(300, 300), 5f, 5);
+            this.entities.Add(enemy1);
             // END TEST
         }
 

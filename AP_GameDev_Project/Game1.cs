@@ -41,6 +41,7 @@ namespace AP_GameDev_Project
         protected override void LoadContent()
         {
             this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
+
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
 
@@ -52,13 +53,8 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
 
-            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy1_standstill, 5f, new Rectangle(22, 10, 17, 43), 5);
-
-            List<AEntity> base_enemies = new List<AEntity>();
-            base_enemies.Add(base_enemy1);
-
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
-            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(base_enemies));
+            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }

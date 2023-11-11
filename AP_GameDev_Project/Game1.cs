@@ -41,7 +41,6 @@ namespace AP_GameDev_Project
         {
             this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");

@@ -14,8 +14,9 @@ namespace AP_GameDev_Project
         private Int16 room_width;
         private readonly Texture2D tilemap;
         private readonly int tile_size;
+        private ContentManager contentManager;
 
-        public Room(Texture2D tilemap, string tilesFilename, int tile_size=64) {
+        public Room(string tilesFilename, int tile_size=64) {
             try
             {
                 tilesFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, tilesFilename);
@@ -30,15 +31,17 @@ namespace AP_GameDev_Project
                 throw new Exception("ERROR: File reading failed");
             }
 
-            this.tilemap = tilemap;
+            this.contentManager = ContentManager.getInstance;
+            this.tilemap = this.contentManager.GetTextures["TILEMAP"];
             this.tile_size = tile_size;
         }
 
-        public Room(Texture2D tilemap, List<Byte> tiles, Int16 room_width, int tile_size=64)
+        public Room(List<Byte> tiles, Int16 room_width, int tile_size=64)
         {
+            this.contentManager = ContentManager.getInstance;
             this.room_width = room_width;
             this.tiles = tiles;
-            this.tilemap = tilemap;
+            this.tilemap = this.contentManager.GetTextures["TILEMAP"];
             this.tile_size = tile_size;
         }
 

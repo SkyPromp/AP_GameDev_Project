@@ -22,7 +22,7 @@ namespace AP_GameDev_Project.State_handlers
         public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
-            this.current_room = new Room(this.contentManager.GetTextures["TILEMAP"], "Rooms\\BigRoom.room");
+            this.current_room = new Room("Rooms\\BigRoom.room");
             this.mouseHandler = MouseHandler.getInstance;
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
@@ -38,9 +38,12 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => { 
-                this.Player.Attack();
-                this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
+            this.mouseHandler.LeftClickHook = () => {
+                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
+                {
+                    this.Player.Attack();
+                    this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
+                }
             };
         }
 
@@ -74,7 +77,7 @@ namespace AP_GameDev_Project.State_handlers
             List<AEntity> entities_new = new List<AEntity>(this.entities);
             bool is_player = true;
 
-            foreach (AEntity entity in this.entities)
+            foreach (AEntity entity in this.entities)  // One big foreach, for performance reasons
             {
                 entity.Update(gameTime);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);

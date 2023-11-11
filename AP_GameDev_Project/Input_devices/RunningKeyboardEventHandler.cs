@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 
 namespace AP_GameDev_Project.Input_devices
 {
-    internal class RunningKeyboardEventHandler
+    internal class RunningKeyboardEventHandler: IInputHandler
     {
         private RunningKeyboardHandler keyboardHandler;
         private RunningStateHandler stateHandler;

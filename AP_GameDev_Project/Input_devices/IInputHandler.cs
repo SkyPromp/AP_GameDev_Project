@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,6 @@ namespace AP_GameDev_Project.Input_devices
 {
     internal interface IInputHandler
     {
-        public void Update();
+        public void Update(GameTime gameTime);
     }
 }

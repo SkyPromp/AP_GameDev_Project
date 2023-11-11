@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 
 namespace AP_GameDev_Project.Input_devices
 {
-    internal class MapMakingKeyboardEventHandler
+    internal class MapMakingKeyboardEventHandler: IInputHandler
     {
         private MapMakingKeyboardHandler keyboardHandler;
         private MapMakingStateHandler stateHandler;

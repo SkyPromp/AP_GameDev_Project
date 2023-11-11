@@ -5,7 +5,7 @@ using System;
 
 namespace AP_GameDev_Project.Input_devices
 {
-    internal class MouseHandler//: IInputHandler
+    internal class MouseHandler
     {
         // Singleton vars
         private volatile static MouseHandler instance;
@@ -18,7 +18,7 @@ namespace AP_GameDev_Project.Input_devices
             MIDDLE_CLICK=4,
         }
 
-        private short mouseActive;
+        private short mouse_active;
 
         private Vector2 mouse_pos;
         public Vector2 MousePos { get { return mouse_pos; } }
@@ -49,7 +49,7 @@ namespace AP_GameDev_Project.Input_devices
 
         public void Init()
         {
-            this.mouseActive = 0;
+            this.mouse_active = 0;
             this.leftClickHook = null;
             this.rightClickHook = null;
 
@@ -59,17 +59,17 @@ namespace AP_GameDev_Project.Input_devices
         {
             MouseState state = Mouse.GetState();
             this.mouse_pos = new Vector2(state.X, state.Y);
-            this.mouseActive = 0;
+            this.mouse_active = 0;
 
             if (state.LeftButton == ButtonState.Pressed)
             {
-                this.mouseActive |= (short) MouseHandler.mouseEnum.LEFT_CLICK;
+                this.mouse_active |= (short) MouseHandler.mouseEnum.LEFT_CLICK;
                 if (this.leftClickHook != null) this.leftClickHook();
             }
 
             if (state.RightButton == ButtonState.Pressed)
             {
-                this.mouseActive |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
+                this.mouse_active |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
                 if (this.rightClickHook != null) this.rightClickHook();
             }
         }

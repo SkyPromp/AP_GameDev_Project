@@ -83,10 +83,7 @@ namespace AP_GameDev_Project.Entities
         {
             this.stand_animation.Draw(spriteBatch, this.position, this.flip_texture);
 
-            foreach (Bullet bullet in this.bullets)
-            {
-                bullet.Draw(spriteBatch);
-            }
+            foreach (Bullet bullet in this.bullets) bullet.Draw(spriteBatch);
 
             if (this.show_hitbox)
             {

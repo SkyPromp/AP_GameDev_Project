@@ -18,7 +18,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.startButtonRect = new Rectangle(0, 0, 1920, 540);
             this.mapMakeButtonRect = new Rectangle(0, 540, 1920, 540);
-            this.mouseHandler = MouseHandler.getInstance;
+            this.mouseHandler = MouseHandler.getInstance.Init();
             this.is_init = false;
             this.stateHandler = StateHandler.getInstance;
         }

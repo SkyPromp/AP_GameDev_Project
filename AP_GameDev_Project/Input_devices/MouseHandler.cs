@@ -47,12 +47,13 @@ namespace AP_GameDev_Project.Input_devices
             }
         }
 
-        public void Init()
+        public MouseHandler Init()
         {
             this.mouse_active = 0;
             this.leftClickHook = null;
             this.rightClickHook = null;
 
+            return this;
         }
 
         public void Update()

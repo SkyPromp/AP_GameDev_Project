@@ -63,7 +63,7 @@ namespace AP_GameDev_Project.State_handlers
             this.tiles = Enumerable.Repeat((Byte) 0, tile_amount).ToList();
             this.room = new Room(this.tiles, room_width);
 
-            this.mouseHandler = MouseHandler.getInstance;
+            this.mouseHandler = MouseHandler.getInstance.Init();
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this, this.current_tile_brush); };
             this.mouseHandler.RightClickHook = () => { this.PlaceTile(this, 0); };
         }

@@ -16,7 +16,7 @@ namespace AP_GameDev_Project.Entities
         {
             this.contentManager = ContentManager.getInstance;
             base.stand_animation = this.contentManager.GetAnimations["PLAYER_STANDSTILL"];
-            this.mouseHandler = MouseHandler.getInstance;
+            this.mouseHandler = MouseHandler.getInstance.Init();
             this.max_health = max_health;
             this.has_invincibility = true;  // TODO set to false
         }

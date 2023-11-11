@@ -23,7 +23,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.contentManager = ContentManager.getInstance;
             this.current_room = new Room("Rooms\\BigRoom.room");
-            this.mouseHandler = MouseHandler.getInstance;
+            this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
 

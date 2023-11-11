@@ -70,7 +70,6 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.LeftClickHook = () => { this.PlaceTile(this, this.current_tile_brush); };
             this.mouseHandler.RightClickHook = () => { this.PlaceTile(this, 0); };
             this.mouseHandler.MiddleClickHook = () => { this.PlaceSpawnpoint(this); };
-            // middle click to place player
         }
 
         public void Update(GameTime gameTime)

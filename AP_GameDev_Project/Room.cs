@@ -46,12 +46,9 @@ namespace AP_GameDev_Project
             this.tilemap = this.contentManager.GetTextures["TILEMAP"];
             this.tile_size = tile_size;
 
-            // start test
             Vector2 tile_center_coords = this.IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
             Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
-            Vector2 player_pos = tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 152);  // use correct offsets
-            this.player_spawnpoint = player_pos;
-            // end test
+            this.player_spawnpoint = tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 152);  // DO MORE DYNAMICALLY
         }
 
         public Room(List<Byte> tiles, UInt16 room_width, int tile_size=64)

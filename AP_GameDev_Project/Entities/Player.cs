@@ -39,6 +39,7 @@ namespace AP_GameDev_Project.Entities
 
                 base.bullets.Add(new Bullet(bullet_position, angle * base.bullet_speed));
                 base.bullet_cooldown = base.bullet_max_cooldown;
+                this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
             }
         }
         public override void Attack(Vector2 player_center)

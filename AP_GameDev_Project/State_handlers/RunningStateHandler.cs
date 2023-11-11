@@ -42,7 +42,6 @@ namespace AP_GameDev_Project.State_handlers
                 if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
                 {
                     this.Player.Attack();
-                    this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
                 }
             };
         }

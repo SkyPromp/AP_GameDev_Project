@@ -57,6 +57,7 @@ namespace AP_GameDev_Project.State_handlers
             this.is_init = true;
             this.current_tile_brush = 1;
             this.show_current_brush = true;
+            this.player_spawnpoint = -1;
 
             // FIX Without Math.Ceiling
             UInt16 room_width = (UInt16) Math.Ceiling((double)GlobalConstants.SCREEN_WIDTH / this.tile_size);

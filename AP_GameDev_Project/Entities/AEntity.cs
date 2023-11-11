@@ -120,7 +120,7 @@ namespace AP_GameDev_Project.Entities
             vertices[3].Color = Color.Red;
             vertices[4] = vertices[0];
 
-            graphicsDevice.DrawUserPrimitives<VertexPositionColor>(Microsoft.Xna.Framework.Graphics.PrimitiveType.LineStrip, vertices, 0, 4);
+            graphicsDevice.DrawUserPrimitives<VertexPositionColor>(PrimitiveType.LineStrip, vertices, 0, 4);
 
         }
 

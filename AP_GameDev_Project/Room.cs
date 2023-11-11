@@ -15,6 +15,7 @@ namespace AP_GameDev_Project
         private readonly Texture2D tilemap;
         private readonly int tile_size;
         private ContentManager contentManager;
+        private Vector2 offset;
 
         public Room(string tilesFilename, int tile_size=64) {
             try
@@ -54,6 +55,10 @@ namespace AP_GameDev_Project
                 int screen_x = (i % this.room_width) * this.tile_size;
                 int screen_y = (i / this.room_width) * this.tile_size;
 
+                // Move reference point to place the room in the center of the screen
+                screen_x += (int)offset.X;
+                screen_y += (int)offset.Y;
+
                 (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
                 if (pattern == -1) continue;
 
@@ -72,9 +77,8 @@ namespace AP_GameDev_Project
                 int screen_y = (i / this.room_width) * this.tile_size;
 
                 // Move reference point to place the room in the center of the screen
-                //screen_x += (GlobalConstants.SCREEN_WIDTH - this.tile_size * this.room_width) / 2;
-                //screen_y += (GlobalConstants.SCREEN_HEIGHT - this.tile_size * this.tiles.Count / this.room_width) / 2;
-
+                screen_x += (int) offset.X;
+                screen_y += (int) offset.Y;
 
                 (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
                 if (pattern == -1) continue;
@@ -95,6 +99,13 @@ namespace AP_GameDev_Project
                     layerDepth: 0
                     );
             }
+        }
+
+        public void Center()
+        {
+            this.offset = new Vector2(
+                (GlobalConstants.SCREEN_WIDTH - this.tile_size * this.room_width) / 2,
+                (GlobalConstants.SCREEN_HEIGHT - this.tile_size * this.tiles.Count / this.room_width) / 2);
         }
 
         private ATileType GetPattern(int i)

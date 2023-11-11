@@ -29,9 +29,7 @@ namespace AP_GameDev_Project.State_handlers
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
 
             // TEST (REMOVE)
-            //Vector2 player_pos = new Vector2(180, 180);
-            Vector2 player_pos = this.current_room.GetPlayerSpawnpoint;
-            Player player = new Player(player_pos, 5f);
+            Player player = new Player(this.current_room.GetPlayerSpawnpoint, 5f);
             this.entities.Add(player);
             Enemy1 enemy1 = new Enemy1(new Vector2(300, 300), 5f, 5);
             this.entities.Add(enemy1);

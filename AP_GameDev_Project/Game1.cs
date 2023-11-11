@@ -32,6 +32,7 @@ namespace AP_GameDev_Project
             this.stateHandler.InitStateHandler();
             this.contentManager = ContentManager.getInstance;
             this.contentManager.Init();
+            SoundEffect.MasterVolume = 1.0f;
 
             base.Initialize();
         }

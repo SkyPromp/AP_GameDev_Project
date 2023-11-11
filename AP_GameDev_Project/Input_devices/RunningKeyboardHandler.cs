@@ -1,7 +1,9 @@
 ﻿using AP_GameDev_Project.State_handlers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Input;
-
+using System;
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.Input_devices
 {
@@ -24,6 +26,15 @@ namespace AP_GameDev_Project.Input_devices
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
                 this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
+            }
+        }
+
+        public void HandleSound()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+            {
+                SoundEffect.MasterVolume = Math.Abs(SoundEffect.MasterVolume - 1f);
+                Debug.WriteLine(SoundEffect.MasterVolume.ToString());
             }
         }
 

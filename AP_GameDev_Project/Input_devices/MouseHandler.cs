@@ -1,6 +1,6 @@
-﻿using Microsoft.Xna.Framework.Input;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using System;
-using System.Numerics;
 
 
 namespace AP_GameDev_Project.Input_devices
@@ -20,8 +20,8 @@ namespace AP_GameDev_Project.Input_devices
 
         private short mouseActive;
 
-        private Vector2 mousePos;
-        public Vector2 MousePos { get { return mousePos; } }
+        private Vector2 mouse_pos;
+        public Vector2 MousePos { get { return mouse_pos; } }
 
         private Action leftClickHook;
         public Action LeftClickHook { set { leftClickHook = value; } }
@@ -58,7 +58,7 @@ namespace AP_GameDev_Project.Input_devices
         public void Update()
         {
             MouseState state = Mouse.GetState();
-            this.mousePos = new Vector2(state.X, state.Y);
+            this.mouse_pos = new Vector2(state.X, state.Y);
             this.mouseActive = 0;
 
             if (state.LeftButton == ButtonState.Pressed)
@@ -71,6 +71,14 @@ namespace AP_GameDev_Project.Input_devices
             {
                 this.mouseActive |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
                 if (this.rightClickHook != null) this.rightClickHook();
+            }
+        }
+
+        public bool IsOnScreen
+        {
+            get
+            {
+                return new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(this.mouse_pos);
             }
         }
     }

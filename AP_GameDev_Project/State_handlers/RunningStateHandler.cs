@@ -38,12 +38,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => {
-                if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
-                {
-                    this.Player.Attack();
-                }
-            };
+            this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(); };
         }
 
         public void Update(GameTime gameTime)

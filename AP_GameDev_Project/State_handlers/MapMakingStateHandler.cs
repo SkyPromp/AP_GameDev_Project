@@ -76,7 +76,7 @@ namespace AP_GameDev_Project.State_handlers
 
         private void PlaceTile(MapMakingStateHandler mapMaker, Byte brush)
         {
-            if (new Rectangle(0, 0, GlobalConstants.SCREEN_WIDTH, GlobalConstants.SCREEN_HEIGHT).Contains(mouseHandler.MousePos))
+            if (this.mouseHandler.IsOnScreen)
             {
                 int tile_row = (int)mapMaker.mouseHandler.MousePos.Y / mapMaker.tile_size;
                 int tile_column = (int)mapMaker.mouseHandler.MousePos.X / mapMaker.tile_size;

@@ -5,9 +5,13 @@ namespace AP_GameDev_Project.Entities
 {
     internal class Enemy1 : AEntity
     {
-        public Enemy1(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, int base_health, Bullet base_bullet, float speed_damping_factor=0.95f) : 
-            base(position, stand_animation, max_speed, normalized_hitbox, base_bullet, 10f, 1f, base_health, speed_damping_factor)
+        private ContentManager contentManager;
+
+        public Enemy1(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, int base_health, float speed_damping_factor=0.95f) : 
+            base(position, stand_animation, max_speed, normalized_hitbox, 10f, 1f, base_health, speed_damping_factor)
         {
+            this.contentManager = ContentManager.getInstance;
+            base.stand_animation = this.contentManager.GetAnimations["ENEMY1_STANDSTILL"];
         }
 
         public override void Attack(Vector2 player_center)
@@ -19,7 +23,7 @@ namespace AP_GameDev_Project.Entities
                 Vector2 bullet_position = weapon_offset + enemy_center;
                 Vector2 angle = Vector2.Normalize(player_center - bullet_position);    // TODO: correct bullet_position to the center of the bullet?
 
-                base.bullets.Add(new Bullet(bullet_position, angle * base.bullet_speed, base.base_bullet));
+                base.bullets.Add(new Bullet(bullet_position, angle * base.bullet_speed));
                 base.bullet_cooldown = base.bullet_max_cooldown;
             }
         }

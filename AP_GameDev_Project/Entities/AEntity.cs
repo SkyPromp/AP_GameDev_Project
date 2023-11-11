@@ -9,7 +9,7 @@ namespace AP_GameDev_Project.Entities
 {
     internal abstract class AEntity
     {
-        private readonly Animate stand_animation;
+        protected Animate stand_animation;
         protected bool flip_texture;
 
         protected int health;
@@ -47,7 +47,7 @@ namespace AP_GameDev_Project.Entities
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, Bullet base_bullet, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
+        public AEntity(Vector2 position, Animate stand_animation, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
         {
             this.position = position;
 
@@ -64,7 +64,6 @@ namespace AP_GameDev_Project.Entities
             this.health = base_health;
 
             this.bullets = new List<Bullet>();
-            this.base_bullet = base_bullet;
             this.bullet_speed = bullet_speed;
             this.bullet_max_cooldown = bullet_max_cooldown;
         }

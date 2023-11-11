@@ -2,8 +2,10 @@
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 
 
 namespace AP_GameDev_Project.State_handlers
@@ -18,16 +20,19 @@ namespace AP_GameDev_Project.State_handlers
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
+        private ContentManager contentManager;
 
-        public RunningStateHandler(Texture2D tilemap, Player player, List<AEntity> base_enemies)
+        public RunningStateHandler(List<AEntity> base_enemies)
         {
-            this.current_room = new Room(tilemap, "Rooms\\BigRoom.room");
+            this.contentManager = ContentManager.getInstance;
+            this.current_room = new Room(this.contentManager.GetTextures["TILEMAP"], "Rooms\\BigRoom.room");
             this.mouseHandler = MouseHandler.getInstance;
             this.base_enemies = base_enemies;
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
 
             // TEST (REMOVE)
+            Player player = new Player(new Vector2(180, 180), this.contentManager.GetAnimations["PLAYER_STANDSTILL"], 5f);
             this.entities.Add(player);
             foreach (AEntity enemy in base_enemies) this.entities.Add(enemy);
             // END TEST
@@ -36,7 +41,10 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => { this.Player.Attack(); };
+            this.mouseHandler.LeftClickHook = () => { 
+                this.Player.Attack();
+                this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
+            };
         }
 
         public void Update(GameTime gameTime)

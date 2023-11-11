@@ -11,6 +11,7 @@ namespace AP_GameDev_Project.Entities
         private readonly Vector2 speed;
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
+        private readonly ContentManager contentManager;
 
         public Rectangle GetHitbox
         {
@@ -20,11 +21,12 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public Bullet(Vector2 position, Vector2 speed, Texture2D texture) 
-        { 
+        public Bullet(Vector2 position, Vector2 speed)
+        {
+            this.contentManager = ContentManager.getInstance;
             this.position = position;
             this.speed = speed;
-            this.texture = texture;
+            this.texture = this.contentManager.GetTextures["BULLET"];
             this.normalized_hitbox = new Rectangle(-2, -2, 4, 4);
         }
 

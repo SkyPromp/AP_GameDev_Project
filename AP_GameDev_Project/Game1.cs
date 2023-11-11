@@ -1,6 +1,7 @@
 ﻿using AP_GameDev_Project.Entities;
 using AP_GameDev_Project.State_handlers;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
@@ -32,6 +33,7 @@ namespace AP_GameDev_Project
             this.stateHandler = StateHandler.getInstance;
             this.stateHandler.InitStateHandler();
             this.contentManager = ContentManager.getInstance;
+            this.contentManager.Init();
 
             base.Initialize();
         }
@@ -39,26 +41,25 @@ namespace AP_GameDev_Project
         protected override void LoadContent()
         {
             this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
-            Texture2D tilemap = Content.Load<Texture2D>("gamedev_tilemap");
-            SpriteFont font = Content.Load<SpriteFont>("Font");
-            Bullet base_bullet = new Bullet(Vector2.Zero, Vector2.Zero, Content.Load<Texture2D>("bullet"));
-
-            List<AEntity> base_enemies = new List<AEntity>();
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
-            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy1_standstill, 5f, new Rectangle(22, 10, 17, 43), 5, base_bullet);
-            base_enemies.Add(base_enemy1);
-
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
-            Player player = new Player(new Vector2(180, 180), player_standstill, 5f, base_bullet);
 
-            this.contentManager.Font = font;
-            this.contentManager.AddTexture("TILEMAP", tilemap);
+            this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
+            this.contentManager.AddSoundEffect("DEATH_EFFECT", Content.Load<SoundEffect>("deathsound"));
+            this.contentManager.Font = Content.Load<SpriteFont>("Font");
+            this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap"));
+            this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
 
+            Enemy1 base_enemy1 = new Enemy1(new Vector2(300, 300), enemy1_standstill, 5f, new Rectangle(22, 10, 17, 43), 5);
+
+            List<AEntity> base_enemies = new List<AEntity>();
+            base_enemies.Add(base_enemy1);
+
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
-            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(tilemap, player, base_enemies));
-            this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice, tilemap, font));
+            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(base_enemies));
+            this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }
 

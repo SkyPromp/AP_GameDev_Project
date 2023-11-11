@@ -12,13 +12,13 @@ namespace AP_GameDev_Project
     internal class ContentManager
     {
         private Dictionary<string, SoundEffect> sound_effects;
-        public Dictionary<string, SoundEffect> Sound_effects { get { return this.sound_effects; } }
+        public Dictionary<string, SoundEffect> GetSoundEffects { get { return this.sound_effects; } }
         private SpriteFont font;
         public SpriteFont Font {  get { return this.font; } set { this.font = value; } }
         private Dictionary<string, Texture2D> textures;
-        public Dictionary<string, Texture2D> Textures { get { return this.textures; } }
+        public Dictionary<string, Texture2D> GetTextures { get { return this.textures; } }
         private Dictionary<string, Animate> animations;
-        public Dictionary<string, Animate> Animations { get { return this.animations; } }
+        public Dictionary<string, Animate> GetAnimations { get { return this.animations; } }
 
         // Singleton vars
         private volatile static ContentManager instance;

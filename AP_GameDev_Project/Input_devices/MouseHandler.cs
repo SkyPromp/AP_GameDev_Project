@@ -20,8 +20,6 @@ namespace AP_GameDev_Project.Input_devices
 
         private short mouseActive;
 
-        public short MouseActive { get { return mouseActive; } }
-
         private Vector2 mousePos;
         public Vector2 MousePos { get { return mousePos; } }
 

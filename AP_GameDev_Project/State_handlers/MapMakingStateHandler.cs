@@ -24,17 +24,19 @@ namespace AP_GameDev_Project.State_handlers
         private SpriteFont font;
         private Room room;
         private MapMakingKeyboardEventHandler keyboardHandler;
+        private ContentManager contentManager;
 
         // DRAW VERTECES VARIABLES
         private GraphicsDevice graphicsDevice;
         private BasicEffect basicEffect;
 
-        public MapMakingStateHandler(GraphicsDevice graphicsDevice, Texture2D tilemap, SpriteFont font, int tile_size=64) {
+        public MapMakingStateHandler(GraphicsDevice graphicsDevice, int tile_size=64) {
+            this.contentManager = ContentManager.getInstance;
             this.is_init = false;
             this.tile_size = tile_size;
             this.tiles = new List<Byte>();
-            this.tilemap = tilemap;
-            this.font = font;
+            this.tilemap = this.contentManager.GetTextures["TILEMAP"];
+            this.font = this.contentManager.Font;
             this.keyboardHandler = new MapMakingKeyboardEventHandler(this);
 
             // DRAW VERTICES SETUP

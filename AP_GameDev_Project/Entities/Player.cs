@@ -7,13 +7,15 @@ namespace AP_GameDev_Project.Entities
     internal class Player: AEntity
     {
         private readonly MouseHandler mouseHandler;
-
+        private ContentManager contentManager;
         private readonly int max_health;
         private bool has_invincibility;
         
-        public Player(Vector2 position, Animate stand_animation, float max_speed, Bullet base_bullet, int max_health=3, float speed_damping_factor=0.95f) : 
-            base(position, stand_animation, max_speed, new Rectangle(45, 35, 35, 142), base_bullet, 10f, 0.2f, max_health, speed_damping_factor)
+        public Player(Vector2 position, Animate stand_animation, float max_speed, int max_health=3, float speed_damping_factor=0.99f) : 
+            base(position, stand_animation, max_speed, new Rectangle(45, 35, 35, 142), 10f, 0.2f, max_health, speed_damping_factor)
         {
+            this.contentManager = ContentManager.getInstance;
+            base.stand_animation = this.contentManager.GetAnimations["PLAYER_STANDSTILL"];
             this.mouseHandler = MouseHandler.getInstance;
             this.max_health = max_health;
             this.has_invincibility = true;  // TODO set to false
@@ -35,7 +37,7 @@ namespace AP_GameDev_Project.Entities
                 Vector2 bullet_position = center + new Vector2(this.mouseHandler.MousePos.X < center.X ? -40 : 40, -7);  
                 Vector2 angle = Vector2.Normalize(this.mouseHandler.MousePos - bullet_position);  // TODO: correct bullet_position to the center of the bullet?
 
-                base.bullets.Add(new Bullet(bullet_position, angle * base.bullet_speed, base.base_bullet));
+                base.bullets.Add(new Bullet(bullet_position, angle * base.bullet_speed));
                 base.bullet_cooldown = base.bullet_max_cooldown;
             }
         }

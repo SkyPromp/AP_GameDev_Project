@@ -40,14 +40,17 @@ namespace AP_GameDev_Project
         {
             this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
 
-            Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
-            Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
 
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
+            this.contentManager.AddTexture("PLAYER_STANDSTILL", Content.Load<Texture2D>("stand_still1"));
+
+            Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
+            Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_STANDSTILL"]);
+
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
 

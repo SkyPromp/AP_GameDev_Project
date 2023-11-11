@@ -118,7 +118,7 @@ namespace AP_GameDev_Project.State_handlers
             {
                 Vector2 tile_center_coords = IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
                 Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
-                spriteBatch.Draw(this.contentManager.GetTextures["PLAYER_STANDSTILL"], tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 142), sprite_rectangle, Color.White);
+                spriteBatch.Draw(this.contentManager.GetTextures["PLAYER_STANDSTILL"], tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 152), sprite_rectangle, Color.White);
             }
 
             if (this.show_current_brush)
@@ -186,11 +186,19 @@ namespace AP_GameDev_Project.State_handlers
 
         public void SaveFile()
         {
+            if(this.player_spawnpoint == -1) throw new InvalidOperationException("There is no spawnpoint for the player set, or it is outside of the room");  // Find better solution (draw text to screen)
             List<Byte> trimmed_tiles;
             int width;
-            (trimmed_tiles, width) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size);
+            int spawnpoint;
+            (trimmed_tiles, width, spawnpoint) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size, this.player_spawnpoint);
+
+            if (spawnpoint == -1) throw new InvalidOperationException("The spawnpoint is outside of the room");  // Find better solution (draw text to screen)
 
             // Write to file
+            Byte[] spawnpoint_bytes = BitConverter.GetBytes(spawnpoint);
+            trimmed_tiles.Insert(0, spawnpoint_bytes[0]);
+            trimmed_tiles.Insert(0, spawnpoint_bytes[1]);
+
             Byte[] header = BitConverter.GetBytes(width);
 
             trimmed_tiles.Insert(0, header[0]);

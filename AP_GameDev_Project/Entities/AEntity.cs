@@ -126,7 +126,7 @@ namespace AP_GameDev_Project.Entities
 
         public void SpeedUp(Vector2 add_speed)
         {
-            this.speed += add_speed * (1 + this.speed_damping_factor);
+            this.speed += add_speed * (1/5f * this.max_speed) * (1 + this.speed_damping_factor);
 
             if (this.speed.Length() >= this.max_speed)
             {

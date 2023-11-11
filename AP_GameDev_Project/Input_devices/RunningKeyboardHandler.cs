@@ -51,7 +51,7 @@ namespace AP_GameDev_Project.Input_devices
                 addSpeed += new Vector2(1, 0);
             }
 
-            return addSpeed / 3;
+            return addSpeed;
         }
     }
 }

@@ -123,7 +123,11 @@ namespace AP_GameDev_Project.State_handlers
                     {
                         int health = this.Player.DoDamage();
                         entity_bullets.Remove(bullet);
-                        if (health <= 0) throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
+                        if (health <= 0)
+                        {
+                            this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
+                            throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
+                        }
                     }
                 }
 

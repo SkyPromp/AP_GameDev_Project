@@ -44,7 +44,7 @@ namespace AP_GameDev_Project
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), Content.Load<Texture2D>("stand_still1"));
 
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
-            this.contentManager.AddSoundEffect("DEATH_EFFECT", Content.Load<SoundEffect>("deathsound"));
+            this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));

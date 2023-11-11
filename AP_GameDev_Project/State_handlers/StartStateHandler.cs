@@ -1,7 +1,7 @@
 ﻿using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Diagnostics.Contracts;
+
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -37,16 +37,10 @@ namespace AP_GameDev_Project.State_handlers
         {
             if (startState.startButtonRect.Contains(startState.mouseHandler.MousePos))
             {
-                startState.mouseHandler.LeftClickHook = null;
-                startState.mouseHandler.RightClickHook = null;
-
                 stateHandler.SetCurrentState(StateHandler.states_enum.RUNNING).Init();
             }
             else if (startState.mapMakeButtonRect.Contains(startState.mouseHandler.MousePos))
             {
-                startState.mouseHandler.LeftClickHook = null;
-                startState.mouseHandler.RightClickHook = null;
-
                 stateHandler.SetCurrentState(StateHandler.states_enum.MAPMAKING).Init();
             }
         }

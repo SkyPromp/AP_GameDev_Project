@@ -21,13 +21,16 @@ namespace AP_GameDev_Project.Input_devices
         private short mouse_active;
 
         private Vector2 mouse_pos;
-        public Vector2 MousePos { get { return mouse_pos; } }
+        public Vector2 MousePos { get { return this.mouse_pos; } }
 
         private Action leftClickHook;
-        public Action LeftClickHook { set { leftClickHook = value; } }
+        public Action LeftClickHook { set { this.leftClickHook = value; } }
 
         private Action rightClickHook;
-        public Action RightClickHook { set { rightClickHook = value; } }
+        public Action RightClickHook { set { this.rightClickHook = value; } }
+
+        private Action middleClickHook;
+        public Action MiddleClickHook { set { this.middleClickHook = value; } }
 
         private MouseHandler() { }
 
@@ -52,6 +55,7 @@ namespace AP_GameDev_Project.Input_devices
             this.mouse_active = 0;
             this.leftClickHook = null;
             this.rightClickHook = null;
+            this.middleClickHook = null;
 
             return this;
         }
@@ -72,6 +76,12 @@ namespace AP_GameDev_Project.Input_devices
             {
                 this.mouse_active |= (short) MouseHandler.mouseEnum.RIGHT_CLICK;
                 if (this.rightClickHook != null) this.rightClickHook();
+            }
+
+            if (state.MiddleButton == ButtonState.Pressed)
+            {
+                this.mouse_active |= (short)MouseHandler.mouseEnum.MIDDLE_CLICK;
+                if (this.middleClickHook != null) this.middleClickHook();
             }
         }
 

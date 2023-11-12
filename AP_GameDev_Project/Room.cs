@@ -60,7 +60,7 @@ namespace AP_GameDev_Project
             this.tile_size = tile_size;
         }
 
-        public List<Rectangle> GetHitboxes()  // TODO Refactor away List<Byte>
+        public List<Rectangle> GetHitboxes(Func<Byte, bool> filter=null)  // TODO Refactor away List<Byte>
         {
             List<Rectangle> result = new List<Rectangle>();
 
@@ -75,6 +75,7 @@ namespace AP_GameDev_Project
 
                 (int pattern, int angle) = this.GetPattern(i).GetileTile(i, this.tiles, this.room_width);
                 if (pattern == -1) continue;
+                if (filter != null && !filter(this.tiles[i])) continue;
 
                 result.Add(new Rectangle(screen_x, screen_y, this.tile_size, this.tile_size));
             }
@@ -101,13 +102,15 @@ namespace AP_GameDev_Project
                 int tilemap_y = this.tiles[i] - 1;
 
                 // TODO: Draw to a texture2D
+                Vector2 origin_offset = Vector2.One * this.tile_size / 2;
+
                 spriteBatch.Draw(
                     texture: this.tilemap,
-                    position: new Vector2(screen_x + this.tile_size / 2, screen_y + this.tile_size / 2),  // The origin changes because of the rotation
+                    position: new Vector2(screen_x, screen_y) + origin_offset,  // The origin changes because of the rotation
                     sourceRectangle: new Rectangle(tilemap_x * this.tile_size, tilemap_y * this.tile_size, this.tile_size, this.tile_size),
                     color: Color.White,
                     rotation: (float) Math.PI / 2.0f * (float) angle,
-                    origin: new Vector2(this.tile_size / 2, this.tile_size / 2),
+                    origin: origin_offset,
                     scale: 1.0f,
                     effects: SpriteEffects.None,
                     layerDepth: 0

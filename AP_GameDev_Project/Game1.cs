@@ -51,7 +51,7 @@ namespace AP_GameDev_Project
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_STANDSTILL"]);
-            Animate player_walk = new Animate(1, 4, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_WALK"]);
+            Animate player_walk = new Animate(0.5, 4, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_WALK"]);
 
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);

@@ -27,12 +27,16 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
+            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
 
             // TEST (REMOVE)
-            Player player = new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f);
-            this.entities.Add(player);
-            Enemy1 enemy1 = new Enemy1(new Vector2(300, 300), contentManager,5f, 5);
-            this.entities.Add(enemy1);
+            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
+
+            foreach(Rectangle tile in this.current_room.GetHitboxes((Byte tile) => { return tile == 2; }))
+            {
+                Enemy1 enemy1 = new Enemy1(tile.Center.ToVector2() - enemy1_offset, contentManager,5f, 5);
+                this.entities.Add(enemy1);
+            }
             // END TEST
         }
 

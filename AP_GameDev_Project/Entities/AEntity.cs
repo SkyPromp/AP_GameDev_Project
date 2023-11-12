@@ -34,10 +34,7 @@ namespace AP_GameDev_Project.Entities
         }
         public Vector2 GetCenter
         {
-            get 
-            {
-                return new Vector2(this.position.X + this.normalized_hitbox.X + this.normalized_hitbox.Width / 2, this.position.Y + this.normalized_hitbox.Y + this.normalized_hitbox.Height / 2);
-            }
+            get { return this.position + this.normalized_hitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;

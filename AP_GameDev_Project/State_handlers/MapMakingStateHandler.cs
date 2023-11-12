@@ -118,7 +118,7 @@ namespace AP_GameDev_Project.State_handlers
             {
                 Vector2 tile_center_coords = IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
                 Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
-                spriteBatch.Draw(this.contentManager.GetTextures["PLAYER_STANDSTILL"], tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 152), sprite_rectangle, Color.White);
+                spriteBatch.Draw(this.contentManager.GetTextures["PLAYER_STANDSTILL"], tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 116), sprite_rectangle, Color.White);
             }
 
             if (this.show_current_brush)

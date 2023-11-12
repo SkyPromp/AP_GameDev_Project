@@ -50,7 +50,7 @@
 /processorParam:TextureFormat=Compressed
 /build:Font.spritefont
 
-#begin gamedev_tilemap.png
+#begin gamedev_tilemap_2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -60,7 +60,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:gamedev_tilemap.png
+/build:gamedev_tilemap_2.png
 
 #begin shootsound.wav
 /importer:WavImporter

@@ -22,7 +22,7 @@ namespace AP_GameDev_Project.State_handlers
         public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
-            this.current_room = new Room("Rooms\\Test2.room");
+            this.current_room = new Room("Rooms\\BigRoom.room");
             this.current_room.Center();
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
@@ -32,10 +32,18 @@ namespace AP_GameDev_Project.State_handlers
             // TEST (REMOVE)
             Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
 
-            foreach(Rectangle tile in this.current_room.GetHitboxes((Byte tile) => { return tile == 2; }))
+            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint
+
+            int max_enemies = 7;
+            int enemy_amount = Math.Min(max_enemies, tiles.Count);
+            Random random = new Random();
+
+            for (int i = 0; i < enemy_amount; i++)
             {
-                Enemy1 enemy1 = new Enemy1(tile.Center.ToVector2() - enemy1_offset, contentManager,5f, 5);
+                Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
+                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, contentManager,5f, 5);
                 this.entities.Add(enemy1);
+                tiles.Remove(random_rect);
             }
             // END TEST
         }
@@ -81,7 +89,7 @@ namespace AP_GameDev_Project.State_handlers
                 entity.Update(gameTime);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
-                foreach (Rectangle hitbox in this.current_room.GetHitboxes())
+                foreach (Rectangle hitbox in this.current_room.GetHitboxes((Byte tile) => { return tile == 2; }))
                 {
                     if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);
 

@@ -27,28 +27,28 @@ namespace AP_GameDev_Project
             {
                 tilesFilename = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, tilesFilename);
                 List<Byte> bytelist = File.ReadAllBytes(tilesFilename).ToList();
+
                 this.room_width = BitConverter.ToUInt16(bytelist.ToArray(), 0);
                 this.room_width = (UInt16)((this.room_width << 8) + (this.room_width >> 8));  // use Big-Endian
                 bytelist.RemoveRange(0, 2);
 
                 player_spawnpoint = BitConverter.ToUInt16(bytelist.ToArray(), 0);
                 player_spawnpoint = (UInt16)((player_spawnpoint << 8) + (player_spawnpoint >> 8));  // use Big-Endian
-
-
                 bytelist.RemoveRange(0, 2);
-                this.tiles = bytelist;
 
+                this.tiles = bytelist;
             } catch
             {
                 throw new Exception("ERROR: File reading failed");
             }
+
             this.contentManager = ContentManager.getInstance;
             this.tilemap = this.contentManager.GetTextures["TILEMAP"];
             this.tile_size = tile_size;
 
             Vector2 tile_center_coords = this.IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
             Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
-            this.player_spawnpoint = tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 152);  // DO MORE DYNAMICALLY
+            this.player_spawnpoint = tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 116);  // DO MORE DYNAMICALLY
         }
 
         public Room(List<Byte> tiles, UInt16 room_width, int tile_size=64)

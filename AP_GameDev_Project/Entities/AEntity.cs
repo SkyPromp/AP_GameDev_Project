@@ -9,6 +9,9 @@ namespace AP_GameDev_Project.Entities
     internal abstract class AEntity
     {
         protected Animate stand_animation;
+        protected Animate walk_animation;
+        protected Animate current_animation;
+
         protected bool flip_texture;
 
         protected int health;
@@ -46,7 +49,7 @@ namespace AP_GameDev_Project.Entities
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, int base_health = 5, float speed_damping_factor=0.95f)
+        public AEntity(Vector2 position, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation=null, int base_health=5, float speed_damping_factor=0.95f)
         {
             this.position = position;
 
@@ -64,6 +67,10 @@ namespace AP_GameDev_Project.Entities
             this.bullets = new List<Bullet>();
             this.bullet_speed = bullet_speed;
             this.bullet_max_cooldown = bullet_max_cooldown;
+
+            this.stand_animation = stand_animation;
+            this.walk_animation = walk_animation != null ? walk_animation : stand_animation;
+            this.current_animation = stand_animation;
         }
 
         public virtual void Update(GameTime gameTime)
@@ -72,7 +79,10 @@ namespace AP_GameDev_Project.Entities
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
-            this.stand_animation.Update(gameTime);
+            if (this.speed.Length() < 0.1) this.current_animation = this.stand_animation;
+            else this.current_animation = this.walk_animation;
+
+            this.current_animation.Update(gameTime);
             this.position += speed;
 
             if (this.bullet_cooldown > 0) this.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
@@ -81,7 +91,7 @@ namespace AP_GameDev_Project.Entities
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            this.stand_animation.Draw(spriteBatch, this.position, this.flip_texture);
+            this.current_animation.Draw(spriteBatch, this.position, this.flip_texture);
 
             foreach (Bullet bullet in this.bullets) bullet.Draw(spriteBatch);
 

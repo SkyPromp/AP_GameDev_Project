@@ -5,13 +5,9 @@ namespace AP_GameDev_Project.Entities
 {
     internal class Enemy1 : AEntity
     {
-        private ContentManager contentManager;
-
-        public Enemy1(Vector2 position, float max_speed, int base_health, float speed_damping_factor=0.95f) : 
-            base(position, max_speed, new Rectangle(22, 10, 17, 43), 10f, 1f, base_health, speed_damping_factor)
+        public Enemy1(Vector2 position, ContentManager contentManager, float max_speed, int base_health, float speed_damping_factor=0.95f) : 
+            base(position, max_speed, new Rectangle(22, 10, 17, 43), 10f, 1f, contentManager.GetAnimations["ENEMY1_STANDSTILL"], base_health: base_health, speed_damping_factor: speed_damping_factor)
         {
-            this.contentManager = ContentManager.getInstance;
-            base.stand_animation = this.contentManager.GetAnimations["ENEMY1_STANDSTILL"];
         }
 
         public override void Attack(Vector2 player_center)

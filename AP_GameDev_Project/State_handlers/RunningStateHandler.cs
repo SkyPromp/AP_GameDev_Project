@@ -31,12 +31,11 @@ namespace AP_GameDev_Project.State_handlers
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
             this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
 
-            // TEST (REMOVE)
             Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint
 
-            int max_enemies = 100;
+            int max_enemies = 20;
             int enemy_amount = Math.Min(max_enemies, tiles.Count);
             Random random = new Random();
 
@@ -47,7 +46,6 @@ namespace AP_GameDev_Project.State_handlers
                 this.entities.Add(enemy1);
                 tiles.Remove(random_rect);
             }
-            // END TEST
         }
 
         public void Init()
@@ -93,17 +91,24 @@ namespace AP_GameDev_Project.State_handlers
 
                 foreach (AEntity entity2 in this.entities)
                 {
-                    if (entity.GetHitbox.Intersects(entity2.GetHitbox) && entity2 != entity)
+                    if (entity.GetHitbox.Intersects(entity2.GetHitbox) && (entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
                     {
-                        Vector2 delta = Vector2.Normalize((entity.GetHitbox.Center - entity2.GetHitbox.Center).ToVector2()) / 2;
+                        entity.HandleCollison(entity2.GetHitbox);  // Hard Collision
+
+                        /*Vector2 delta = Vector2.Normalize((entity.GetHitbox.Center - entity2.GetHitbox.Center).ToVector2());  // Soft Collision
+
+                        if (float.IsNaN(delta.X))
+                        {
+                            throw new ArithmeticException("Vectors too close for rounding error");
+                        }
                         entity.SpeedUp(delta);
-                        entity2.SpeedUp(-delta);
+                        entity2.SpeedUp(-delta);*/
                     }
                 }
 
                 foreach (Rectangle hitbox in this.tile_hitboxes)
                 {
-                    if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);
+                    if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);  // Check for better accuracy to avoid clipping
 
                     foreach (Bullet bullet in entity.Bullets)
                     {

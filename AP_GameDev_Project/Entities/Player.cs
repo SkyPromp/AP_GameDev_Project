@@ -1,6 +1,6 @@
 ﻿using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
-
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.Entities
 {
@@ -24,6 +24,11 @@ namespace AP_GameDev_Project.Entities
             this.mouse_position = move_direction;
 
             base.Update(gameTime, move_direction);
+        }
+
+        public override void SpeedUp(Vector2 add_speed)
+        {
+            base.SpeedUp(add_speed);
         }
 
         public void Attack()

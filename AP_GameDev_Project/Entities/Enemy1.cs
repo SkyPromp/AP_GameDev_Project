@@ -13,7 +13,6 @@ namespace AP_GameDev_Project.Entities
         public override void Update(GameTime gameTime, Vector2 move_direction)
         {
             base.SpeedUp(Vector2.Normalize(move_direction - base.GetCenter));
-
             base.Update(gameTime, move_direction);
         }
 

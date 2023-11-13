@@ -133,7 +133,7 @@ namespace AP_GameDev_Project.Entities
 
         }
 
-        public void SpeedUp(Vector2 add_speed)
+        public virtual void SpeedUp(Vector2 add_speed)
         {
             this.speed += add_speed * (1/5f * this.max_speed) * (1 + this.speed_damping_factor);
 
@@ -148,22 +148,37 @@ namespace AP_GameDev_Project.Entities
             Vector2 xtest = new Vector2(this.position.X, this.position.Y);
             Vector2 ytest = new Vector2(this.position.X, this.position.Y);
 
-            if (this.speed.X < 0 && wall.X + wall.Width > this.position.X + this.normalized_hitbox.X) // Left
+            Rectangle hitbox = this.GetHitbox;
+
+            float horizontal = float.PositiveInfinity;
+            float vertical = float.PositiveInfinity;
+
+            if(hitbox.Left < wall.Right)
             {
                 xtest.X = wall.X + wall.Width - this.normalized_hitbox.X;
+                horizontal = xtest.X;
             }
-            else if (this.speed.X > 0 && wall.X < this.position.X + this.normalized_hitbox.X + this.normalized_hitbox.Width)  // Right
+            if ((hitbox.Right > wall.Left))
             {
                 xtest.X = wall.X - this.normalized_hitbox.Width - this.normalized_hitbox.X;
+                if (Math.Abs(horizontal - this.position.X) < Math.Abs(xtest.X - this.position.X))
+                {
+                    xtest.X = horizontal;
+                }
             }
 
-            if (this.speed.Y < 0 && wall.Y + wall.Height > this.position.Y + this.normalized_hitbox.Y)  // Top
+            if(hitbox.Top < wall.Bottom)
             {
                 ytest.Y = wall.Y + wall.Height - this.normalized_hitbox.Y;
+                vertical = ytest.Y;
             }
-            else if (this.speed.Y > 0 && wall.Y < this.position.Y + this.normalized_hitbox.Y + this.normalized_hitbox.Height)  // Bottom
+            if(hitbox.Bottom > wall.Top)
             {
                 ytest.Y = wall.Y - this.normalized_hitbox.Height - this.normalized_hitbox.Y;
+                if (Math.Abs(vertical - this.position.Y) < Math.Abs(ytest.Y - this.position.Y))
+                {
+                    ytest.Y = vertical;
+                }
             }
 
             if (((xtest != this.position) && (this.position - xtest).Length() < (this.position - ytest).Length()) || ((ytest == this.position)))

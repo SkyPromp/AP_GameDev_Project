@@ -35,14 +35,14 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint
 
-            int max_enemies = 20;
+            int max_enemies = 4;
             int enemy_amount = Math.Min(max_enemies, tiles.Count);
             Random random = new Random();
 
             for (int i = 0; i < enemy_amount; i++)
             {
                 Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
-                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, contentManager,5f, 5);
+                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, this.contentManager,5f, 5);
                 this.entities.Add(enemy1);
                 tiles.Remove(random_rect);
             }
@@ -51,7 +51,7 @@ namespace AP_GameDev_Project.State_handlers
         public void Init()
         {
             this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(); };
+            this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(this.mouseHandler.MousePos); };
         }
 
         public void Update(GameTime gameTime)

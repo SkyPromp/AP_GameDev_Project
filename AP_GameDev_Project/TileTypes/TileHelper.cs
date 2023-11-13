@@ -15,10 +15,6 @@ namespace AP_GameDev_Project.TileTypes
 
         public enum corners: int
         {
-            /*TOP_LEFT,
-            BOTTOM_LEFT,
-            BOTTOM_RIGHT,
-            TOP_RIGHT*/
             TOP_LEFT,
             TOP_RIGHT,
             BOTTOM_RIGHT,

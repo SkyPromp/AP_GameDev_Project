@@ -11,6 +11,7 @@ namespace AP_GameDev_Project.State_handlers
     internal class RunningStateHandler : IStateHandler
     {
         private Room current_room;
+        private List<Rectangle> tile_hitboxes;
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private List<AEntity> entities;
@@ -24,6 +25,7 @@ namespace AP_GameDev_Project.State_handlers
             this.contentManager = ContentManager.getInstance;
             this.current_room = new Room("Rooms\\BigRoom.room");
             this.current_room.Center();
+            this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
@@ -89,7 +91,7 @@ namespace AP_GameDev_Project.State_handlers
                 entity.Update(gameTime);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
-                foreach (Rectangle hitbox in this.current_room.GetHitboxes((Byte tile) => { return tile == 2; }))
+                foreach (Rectangle hitbox in this.tile_hitboxes)
                 {
                     if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);
 

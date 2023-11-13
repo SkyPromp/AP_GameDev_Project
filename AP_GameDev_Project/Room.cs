@@ -134,15 +134,10 @@ namespace AP_GameDev_Project
 
             TileHelper tileHelper = new TileHelper(room_width, tiles, i);
 
-            int left_i = tileHelper.getLeftIndex(i);
-            int right_i = tileHelper.getRightIndex(i);
-            int top_i = tileHelper.getTopIndex(i);
-            int bottom_i = tileHelper.getBottomIndex(i);
-
-            int left = tileHelper.IsCorrectTileAtPos(left_i) ? 1 : 0;
-            int right = tileHelper.IsCorrectTileAtPos(right_i) ? 1 : 0;
-            int top = tileHelper.IsCorrectTileAtPos(top_i) ? 1 : 0;
-            int bottom = tileHelper.IsCorrectTileAtPos(bottom_i) ? 1 : 0;
+            int left = tileHelper.IsCorrectTileAtPos(tileHelper.getLeftIndex(i)) ? 1 : 0;
+            int right = tileHelper.IsCorrectTileAtPos(tileHelper.getRightIndex(i)) ? 1 : 0;
+            int top = tileHelper.IsCorrectTileAtPos(tileHelper.getTopIndex(i)) ? 1 : 0;
+            int bottom = tileHelper.IsCorrectTileAtPos(tileHelper.getBottomIndex(i)) ? 1 : 0;
 
             switch (left + right + top + bottom)
             {

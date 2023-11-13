@@ -36,7 +36,7 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint
 
-            int max_enemies = 7;
+            int max_enemies = 1;
             int enemy_amount = Math.Min(max_enemies, tiles.Count);
             Random random = new Random();
 
@@ -88,7 +88,7 @@ namespace AP_GameDev_Project.State_handlers
 
             foreach (AEntity entity in this.entities)  // One big foreach, for performance reasons
             {
-                entity.Update(gameTime);
+                entity.Update(gameTime, is_player ? this.mouseHandler.MousePos : player_center);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
                 foreach (Rectangle hitbox in this.tile_hitboxes)

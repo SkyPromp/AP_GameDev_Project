@@ -76,7 +76,6 @@ namespace AP_GameDev_Project.Entities
             Rectangle hitbox = this.GetHitbox;
             this.flip_texture = move_direction.X < hitbox.X + hitbox.Width / 2;
 
-            this.speed *= (1 - this.speed_damping_factor);
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
@@ -85,6 +84,8 @@ namespace AP_GameDev_Project.Entities
 
             this.current_animation.Update(gameTime);
             this.position += speed;
+            
+            this.speed *= (1 - this.speed_damping_factor);
 
             if (this.bullet_cooldown > 0) this.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
             foreach (Bullet bullet in this.bullets) bullet.Update(gameTime);

@@ -153,32 +153,26 @@ namespace AP_GameDev_Project.Entities
             float horizontal = float.PositiveInfinity;
             float vertical = float.PositiveInfinity;
 
-            if(hitbox.Left < wall.Right)
+            if(hitbox.Left < wall.Right)  // Left
             {
                 xtest.X = wall.X + wall.Width - this.normalized_hitbox.X;
                 horizontal = xtest.X;
             }
-            if ((hitbox.Right > wall.Left))
+            if ((hitbox.Right > wall.Left))  // Right
             {
                 xtest.X = wall.X - this.normalized_hitbox.Width - this.normalized_hitbox.X;
-                if (Math.Abs(horizontal - this.position.X) < Math.Abs(xtest.X - this.position.X))
-                {
-                    xtest.X = horizontal;
-                }
+                if (Math.Abs(horizontal - this.position.X) < Math.Abs(xtest.X - this.position.X)) xtest.X = horizontal;
             }
 
-            if(hitbox.Top < wall.Bottom)
+            if(hitbox.Top < wall.Bottom)  // Top
             {
                 ytest.Y = wall.Y + wall.Height - this.normalized_hitbox.Y;
                 vertical = ytest.Y;
             }
-            if(hitbox.Bottom > wall.Top)
+            if(hitbox.Bottom > wall.Top)  // Bottom
             {
                 ytest.Y = wall.Y - this.normalized_hitbox.Height - this.normalized_hitbox.Y;
-                if (Math.Abs(vertical - this.position.Y) < Math.Abs(ytest.Y - this.position.Y))
-                {
-                    ytest.Y = vertical;
-                }
+                if (Math.Abs(vertical - this.position.Y) < Math.Abs(ytest.Y - this.position.Y)) ytest.Y = vertical;
             }
 
             if (((xtest != this.position) && (this.position - xtest).Length() < (this.position - ytest).Length()) || ((ytest == this.position)))

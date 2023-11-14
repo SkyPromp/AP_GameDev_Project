@@ -19,10 +19,12 @@ namespace AP_GameDev_Project.State_handlers
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
+        private CollisionHandler collisionHandler;
 
         public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
+            this.collisionHandler = new CollisionHandler();
             this.current_room = this.contentManager.GetRooms[0];
             this.current_room.Center();
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
@@ -91,7 +93,9 @@ namespace AP_GameDev_Project.State_handlers
 
                 foreach (AEntity entity2 in this.entities)
                 {
-                    if (entity.GetHitbox.Intersects(entity2.GetHitbox) && (entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
+                    if((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
+                    this.collisionHandler.HandleHardCollison(entity, entity2.GetHitbox);
+                    /*if (entity.GetHitbox.Intersects(entity2.GetHitbox) && (entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
                     {
                         entity.HardCollide(entity2.GetHitbox);  // Hard Collision
 
@@ -107,13 +111,14 @@ namespace AP_GameDev_Project.State_handlers
                             entity.SpeedUp(delta);
                             entity2.SpeedUp(-delta);
                         }
-                        */
-                    }
+                        
+                    }*/
                 }
 
                 foreach (Rectangle hitbox in this.tile_hitboxes)
                 {
-                    if (hitbox.Intersects(entity.GetHitbox)) entity.HardCollide(hitbox);
+                    //if (hitbox.Intersects(entity.GetHitbox)) entity.HardCollide(hitbox);
+                    this.collisionHandler.HandleHardCollison(entity, hitbox);
 
                     foreach (Bullet bullet in entity.Bullets)
                     {

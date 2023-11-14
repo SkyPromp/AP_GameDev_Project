@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace AP_GameDev_Project.Entities
 {
-    internal abstract class AEntity
+    internal abstract class AEntity: ICollidable
     {
         protected Animate stand_animation;
         protected Animate walk_animation;
@@ -18,14 +18,15 @@ namespace AP_GameDev_Project.Entities
         protected int health;
 
         private Vector2 position;
-        public Vector2 Position { get { return this.position; } }
+        public Vector2 Position { get { return this.position; } set { this.position = value; } }
 
         private readonly float max_speed;
         private Vector2 speed;
-        protected Vector2 Speed { get { return this.speed; } }
+        public Vector2 Speed { get { return this.speed; } set { this.speed = value; } }
         private float speed_damping_factor;
 
         private readonly Rectangle normalized_hitbox;
+        public Rectangle GetNormalizedHitbox { get {  return this.normalized_hitbox; } }
         public Rectangle GetHitbox
         {
             get

@@ -57,6 +57,8 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
 
+            this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
+
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));

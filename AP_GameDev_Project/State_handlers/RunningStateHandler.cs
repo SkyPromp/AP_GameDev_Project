@@ -23,7 +23,7 @@ namespace AP_GameDev_Project.State_handlers
         public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
-            this.current_room = new Room("Rooms\\BigRoom.room");
+            this.current_room = this.contentManager.GetRooms[0];
             this.current_room.Center();
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
             this.mouseHandler = MouseHandler.getInstance.Init();

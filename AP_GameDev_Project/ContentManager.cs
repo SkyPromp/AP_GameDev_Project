@@ -15,6 +15,8 @@ namespace AP_GameDev_Project
         public Dictionary<string, Texture2D> GetTextures { get { return this.textures; } }
         private Dictionary<string, Animate> animations;
         public Dictionary<string, Animate> GetAnimations { get { return this.animations; } }
+        private List<Room> rooms;
+        public List<Room> GetRooms { get { return this.rooms; } }
 
         // Singleton vars
         private volatile static ContentManager instance;
@@ -43,6 +45,7 @@ namespace AP_GameDev_Project
             this.sound_effects = new Dictionary<string, SoundEffect>();
             this.textures = new Dictionary<string, Texture2D>();
             this.animations = new Dictionary<string, Animate>();
+            this.rooms = new List<Room>();
         }
 
         public void AddSoundEffect(string name, SoundEffect sound_effect)
@@ -58,6 +61,11 @@ namespace AP_GameDev_Project
         public void AddAnimation(string name, Animate animation)
         {
             this.animations.Add(name, animation);
+        }
+
+        public void AddRoom(Room room)
+        {
+            this.rooms.Add(room);
         }
     }
 }

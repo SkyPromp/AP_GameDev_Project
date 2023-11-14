@@ -93,22 +93,27 @@ namespace AP_GameDev_Project.State_handlers
                 {
                     if (entity.GetHitbox.Intersects(entity2.GetHitbox) && (entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
                     {
-                        entity.HandleCollison(entity2.GetHitbox);  // Hard Collision
+                        entity.HardCollide(entity2.GetHitbox);  // Hard Collision
 
-                        /*Vector2 delta = Vector2.Normalize((entity.GetHitbox.Center - entity2.GetHitbox.Center).ToVector2());  // Soft Collision
-
-                        if (float.IsNaN(delta.X))
+                        /*
+                        if(entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)  // Soft Collision
                         {
-                            throw new ArithmeticException("Vectors too close for rounding error");
+                            Vector2 delta = Vector2.Normalize((entity.GetHitbox.Center - entity2.GetHitbox.Center).ToVector2());
+
+                            if (float.IsNaN(delta.X))
+                            {
+                                throw new ArithmeticException("Vectors too close for rounding error");
+                            }
+                            entity.SpeedUp(delta);
+                            entity2.SpeedUp(-delta);
                         }
-                        entity.SpeedUp(delta);
-                        entity2.SpeedUp(-delta);*/
+                        */
                     }
                 }
 
                 foreach (Rectangle hitbox in this.tile_hitboxes)
                 {
-                    if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);  // Check for better accuracy to avoid clipping
+                    if (hitbox.Intersects(entity.GetHitbox)) entity.HardCollide(hitbox);
 
                     foreach (Bullet bullet in entity.Bullets)
                     {

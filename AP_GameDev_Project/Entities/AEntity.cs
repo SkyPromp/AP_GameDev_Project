@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace AP_GameDev_Project.Entities
 {
-    internal abstract class AEntity
+    internal abstract class AEntity: ICollidable
     {
         protected Animate stand_animation;
         protected Animate walk_animation;
@@ -18,14 +18,15 @@ namespace AP_GameDev_Project.Entities
         protected int health;
 
         private Vector2 position;
-        public Vector2 Position { get { return this.position; } }
+        public Vector2 Position { get { return this.position; } set { this.position = value; } }
 
         private readonly float max_speed;
         private Vector2 speed;
-        protected Vector2 Speed { get { return this.speed; } }
+        public Vector2 Speed { get { return this.speed; } set { this.speed = value; } }
         private float speed_damping_factor;
 
         private readonly Rectangle normalized_hitbox;
+        public Rectangle GetNormalizedHitbox { get {  return this.normalized_hitbox; } }
         public Rectangle GetHitbox
         {
             get
@@ -42,7 +43,6 @@ namespace AP_GameDev_Project.Entities
 
         protected List<Bullet> bullets;
         public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
-        protected readonly Bullet base_bullet;
         protected readonly float bullet_speed;
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
@@ -143,10 +143,14 @@ namespace AP_GameDev_Project.Entities
             }
         }
 
-        public void HandleCollison(Rectangle wall)
+        public void HandleHardCollison(Rectangle hitbox)
         {
-            Vector2 xtest = new Vector2(this.position.X, this.position.Y);
-            Vector2 ytest = new Vector2(this.position.X, this.position.Y);
+            if (this.GetHitbox.Intersects(hitbox)) this.HardCollide(hitbox);
+        }
+
+        public void HardCollide(Rectangle wall)
+        {
+            Vector2 test = new Vector2(this.position.X, this.position.Y);
 
             Rectangle hitbox = this.GetHitbox;
 
@@ -155,34 +159,34 @@ namespace AP_GameDev_Project.Entities
 
             if(hitbox.Left < wall.Right)  // Left
             {
-                xtest.X = wall.X + wall.Width - this.normalized_hitbox.X;
-                horizontal = xtest.X;
+                test.X = wall.Right- this.normalized_hitbox.Left;
+                horizontal = test.X;
             }
             if ((hitbox.Right > wall.Left))  // Right
             {
-                xtest.X = wall.X - this.normalized_hitbox.Width - this.normalized_hitbox.X;
-                if (Math.Abs(horizontal - this.position.X) < Math.Abs(xtest.X - this.position.X)) xtest.X = horizontal;
+                test.X = wall.Left - this.normalized_hitbox.Right;
+                if (Math.Abs(horizontal - this.position.X) < Math.Abs(test.X - this.position.X)) test.X = horizontal;
             }
 
             if(hitbox.Top < wall.Bottom)  // Top
             {
-                ytest.Y = wall.Y + wall.Height - this.normalized_hitbox.Y;
-                vertical = ytest.Y;
+                test.Y = wall.Bottom - this.normalized_hitbox.Top;
+                vertical = test.Y;
             }
             if(hitbox.Bottom > wall.Top)  // Bottom
             {
-                ytest.Y = wall.Y - this.normalized_hitbox.Height - this.normalized_hitbox.Y;
-                if (Math.Abs(vertical - this.position.Y) < Math.Abs(ytest.Y - this.position.Y)) ytest.Y = vertical;
+                test.Y = wall.Top - this.normalized_hitbox.Bottom;
+                if (Math.Abs(vertical - this.position.Y) < Math.Abs(test.Y - this.position.Y)) test.Y = vertical;
             }
 
-            if (((xtest != this.position) && (this.position - xtest).Length() < (this.position - ytest).Length()) || ((ytest == this.position)))
+            if (((test.X != this.position.X) && Math.Abs((this.position.X - test.X)) < Math.Abs(this.position.Y - test.Y)) || ((test.Y == this.position.Y)))
             {
-                this.position = xtest;
+                this.position.X = test.X;
                 this.speed.X = 0;
             }
             else
             {
-                this.position = ytest;
+                this.position.Y = test.Y;
                 this.speed.Y = 0;
             }
         }

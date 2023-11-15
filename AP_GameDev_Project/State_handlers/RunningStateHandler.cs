@@ -19,10 +19,12 @@ namespace AP_GameDev_Project.State_handlers
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
+        private CollisionHandler collisionHandler;
 
         public RunningStateHandler()
         {
             this.contentManager = ContentManager.getInstance;
+            this.collisionHandler = new CollisionHandler();
             this.current_room = this.contentManager.GetRooms[0];
             this.current_room.Center();
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
@@ -89,34 +91,8 @@ namespace AP_GameDev_Project.State_handlers
                 entity.Update(gameTime, is_player ? this.mouseHandler.MousePos : player_center);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
-                foreach (AEntity entity2 in this.entities)
-                {
-                    if (entity.GetHitbox.Intersects(entity2.GetHitbox) && (entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
-                    {
-                        entity.HandleCollison(entity2.GetHitbox);  // Hard Collision
-
-                        /*Vector2 delta = Vector2.Normalize((entity.GetHitbox.Center - entity2.GetHitbox.Center).ToVector2());  // Soft Collision
-
-                        if (float.IsNaN(delta.X))
-                        {
-                            throw new ArithmeticException("Vectors too close for rounding error");
-                        }
-                        entity.SpeedUp(delta);
-                        entity2.SpeedUp(-delta);*/
-                    }
-                }
-
-                foreach (Rectangle hitbox in this.tile_hitboxes)
-                {
-                    if (hitbox.Intersects(entity.GetHitbox)) entity.HandleCollison(hitbox);  // Check for better accuracy to avoid clipping
-
-                    foreach (Bullet bullet in entity.Bullets)
-                    {
-                        if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
-                    }
-                }
-
-                entity.Bullets = entity_bullets;
+                EECollision(entity);
+                ETBCollision(entity);
 
                 if (is_player)
                 {
@@ -124,44 +100,78 @@ namespace AP_GameDev_Project.State_handlers
                     continue;
                 }
 
-                entity.Attack(player_center);  // Add condition
+                if (PbECollision(entity)) entities_new.Remove(entity);
 
-                // Check if player hits enemies
-                List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
-
-                foreach (Bullet bullet in this.Player.Bullets)
-                {
-                    if (bullet.GetHitbox.Intersects(entity.GetHitbox))
-                    {
-                        int health = entity.DoDamage();
-                        player_bullets.Remove(bullet);
-                        if (health <= 0) entities_new.Remove(entity);
-                    }
-                }
-
-                this.Player.Bullets = player_bullets;
-
-                // Check if enemies hit player
-                entity_bullets = new List<Bullet>(entity.Bullets);
-
-                foreach (Bullet bullet in entity.Bullets)
-                {
-                    if (bullet.GetHitbox.Intersects(this.Player.GetHitbox))
-                    {
-                        int health = this.Player.DoDamage();
-                        entity_bullets.Remove(bullet);
-                        if (health <= 0)
-                        {
-                            this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
-                            throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
-                        }
-                    }
-                }
-
-                entity.Bullets = entity_bullets;
+                EbPCollision(entity);
             }
 
             this.entities = entities_new;
+        }
+
+        private void EECollision(AEntity entity)
+        {
+            foreach (AEntity entity2 in this.entities)
+            {
+                if ((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
+                    this.collisionHandler.HandleHardCollison(entity, entity2);
+            }
+        }
+
+        private void ETBCollision(AEntity entity)
+        {
+            List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
+            foreach (Rectangle hitbox in this.tile_hitboxes)
+            {
+                this.collisionHandler.HandleHardCollison(entity, hitbox);
+
+                foreach (Bullet bullet in entity.Bullets)
+                {
+                    if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
+                }
+            }
+
+            entity.Bullets = entity_bullets;
+        }
+
+        private bool PbECollision(AEntity entity)
+        {
+            List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
+            bool remove_entity = false;
+
+            foreach (Bullet bullet in this.Player.Bullets)
+            {
+                if (bullet.GetHitbox.Intersects(entity.GetHitbox))
+                {
+                    int health = entity.DoDamage();
+                    player_bullets.Remove(bullet);
+                    remove_entity = health <= 0;
+                }
+            }
+
+            this.Player.Bullets = player_bullets;
+
+            return remove_entity;
+        }
+
+        private void EbPCollision(AEntity entity)
+        {
+            List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
+
+            foreach (Bullet bullet in entity.Bullets)
+            {
+                if (bullet.GetHitbox.Intersects(this.Player.GetHitbox))
+                {
+                    int health = this.Player.DoDamage();
+                    entity_bullets.Remove(bullet);
+                    if (health <= 0)
+                    {
+                        this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
+                        throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
+                    }
+                }
+            }
+
+            entity.Bullets = entity_bullets;
         }
     }
 }

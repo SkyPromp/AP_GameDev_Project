@@ -43,7 +43,6 @@ namespace AP_GameDev_Project.Entities
 
         protected List<Bullet> bullets;
         public List<Bullet> Bullets { get { return bullets; } set { this.bullets = value; } }
-        protected readonly Bullet base_bullet;
         protected readonly float bullet_speed;
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;

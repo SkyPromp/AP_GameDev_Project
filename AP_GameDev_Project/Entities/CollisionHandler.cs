@@ -11,7 +11,12 @@ namespace AP_GameDev_Project.Entities
             if (self.GetHitbox.Intersects(other)) this.HardCollide(self, other);
         }
 
-        public void HardCollide(ICollidable self, Rectangle other)
+        public void HandleHardCollison(ICollidable self, ICollidable other)
+        {
+            if (self.GetHitbox.Intersects(other.GetHitbox)) this.HardCollide(self, other.GetHitbox);
+        }
+
+        private void HardCollide(ICollidable self, Rectangle other)
         {
             Vector2 test = new Vector2(self.Position.X, self.Position.Y);
 

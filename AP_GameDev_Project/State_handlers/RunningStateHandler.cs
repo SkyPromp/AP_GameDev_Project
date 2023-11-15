@@ -92,7 +92,7 @@ namespace AP_GameDev_Project.State_handlers
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
                 EECollision(entity);
-                entity.Bullets = ETBCollision(entity);
+                ETBCollision(entity);
 
                 if (is_player)
                 {
@@ -100,12 +100,9 @@ namespace AP_GameDev_Project.State_handlers
                     continue;
                 }
 
-                entity.Attack(player_center);  // Add condition
+                if (PbECollision(entity)) entities_new.Remove(entity);
 
-                (this.Player.Bullets, bool remove_entity) = PbECollision(entity);
-                if (remove_entity) entities_new.Remove(entity);
-
-                entity.Bullets = EbPCollision(entity);
+                EbPCollision(entity);
             }
 
             this.entities = entities_new;
@@ -120,7 +117,7 @@ namespace AP_GameDev_Project.State_handlers
             }
         }
 
-        private List<Bullet> ETBCollision(AEntity entity)
+        private void ETBCollision(AEntity entity)
         {
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
             foreach (Rectangle hitbox in this.tile_hitboxes)
@@ -133,10 +130,10 @@ namespace AP_GameDev_Project.State_handlers
                 }
             }
 
-            return entity_bullets;
+            entity.Bullets = entity_bullets;
         }
 
-        private (List<Bullet>, bool) PbECollision(AEntity entity)
+        private bool PbECollision(AEntity entity)
         {
             List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
             bool remove_entity = false;
@@ -151,10 +148,12 @@ namespace AP_GameDev_Project.State_handlers
                 }
             }
 
-            return (player_bullets, remove_entity);
+            this.Player.Bullets = player_bullets;
+
+            return remove_entity;
         }
 
-        private List<Bullet> EbPCollision(AEntity entity)
+        private void EbPCollision(AEntity entity)
         {
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
@@ -172,7 +171,7 @@ namespace AP_GameDev_Project.State_handlers
                 }
             }
 
-            return entity_bullets;
+            entity.Bullets = entity_bullets;
         }
     }
 }

@@ -10,10 +10,11 @@ namespace AP_GameDev_Project.Entities
         {
         }
 
-        public override void Update(GameTime gameTime, Vector2 move_direction)
+        public override void Update(GameTime gameTime, Vector2 player_center)
         {
-            base.SpeedUp(Vector2.Normalize(move_direction - base.GetCenter));
-            base.Update(gameTime, move_direction);
+            this.Attack(player_center);  // Add condition
+            base.SpeedUp(Vector2.Normalize(player_center - base.GetCenter));
+            base.Update(gameTime, player_center);
         }
 
         public override void Attack(Vector2 player_center)

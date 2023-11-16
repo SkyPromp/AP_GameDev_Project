@@ -190,7 +190,7 @@ namespace AP_GameDev_Project.State_handlers
             List<Byte> trimmed_tiles;
             int width;
             int spawnpoint;
-            (trimmed_tiles, width, spawnpoint) = Trimmer.GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size, this.player_spawnpoint);
+            (trimmed_tiles, width, spawnpoint) = (new Trimmer()).GetTrimmedRoom(new List<Byte>(this.tiles), this.tile_size, this.player_spawnpoint);
 
             if (spawnpoint == -1) throw new InvalidOperationException("The spawnpoint is outside of the room");  // Find better solution (draw text to screen)
 

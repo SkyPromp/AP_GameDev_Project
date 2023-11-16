@@ -1,4 +1,5 @@
 ﻿using AP_GameDev_Project.Entities;
+using AP_GameDev_Project.Entities.Collectables;
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +17,7 @@ namespace AP_GameDev_Project.State_handlers
         public bool IsInit { get { return this.is_init; } }
         private List<AEntity> entities;
         private Player Player { get { return (Player)this.entities[0]; } set { this.entities[0] = value; } }
+        private List<ACollectables> collectables;
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
@@ -30,8 +32,9 @@ namespace AP_GameDev_Project.State_handlers
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
-            this.keyboardHandler = new RunningKeyboardEventHandler(this);
             this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
+            this.keyboardHandler = new RunningKeyboardEventHandler(this);
+            this.collectables = new List<ACollectables>();
 
             Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
 
@@ -48,6 +51,17 @@ namespace AP_GameDev_Project.State_handlers
                 this.entities.Add(enemy1);
                 tiles.Remove(random_rect);
             }
+
+            Vector2 collectable_offset = new HeartCollectable(Vector2.Zero, this.contentManager).GetCenter;
+            int max_collectables = 4;
+            int collectable_amount = Math.Min(max_collectables, tiles.Count);
+            for (int i = 0; i < collectable_amount; i++)
+            {
+                Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
+                ACollectables collectable = new HeartCollectable(random_rect.Center.ToVector2() - collectable_offset, this.contentManager);
+                this.collectables.Add(collectable);
+                tiles.Remove(random_rect);
+            }
         }
 
         public void Init()
@@ -60,13 +74,14 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.mouseHandler.Update();
             this.keyboardHandler.Update(gameTime);
+            foreach (ACollectables collectable in this.collectables) collectable.Update(gameTime);
             this.HandleCollision(gameTime);
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             current_room.Draw(spriteBatch);
-
+            foreach (ACollectables collectable in this.collectables) collectable.Draw(spriteBatch);
             foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
         }
 

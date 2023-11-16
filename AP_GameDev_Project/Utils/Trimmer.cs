@@ -9,7 +9,7 @@ namespace AP_GameDev_Project.Utils
 {
     internal class Trimmer
     {
-        public static (List<Byte>, int, int) GetTrimmedRoom(List<Byte> tiles, int tile_size, int player_spawnpoint)
+        public (List<Byte>, int, int) GetTrimmedRoom(List<Byte> tiles, int tile_size, int player_spawnpoint)
         {
             // Trim vertically
             int width = GlobalConstants.SCREEN_WIDTH / tile_size;
@@ -24,15 +24,15 @@ namespace AP_GameDev_Project.Utils
 
             // Trim horizontally
             int old_width = width;
-            (trimmed_room, width) = Trimmer.TrimSide(trimmed_room, width, (int i, int width) => { return i * width; });  // Left
+            (trimmed_room, width) = this.TrimSide(trimmed_room, width, (int i, int width) => { return i * width; });  // Left
             player_spawnpoint -= old_width - width;
 
-            (trimmed_room, width) = Trimmer.TrimSide(trimmed_room, width, (int i, int width) => { return (i + 1) * width - 1; });  // Right
+            (trimmed_room, width) = this.TrimSide(trimmed_room, width, (int i, int width) => { return (i + 1) * width - 1; });  // Right
 
             return (trimmed_room, width, player_spawnpoint);
         }
 
-        private static (List<Byte>, int) TrimSide(List<Byte> trimmed_room, int width, Func<int, int, int> pick_index)
+        private (List<Byte>, int) TrimSide(List<Byte> trimmed_room, int width, Func<int, int, int> pick_index)
         {
             int height = trimmed_room.Count / width;
 

@@ -109,6 +109,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             }
         }
 
+
         public virtual void SpeedUp(Vector2 add_speed)
         {
             speed += add_speed * (1 / 5f * max_speed) * (1 + speed_damping_factor);

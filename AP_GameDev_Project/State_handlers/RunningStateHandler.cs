@@ -98,7 +98,13 @@ namespace AP_GameDev_Project.State_handlers
 
         public void ToggleDebug()
         {
-            foreach(AEntity entity in this.entities) entity.show_hitbox = !entity.show_hitbox;
+            foreach(AEntity entity in this.entities)
+            {
+                entity.show_hitbox = !entity.show_hitbox;
+                foreach(Bullet bullet in entity.Bullets) bullet.show_hitbox = !bullet.show_hitbox;
+            }
+
+            foreach(ACollectables collectable in this.collectables) collectable.show_hitbox = !collectable.show_hitbox;
         }
     }
 }

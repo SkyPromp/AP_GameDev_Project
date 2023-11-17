@@ -11,50 +11,53 @@ namespace AP_GameDev_Project.Entities.Mobs
         private readonly Vector2 speed;
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
-        private readonly ContentManager contentManager;
+        public bool show_hitbox;
+        private HitboxDrawer hitboxDrawer;
 
         public Rectangle GetHitbox
         {
             get
             {
-                return new Rectangle((int)(position.X + normalized_hitbox.X), (int)(position.Y + normalized_hitbox.Y), normalized_hitbox.Width, normalized_hitbox.Height);
+                return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
             }
         }
 
         public Bullet(Vector2 position, Vector2 speed)
         {
-            contentManager = ContentManager.getInstance;
+            ContentManager contentManager = ContentManager.getInstance;
             this.position = position;
             this.speed = speed;
-            texture = contentManager.GetTextures["BULLET"];
-            normalized_hitbox = new Rectangle(-2, -2, 4, 4);
-        }
-
-        public Bullet(Vector2 position, Vector2 speed, Bullet base_bullet)
-        {
-            this.position = position;
-            this.speed = speed;
-            texture = base_bullet.texture;
+            this.texture = contentManager.GetTextures["BULLET"];
+            this.normalized_hitbox = new Rectangle(-2, -2, 4, 4);
+            this.show_hitbox = false;
+            this.hitboxDrawer = HitboxDrawer.getInstance;
         }
 
         public void Update(GameTime gameTime)
         {
-            position += speed;
+            this.position += this.speed;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-            texture: texture,
-            position: position,  // The origin changes because of the rotation
+            texture: this.texture,
+            position: this.position,  // The origin changes because of the rotation
             sourceRectangle: new Rectangle(4, 6, 9, 4),
             color: Color.White,
-            rotation: (float)Math.Atan2(speed.Y, speed.X),
+            rotation: (float)Math.Atan2(this.speed.Y, this.speed.X),
             origin: new Vector2(13 / 2f, 10 / 2f),
             scale: 1.0f,
             effects: SpriteEffects.None,
             layerDepth: 0
             );
+
+            if (this.show_hitbox)
+            {
+                spriteBatch.End();  // Required to draw the hitbox on top
+                spriteBatch.Begin();
+                this.hitboxDrawer.DrawHitbox(this.GetHitbox);
+            }
         }
     }
 }

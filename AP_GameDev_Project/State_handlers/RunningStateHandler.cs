@@ -56,7 +56,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             Random random = new Random();
             enemy_amount = Math.Min(enemy_amount, tiles.Count);
-            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
+            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
 
             for (int i = 0; i < enemy_amount; i++)
             {

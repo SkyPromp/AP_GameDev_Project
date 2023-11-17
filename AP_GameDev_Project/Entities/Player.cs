@@ -16,7 +16,7 @@ namespace AP_GameDev_Project.Entities
         {
             this.contentManager = ContentManager.getInstance;
             this.max_health = max_health;
-            this.has_invincibility = false;  // TODO set to false
+            this.has_invincibility = true;  // TODO set to false
         }
 
         public override void Update(GameTime gameTime, Vector2 move_direction)

@@ -91,7 +91,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.keyboardHandler.Update(gameTime);
             foreach (ACollectables collectable in this.collectables) collectable.Update(gameTime);
-            this.HandleCollision(gameTime);
+            this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes, this.mouseHandler);
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -109,116 +109,6 @@ namespace AP_GameDev_Project.State_handlers
         public void ToggleDebug()
         {
             foreach(AEntity entity in this.entities) entity.show_hitbox = !entity.show_hitbox;
-        }
-
-        private void HandleCollision(GameTime gameTime)
-        {
-            Vector2 player_center = this.Player.GetCenter;
-            List<AEntity> entities_new = new List<AEntity>(this.entities);
-            bool is_player = true;
-
-            foreach (AEntity entity in this.entities)  // One big foreach, for performance reasons
-            {
-                entity.Update(gameTime, is_player ? this.mouseHandler.MousePos : player_center);
-                List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
-
-                EECollision(entity);
-                ETBCollision(entity);
-
-                if (is_player)
-                {
-                    is_player = false;
-                    continue;
-                }
-
-                if (PbECollision(entity)) entities_new.Remove(entity);
-
-                EbPCollision(entity);
-            }
-
-            PCCollision();
-
-            this.entities = entities_new;
-        }
-
-        private void EECollision(AEntity entity)
-        {
-            foreach (AEntity entity2 in this.entities)
-            {
-                if ((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
-                    this.collisionHandler.HandleHardCollison(entity, entity2);
-            }
-        }
-
-        private void ETBCollision(AEntity entity)
-        {
-            List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
-            foreach (Rectangle hitbox in this.tile_hitboxes)
-            {
-                this.collisionHandler.HandleHardCollison(entity, hitbox);
-
-                foreach (Bullet bullet in entity.Bullets)
-                {
-                    if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
-                }
-            }
-
-            entity.Bullets = entity_bullets;
-        }
-
-        private bool PbECollision(AEntity entity)
-        {
-            List<Bullet> player_bullets = new List<Bullet>(this.Player.Bullets);
-            bool remove_entity = false;
-
-            foreach (Bullet bullet in this.Player.Bullets)
-            {
-                if (bullet.GetHitbox.Intersects(entity.GetHitbox))
-                {
-                    int health = entity.DoDamage();
-                    player_bullets.Remove(bullet);
-                    remove_entity = health <= 0;
-                }
-            }
-
-            this.Player.Bullets = player_bullets;
-
-            return remove_entity;
-        }
-
-        private void EbPCollision(AEntity entity)
-        {
-            List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
-
-            foreach (Bullet bullet in entity.Bullets)
-            {
-                if (bullet.GetHitbox.Intersects(this.Player.GetHitbox))
-                {
-                    int health = this.Player.DoDamage();
-                    entity_bullets.Remove(bullet);
-                    if (health <= 0)
-                    {
-                        this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
-                        throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
-                    }
-                }
-            }
-
-            entity.Bullets = entity_bullets;
-        }
-
-        private void PCCollision()
-        {
-            Rectangle player_hitbox = this.Player.GetHitbox;
-
-            foreach (ACollectables collectable in new List<ACollectables>(this.collectables))
-            {
-                if (player_hitbox.Intersects(collectable.GetHitbox))
-                {
-                    collectable.OnCollision(this.Player);
-                    this.collectables.Remove(collectable);
-                }
-            }
         }
     }
 }

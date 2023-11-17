@@ -15,11 +15,11 @@ namespace AP_GameDev_Project.Utils
             int width = GlobalConstants.SCREEN_WIDTH / tile_size;
             List<Byte> trimmed_room;
 
-            (trimmed_room) = Trimmer.TrimBottom(new List<Byte>(tiles), width);
+            (trimmed_room) = this.TrimBottom(new List<Byte>(tiles), width);
             player_spawnpoint -= tiles.Count - trimmed_room.Count;
 
             trimmed_room.Reverse();
-            (trimmed_room) = Trimmer.TrimBottom(trimmed_room, width);
+            (trimmed_room) = this.TrimBottom(trimmed_room, width);
             trimmed_room.Reverse();
 
             // Trim horizontally
@@ -58,7 +58,7 @@ namespace AP_GameDev_Project.Utils
             return (trimmed_room, width);
         }
 
-        private static List<Byte> TrimBottom(List<Byte> trimmed_room, int width)
+        private List<Byte> TrimBottom(List<Byte> trimmed_room, int width)
         {
             while (trimmed_room.Count > 0)
             {

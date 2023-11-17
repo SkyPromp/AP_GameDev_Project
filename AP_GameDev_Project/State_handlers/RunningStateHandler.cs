@@ -120,6 +120,8 @@ namespace AP_GameDev_Project.State_handlers
                 EbPCollision(entity);
             }
 
+            PCCollision();
+
             this.entities = entities_new;
         }
 
@@ -187,6 +189,20 @@ namespace AP_GameDev_Project.State_handlers
             }
 
             entity.Bullets = entity_bullets;
+        }
+
+        private void PCCollision()
+        {
+            Rectangle player_hitbox = this.Player.GetHitbox;
+
+            foreach (ACollectables collectable in new List<ACollectables>(this.collectables))
+            {
+                if (player_hitbox.Intersects(collectable.GetHitbox))
+                {
+                    collectable.OnCollision(this.Player);
+                    this.collectables.Remove(collectable);
+                }
+            }
         }
     }
 }

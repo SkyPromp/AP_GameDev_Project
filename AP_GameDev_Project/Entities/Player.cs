@@ -48,7 +48,7 @@ namespace AP_GameDev_Project.Entities
         public void Heal(int heal_amount=1)
         {
             base.health += heal_amount;
-            
+
             if(base.health > this.max_health) base.health = this.max_health;
         }
 

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace AP_GameDev_Project.Entities.Collectables
 {
-    internal abstract class ACollectables
+    internal abstract class ACollectables: ISpawnable
     {
         private Animate animation;
         private Vector2 position;

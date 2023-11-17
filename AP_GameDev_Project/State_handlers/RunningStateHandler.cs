@@ -3,9 +3,11 @@ using AP_GameDev_Project.Entities.Collectables;
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Principal;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -39,11 +41,8 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
 
-            int max_enemies = 4;
-            tiles = this.SpawnEnemies(max_enemies, tiles);
-
-            int max_collectables = 4;
-            tiles = this.SpawnCollectables(max_collectables, tiles);
+            tiles = this.Spawn<Enemy1, AEntity>(4, tiles, this.entities, new object[] { 5f, 5, 0.8f});
+            tiles = this.Spawn<HeartCollectable, ACollectables>(4, tiles, this.collectables, new object[] {});
         }
 
         public void Init()
@@ -52,34 +51,25 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(this.mouseHandler.MousePos); };
         }
 
-        private List<Rectangle> SpawnEnemies(int enemy_amount, List<Rectangle> tiles)
+        private List<Rectangle> Spawn<T, A>(int amount, List<Rectangle> tiles, List<A> collection, Object[] constructor_parameters) where T: A where A : ISpawnable
         {
             Random random = new Random();
-            enemy_amount = Math.Min(enemy_amount, tiles.Count);
-            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
+            amount = Math.Min(amount, tiles.Count);
 
-            for (int i = 0; i < enemy_amount; i++)
+            Object[] default_parameters = { this.contentManager };
+            Object[] parameters = new object[default_parameters.Length + constructor_parameters.Length + 1];
+            default_parameters.CopyTo(parameters, 1);
+            constructor_parameters.CopyTo(parameters, default_parameters.Length + 1);
+
+            parameters[0] = Vector2.Zero;
+            Vector2 offset = ((T)Activator.CreateInstance(typeof(T), parameters)).GetCenter;
+
+            for (int i = 0; i < amount; i++)
             {
                 Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
-                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, this.contentManager, 5f, 5);
-                this.entities.Add(enemy1);
-                tiles.Remove(random_rect);
-            }
-
-            return tiles;
-        }
-
-        private List<Rectangle> SpawnCollectables(int collectable_amount, List<Rectangle> tiles)
-        {
-            Random random = new Random();
-            collectable_amount = Math.Min(collectable_amount, tiles.Count);
-            Vector2 collectable_offset = new HeartCollectable(Vector2.Zero, this.contentManager).GetCenter;
-
-            for (int i = 0; i < collectable_amount; i++)
-            {
-                Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
-                ACollectables collectable = new HeartCollectable(random_rect.Center.ToVector2() - collectable_offset, this.contentManager);
-                this.collectables.Add(collectable);
+                parameters[0] = random_rect.Center.ToVector2() - offset;
+                T collectable = (T)Activator.CreateInstance(typeof(T), parameters);
+                collection.Add((A)collectable);
                 tiles.Remove(random_rect);
             }
 
@@ -96,7 +86,7 @@ namespace AP_GameDev_Project.State_handlers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            current_room.Draw(spriteBatch);
+            this.current_room.Draw(spriteBatch);
             foreach (ACollectables collectable in this.collectables) collectable.Draw(spriteBatch);
             foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
         }

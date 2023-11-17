@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace AP_GameDev_Project.Entities
 {
-    internal abstract class AEntity: ICollidable
+    internal abstract class AEntity: ICollidable, ISpawnable
     {
         protected Animate stand_animation;
         protected Animate walk_animation;

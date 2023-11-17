@@ -48,14 +48,17 @@ namespace AP_GameDev_Project
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("PLAYER_STANDSTILL", Content.Load<Texture2D>("short_stand_still3"));
             this.contentManager.AddTexture("PLAYER_WALK", Content.Load<Texture2D>("short_walking_1"));
+            this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables"));
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), Content.Load<Texture2D>("enemy1_stand_still_0"));
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_STANDSTILL"]);
             Animate player_walk = new Animate(0.5, 4, new Rectangle(0, 0, 128, 192), this.contentManager.GetTextures["PLAYER_WALK"]);
+            Animate heart_collectable = new Animate(3.5, 4, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
 
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
+            this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);
 
             this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
 

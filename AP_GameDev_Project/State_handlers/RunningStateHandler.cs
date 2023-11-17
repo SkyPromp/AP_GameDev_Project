@@ -32,29 +32,49 @@ namespace AP_GameDev_Project.State_handlers
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
-            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
             this.collectables = new List<ACollectables>();
 
-            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
+            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
 
-            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint
+            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
 
             int max_enemies = 4;
-            int enemy_amount = Math.Min(max_enemies, tiles.Count);
+            tiles = this.SpawnEnemies(max_enemies, tiles);
+
+            int max_collectables = 4;
+            tiles = this.SpawnCollectables(max_collectables, tiles);
+        }
+
+        public void Init()
+        {
+            this.is_init = true;
+            this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(this.mouseHandler.MousePos); };
+        }
+
+        private List<Rectangle> SpawnEnemies(int enemy_amount, List<Rectangle> tiles)
+        {
             Random random = new Random();
+            enemy_amount = Math.Min(enemy_amount, tiles.Count);
+            Vector2 enemy1_offset = new Enemy1(Vector2.Zero, contentManager, 0, 0).GetCenter;
 
             for (int i = 0; i < enemy_amount; i++)
             {
                 Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
-                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, this.contentManager,5f, 5);
+                Enemy1 enemy1 = new Enemy1(random_rect.Center.ToVector2() - enemy1_offset, this.contentManager, 5f, 5);
                 this.entities.Add(enemy1);
                 tiles.Remove(random_rect);
             }
 
+            return tiles;
+        }
+
+        private List<Rectangle> SpawnCollectables(int collectable_amount, List<Rectangle> tiles)
+        {
+            Random random = new Random();
+            collectable_amount = Math.Min(collectable_amount, tiles.Count);
             Vector2 collectable_offset = new HeartCollectable(Vector2.Zero, this.contentManager).GetCenter;
-            int max_collectables = 4;
-            int collectable_amount = Math.Min(max_collectables, tiles.Count);
+
             for (int i = 0; i < collectable_amount; i++)
             {
                 Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
@@ -62,12 +82,8 @@ namespace AP_GameDev_Project.State_handlers
                 this.collectables.Add(collectable);
                 tiles.Remove(random_rect);
             }
-        }
 
-        public void Init()
-        {
-            this.is_init = true;
-            this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(this.mouseHandler.MousePos); };
+            return tiles;
         }
 
         public void Update(GameTime gameTime)

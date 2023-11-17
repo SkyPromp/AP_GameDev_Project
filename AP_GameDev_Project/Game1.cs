@@ -1,4 +1,5 @@
-﻿using AP_GameDev_Project.State_handlers;
+﻿using AP_GameDev_Project.Entities;
+using AP_GameDev_Project.State_handlers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,7 +19,7 @@ namespace AP_GameDev_Project
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 
@@ -28,10 +29,13 @@ namespace AP_GameDev_Project
 
         protected override void Initialize()
         {
+            this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
             this.stateHandler = StateHandler.getInstance;
             this.stateHandler.InitStateHandler();
             this.contentManager = ContentManager.getInstance;
             this.contentManager.Init();
+            HitboxDrawer.getInstance.Init(this.GraphicsDevice);
+
             SoundEffect.MasterVolume = 1.0f;
 
             base.Initialize();
@@ -39,8 +43,6 @@ namespace AP_GameDev_Project
 
         protected override void LoadContent()
         {
-            this._spriteBatch = new SpriteBatch(this.GraphicsDevice);
-
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");

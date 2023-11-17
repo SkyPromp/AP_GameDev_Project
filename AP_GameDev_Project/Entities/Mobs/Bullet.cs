@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 
 
-namespace AP_GameDev_Project.Entities
+namespace AP_GameDev_Project.Entities.Mobs
 {
     internal class Bullet
     {
@@ -17,39 +17,39 @@ namespace AP_GameDev_Project.Entities
         {
             get
             {
-                return new Rectangle((int)(this.position.X + this.normalized_hitbox.X), (int)(this.position.Y + this.normalized_hitbox.Y), this.normalized_hitbox.Width, this.normalized_hitbox.Height);
+                return new Rectangle((int)(position.X + normalized_hitbox.X), (int)(position.Y + normalized_hitbox.Y), normalized_hitbox.Width, normalized_hitbox.Height);
             }
         }
 
         public Bullet(Vector2 position, Vector2 speed)
         {
-            this.contentManager = ContentManager.getInstance;
+            contentManager = ContentManager.getInstance;
             this.position = position;
             this.speed = speed;
-            this.texture = this.contentManager.GetTextures["BULLET"];
-            this.normalized_hitbox = new Rectangle(-2, -2, 4, 4);
+            texture = contentManager.GetTextures["BULLET"];
+            normalized_hitbox = new Rectangle(-2, -2, 4, 4);
         }
 
         public Bullet(Vector2 position, Vector2 speed, Bullet base_bullet)
         {
             this.position = position;
             this.speed = speed;
-            this.texture = base_bullet.texture;
+            texture = base_bullet.texture;
         }
 
         public void Update(GameTime gameTime)
         {
-            this.position += this.speed;
+            position += speed;
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(
-            texture: this.texture,
-            position: this.position,  // The origin changes because of the rotation
+            texture: texture,
+            position: position,  // The origin changes because of the rotation
             sourceRectangle: new Rectangle(4, 6, 9, 4),
             color: Color.White,
-            rotation: (float)Math.Atan2(this.speed.Y, this.speed.X),
+            rotation: (float)Math.Atan2(speed.Y, speed.X),
             origin: new Vector2(13 / 2f, 10 / 2f),
             scale: 1.0f,
             effects: SpriteEffects.None,

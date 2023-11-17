@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AP_GameDev_Project.Entities.Mobs;
+using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

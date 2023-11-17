@@ -3,11 +3,10 @@ using AP_GameDev_Project.Entities.Collectables;
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.MediaFoundation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Security.Principal;
+
 
 namespace AP_GameDev_Project.State_handlers
 {

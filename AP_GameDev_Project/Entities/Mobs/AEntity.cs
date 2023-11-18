@@ -9,8 +9,6 @@ namespace AP_GameDev_Project.Entities.Mobs
 {
     internal abstract class AEntity : ICollidable, ISpawnable
     {
-        private HitboxDrawer hitboxDrawer;
-
         protected Animate stand_animation;
         protected Animate walk_animation;
         protected Animate current_animation;
@@ -51,8 +49,6 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f)
         {
-            this.hitboxDrawer = HitboxDrawer.getInstance;
-
             this.position = position;
 
             flip_texture = false;
@@ -102,7 +98,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
 
             //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
-            if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch, this.position); }
+            if (this.show_hitbox) { hitbox.Draw(spriteBatch, this.position); }
         }
 
 

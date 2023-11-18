@@ -27,7 +27,6 @@ namespace AP_GameDev_Project.Entities.Collectables
         }
 
         public bool show_hitbox;
-        private HitboxDrawer hitboxDrawer;
 
         public ACollectables(Vector2 position, Animate animation, Hitbox hitbox)
         {
@@ -35,7 +34,6 @@ namespace AP_GameDev_Project.Entities.Collectables
             this.animation = animation;
             this.hitbox = hitbox;
             this.show_hitbox = false;
-            this.hitboxDrawer = HitboxDrawer.getInstance;
         }
 
         public void Update(GameTime gameTime)
@@ -48,7 +46,7 @@ namespace AP_GameDev_Project.Entities.Collectables
             this.animation.Draw(spriteBatch, this.position);
 
             //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
-            if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch, this.position); }
+            if (this.show_hitbox) { hitbox.Draw(spriteBatch, this.position); }
         }
 
         public abstract void OnCollision(Player player);

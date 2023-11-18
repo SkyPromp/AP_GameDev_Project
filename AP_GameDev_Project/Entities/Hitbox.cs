@@ -38,29 +38,34 @@ namespace AP_GameDev_Project.Entities
             return this.children.Any(child_hitbox => child_hitbox.DoesCollide(other_hitbox));
         }
 
-        public void DrawHitboxes(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        {
+            spriteBatch.End();
+            spriteBatch.Begin();
+
+            GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
+
+            BasicEffect basicEffect = new BasicEffect(graphicsDevice);
+            basicEffect.VertexColorEnabled = true;
+            basicEffect.Projection = Matrix.CreateOrthographicOffCenter
+            (0, graphicsDevice.Viewport.Width,     // left, right
+            graphicsDevice.Viewport.Height, 0,    // bottom, top
+            0, 1);
+
+            this.DrawHitboxes(graphicsDevice, basicEffect, position);
+        }
+
+        private void DrawHitboxes(GraphicsDevice graphicsDevice, BasicEffect basicEffect, Vector2 position)
         {
             if(this.children.Count == 0)
             {
-                spriteBatch.End();
-                spriteBatch.Begin();
-
-                GraphicsDevice graphicsDevice = spriteBatch.GraphicsDevice;
-
-                BasicEffect basicEffect = new BasicEffect(graphicsDevice);
-                basicEffect.VertexColorEnabled = true;
-                basicEffect.Projection = Matrix.CreateOrthographicOffCenter
-                (0, graphicsDevice.Viewport.Width,     // left, right
-                graphicsDevice.Viewport.Height, 0,    // bottom, top
-                0, 1);
-
                 this.DrawHitbox(graphicsDevice, basicEffect, position);
             }
             else
             {
                 foreach (Hitbox hitbox in this.children)
                 {
-                    hitbox.DrawHitboxes(spriteBatch, position);
+                    hitbox.DrawHitboxes(graphicsDevice, basicEffect, position);
                 }
             }
 

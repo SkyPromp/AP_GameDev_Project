@@ -10,10 +10,10 @@ namespace AP_GameDev_Project.Entities.Mobs
     {
         private Vector2 position;
         private readonly Vector2 speed;
+        private readonly Hitbox hitbox;
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
         public bool show_hitbox;
-        private HitboxDrawer hitboxDrawer;
 
         public Rectangle GetHitbox
         {
@@ -29,9 +29,8 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.position = position;
             this.speed = speed;
             this.texture = contentManager.GetTextures["BULLET"];
-            this.normalized_hitbox = new Rectangle(-2, -2, 4, 4);
+            this.hitbox = new Hitbox(new Rectangle(-2, -2, 4, 4));
             this.show_hitbox = false;
-            this.hitboxDrawer = HitboxDrawer.getInstance;
         }
 
         public void Update(GameTime gameTime)
@@ -53,8 +52,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             layerDepth: 0
             );
 
-            if (this.show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
-            //if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch); }
+            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch, this.position); }
         }
     }
 }

@@ -28,12 +28,12 @@ namespace AP_GameDev_Project.Entities.Mobs
         private float speed_damping_factor;
 
         private readonly Hitbox hitbox;
-        public Rectangle GetNormalizedHitbox { get { return this.hitbox.GetHitbox; } }
+        public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {
             get
             {
-                return new Rectangle((int)(position.X + this.hitbox.GetHitbox.X), (int)(position.Y + this.hitbox.GetHitbox.Y), this.hitbox.GetHitbox.Width, this.hitbox.GetHitbox.Height);
+                return new Rectangle((int)(position.X + this.NormalizedHitbox.X), (int)(position.Y + this.NormalizedHitbox.Y), this.NormalizedHitbox.Width, this.NormalizedHitbox.Height);
             }
         }
         public Vector2 GetCenter
@@ -101,12 +101,7 @@ namespace AP_GameDev_Project.Entities.Mobs
 
             foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
 
-            if (show_hitbox)
-            {
-                spriteBatch.End();  // Required to draw the hitbox on top
-                spriteBatch.Begin();
-                this.hitboxDrawer.DrawHitbox(this.GetHitbox);
-            }
+            if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
         }
 
 

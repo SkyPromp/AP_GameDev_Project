@@ -1,12 +1,6 @@
-﻿using AP_GameDev_Project.Input_devices;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct2D1;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace AP_GameDev_Project.Entities
 {
@@ -41,7 +35,6 @@ namespace AP_GameDev_Project.Entities
         {
             this.graphicsDevice = graphicsDevice;
 
-            // DRAW VERTICES SETUP
             this.basicEffect = new BasicEffect(graphicsDevice);
             basicEffect.VertexColorEnabled = true;
             basicEffect.Projection = Matrix.CreateOrthographicOffCenter
@@ -52,8 +45,11 @@ namespace AP_GameDev_Project.Entities
             return this;
         }
 
-        public void DrawHitbox(Rectangle hitbox)
+        public void DrawHitbox(Rectangle hitbox, SpriteBatch spriteBatch)
         {
+            spriteBatch.End();
+            spriteBatch.Begin();
+
             this.basicEffect.CurrentTechnique.Passes[0].Apply();
 
             VertexPositionColor[] vertices = new VertexPositionColor[5];

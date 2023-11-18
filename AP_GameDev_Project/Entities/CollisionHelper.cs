@@ -21,7 +21,7 @@ namespace AP_GameDev_Project.Entities
             Vector2 test = new Vector2(self.Position.X, self.Position.Y);
 
             Rectangle hitbox = self.GetHitbox;
-            Rectangle normalized_hitbox = self.GetNormalizedHitbox;
+            Rectangle normalized_hitbox = self.NormalizedHitbox;
             Vector2 self_position = self.Position;
 
             float horizontal = float.PositiveInfinity;

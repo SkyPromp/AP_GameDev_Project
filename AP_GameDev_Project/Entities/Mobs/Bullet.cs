@@ -52,12 +52,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             layerDepth: 0
             );
 
-            if (this.show_hitbox)
-            {
-                spriteBatch.End();  // Required to draw the hitbox on top
-                spriteBatch.Begin();
-                this.hitboxDrawer.DrawHitbox(this.GetHitbox);
-            }
+            if (this.show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
         }
     }
 }

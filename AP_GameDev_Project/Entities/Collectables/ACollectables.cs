@@ -10,28 +10,30 @@ namespace AP_GameDev_Project.Entities.Collectables
         private Animate animation;
         private Vector2 position;
         public Vector2 Position { get { return position; } }
-        private readonly Rectangle normalized_hitbox;
+
+        private readonly Hitbox hitbox;
+        public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {
             get
             {
-                return new Rectangle((int)(position.X + normalized_hitbox.X), (int)(position.Y + normalized_hitbox.Y), normalized_hitbox.Width, normalized_hitbox.Height);
+                return new Rectangle((int)(position.X + this.NormalizedHitbox.X), (int)(position.Y + this.NormalizedHitbox.Y), this.NormalizedHitbox.Width, this.NormalizedHitbox.Height);
             }
         }
 
         public Vector2 GetCenter
         {
-            get { return position + normalized_hitbox.Center.ToVector2(); }
+            get { return position + this.NormalizedHitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;
         private HitboxDrawer hitboxDrawer;
 
-        public ACollectables(Vector2 position, Animate animation, Rectangle normalized_hitbox)
+        public ACollectables(Vector2 position, Animate animation, Hitbox hitbox)
         {
             this.position = position;
             this.animation = animation;
-            this.normalized_hitbox = normalized_hitbox;
+            this.hitbox = hitbox;
             this.show_hitbox = false;
             this.hitboxDrawer = HitboxDrawer.getInstance;
         }
@@ -45,12 +47,7 @@ namespace AP_GameDev_Project.Entities.Collectables
         {
             this.animation.Draw(spriteBatch, this.position);
 
-            if (show_hitbox)
-            {
-                spriteBatch.End();  // Required to draw the hitbox on top
-                spriteBatch.Begin();
-                this.hitboxDrawer.DrawHitbox(this.GetHitbox);
-            }
+            if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
         }
 
         public abstract void OnCollision(Player player);

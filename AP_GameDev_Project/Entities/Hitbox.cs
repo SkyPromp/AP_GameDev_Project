@@ -21,14 +21,44 @@ namespace AP_GameDev_Project.Entities
             this.children = new List<Hitbox>();
         }
 
-        public void AddChild(Rectangle child_hitbox)
+        public Hitbox AddChild(Rectangle child_hitbox)
         {
             this.children.Add(new Hitbox(child_hitbox, this));
+            if (this.parent != null) this.parent.UpdateParentHitbox(child_hitbox);
+
+            return this;
         }
 
-        public void RemoveChild(Hitbox hitbox)
+        public Hitbox RemoveChild(Hitbox hitbox)  // TODO Auto adjust hitboxes
         {
             this.children.Remove(hitbox);
+
+            return this;
+        }
+
+        private void UpdateParentHitbox(Rectangle child_hitbox)
+        {
+            if (this.hitbox.Left > child_hitbox.Left)
+            {
+                this.hitbox = new Rectangle(child_hitbox.Left, this.hitbox.Top, this.hitbox.Right - child_hitbox.Left, this.hitbox.Height);
+            }
+
+            if (this.hitbox.Right < child_hitbox.Right)
+            {
+                this.hitbox = new Rectangle(this.hitbox.Left, this.hitbox.Top, child_hitbox.Right - this.hitbox.Left, this.hitbox.Height);
+            }
+
+            if (this.hitbox.Top > child_hitbox.Top)
+            {
+                this.hitbox = new Rectangle(this.hitbox.Left, child_hitbox.Top, this.hitbox.Width, this.hitbox.Bottom - child_hitbox.Top);
+            }
+
+            if (this.hitbox.Bottom < child_hitbox.Bottom)
+            {
+                this.hitbox = new Rectangle(this.hitbox.Left, this.hitbox.Top, this.hitbox.Width, child_hitbox.Bottom - this.hitbox.Top);
+            }
+
+            if (this.parent != null) this.parent.UpdateParentHitbox(this.hitbox);
         }
 
         public bool DoesCollide(Rectangle other_hitbox)

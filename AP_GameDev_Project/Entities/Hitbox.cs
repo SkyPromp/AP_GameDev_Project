@@ -1,19 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+
 
 namespace AP_GameDev_Project.Entities
 {
-    internal class Hitboxes
+    internal class Hitbox
     {
-        private Hitboxes parent;
-        private List<Hitboxes> children;
+        private Hitbox parent;
+        private List<Hitbox> children;
 
         private Rectangle hitbox;
+        public Rectangle GetHitbox { get { return this.hitbox; } }
 
-        public Hitboxes(Rectangle hitbox, Hitboxes parent=null)
+        public Hitbox(Rectangle hitbox, Hitbox parent=null)
         {
             this.hitbox = hitbox;
             this.parent = parent;
@@ -21,10 +21,10 @@ namespace AP_GameDev_Project.Entities
 
         public void AddChild(Rectangle child_hitbox)
         {
-            this.children.Add(new Hitboxes(child_hitbox, this));
+            this.children.Add(new Hitbox(child_hitbox, this));
         }
 
-        public void RemoveChild(Hitboxes hitbox)
+        public void RemoveChild(Hitbox hitbox)
         {
             this.children.Remove(hitbox);
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.Linq;
 
 
@@ -14,7 +15,14 @@ namespace AP_GameDev_Project.Entities
         private Rectangle hitbox;
         public Rectangle GetHitbox { get { return this.hitbox; } }
 
-        public Hitbox(Rectangle hitbox, Hitbox parent=null)
+        public Hitbox()
+        {
+            this.hitbox = Rectangle.Empty;
+            this.children = new List<Hitbox>();
+            this.parent = null;
+        }
+
+        private Hitbox(Rectangle hitbox, Hitbox parent=null)
         {
             this.hitbox = hitbox;
             this.parent = parent;
@@ -59,6 +67,13 @@ namespace AP_GameDev_Project.Entities
             }
 
             if (this.parent != null) this.parent.UpdateParentHitbox(this.hitbox);
+        }
+
+        public bool DoesCollide(Hitbox other_hitbox)
+        {
+            if(other_hitbox.children.Count == 0) return this.DoesCollide(other_hitbox.hitbox);
+            
+            return other_hitbox.children.Any(child => this.DoesCollide(child));
         }
 
         public bool DoesCollide(Rectangle other_hitbox)

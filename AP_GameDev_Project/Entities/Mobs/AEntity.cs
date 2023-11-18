@@ -26,6 +26,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         private float speed_damping_factor;
 
         private readonly Hitbox hitbox;
+        public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {

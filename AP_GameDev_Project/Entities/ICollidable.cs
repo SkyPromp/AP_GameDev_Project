@@ -8,6 +8,7 @@ namespace AP_GameDev_Project.Entities
         public Vector2 Position { get; set; }
         public Vector2 Speed { get; set; }
         public Rectangle GetHitbox { get; }
+        public Hitbox GetHitboxHitbox { get; }
         public Rectangle NormalizedHitbox { get; }
     }
 }

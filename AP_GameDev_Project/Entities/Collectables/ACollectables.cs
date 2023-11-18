@@ -12,6 +12,7 @@ namespace AP_GameDev_Project.Entities.Collectables
         public Vector2 Position { get { return position; } }
 
         private readonly Hitbox hitbox;
+        public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {

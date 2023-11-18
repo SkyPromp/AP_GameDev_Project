@@ -3,14 +3,12 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Windows.Forms;
+
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
     internal abstract class AEntity : ICollidable, ISpawnable
     {
-        private HitboxDrawer hitboxDrawer;
-
         protected Animate stand_animation;
         protected Animate walk_animation;
         protected Animate current_animation;
@@ -27,18 +25,18 @@ namespace AP_GameDev_Project.Entities.Mobs
         public Vector2 Speed { get { return speed; } set { speed = value; } }
         private float speed_damping_factor;
 
-        private readonly Rectangle normalized_hitbox;
-        public Rectangle GetNormalizedHitbox { get { return normalized_hitbox; } }
+        private readonly Hitbox hitbox;
+        public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {
             get
             {
-                return new Rectangle((int)(position.X + normalized_hitbox.X), (int)(position.Y + normalized_hitbox.Y), normalized_hitbox.Width, normalized_hitbox.Height);
+                return new Rectangle((int)(position.X + this.NormalizedHitbox.X), (int)(position.Y + this.NormalizedHitbox.Y), this.NormalizedHitbox.Width, this.NormalizedHitbox.Height);
             }
         }
         public Vector2 GetCenter
         {
-            get { return position + normalized_hitbox.Center.ToVector2(); }
+            get { return position + this.hitbox.GetHitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;
@@ -49,10 +47,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, float max_speed, Rectangle normalized_hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f)
+        public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f)
         {
-            this.hitboxDrawer = HitboxDrawer.getInstance;
-
             this.position = position;
 
             flip_texture = false;
@@ -61,7 +57,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.max_speed = max_speed;
             this.speed_damping_factor = speed_damping_factor;
 
-            this.normalized_hitbox = normalized_hitbox;
+            this.hitbox = hitbox;
             show_hitbox = false;
 
             health = base_health;
@@ -101,12 +97,8 @@ namespace AP_GameDev_Project.Entities.Mobs
 
             foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
 
-            if (show_hitbox)
-            {
-                spriteBatch.End();  // Required to draw the hitbox on top
-                spriteBatch.Begin();
-                this.hitboxDrawer.DrawHitbox(this.GetHitbox);
-            }
+            //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            if (this.show_hitbox) { hitbox.Draw(spriteBatch, this.position); }
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Windows.Forms;
 
 
 namespace AP_GameDev_Project.Entities.Mobs
@@ -53,6 +54,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             );
 
             if (this.show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            //if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch); }
         }
     }
 }

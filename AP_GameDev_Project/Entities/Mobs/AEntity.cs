@@ -101,7 +101,8 @@ namespace AP_GameDev_Project.Entities.Mobs
 
             foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
 
-            if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch, this.position); }
         }
 
 

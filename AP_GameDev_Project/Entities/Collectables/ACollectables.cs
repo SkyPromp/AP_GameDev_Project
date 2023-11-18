@@ -47,7 +47,8 @@ namespace AP_GameDev_Project.Entities.Collectables
         {
             this.animation.Draw(spriteBatch, this.position);
 
-            if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
+            if (this.show_hitbox) { hitbox.DrawHitboxes(spriteBatch, this.position); }
         }
 
         public abstract void OnCollision(Player player);

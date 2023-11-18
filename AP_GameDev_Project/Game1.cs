@@ -34,7 +34,7 @@ namespace AP_GameDev_Project
             this.stateHandler.InitStateHandler();
             this.contentManager = ContentManager.getInstance;
             this.contentManager.Init();
-            HitboxDrawer.getInstance.Init(_spriteBatch.GraphicsDevice);
+            HitboxDrawer.getInstance.Init(this.GraphicsDevice);
 
             SoundEffect.MasterVolume = 1.0f;
 

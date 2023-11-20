@@ -22,7 +22,7 @@ namespace AP_GameDev_Project.Entities
 
             Rectangle hitbox = self.GetHitbox;
             Rectangle normalized_hitbox = self.NormalizedHitbox;
-            Vector2 self_position = self.Position;
+            Vector2 self_position = self.Position;  // hitbox - normalised
 
             float horizontal = float.PositiveInfinity;
             float vertical = float.PositiveInfinity;

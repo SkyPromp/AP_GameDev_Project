@@ -39,6 +39,7 @@ namespace AP_GameDev_Project.Entities.Collectables
 
         public void Update(GameTime gameTime)
         {
+            this.hitbox.Position = this.position;
             this.animation.Update(gameTime);
         }
 

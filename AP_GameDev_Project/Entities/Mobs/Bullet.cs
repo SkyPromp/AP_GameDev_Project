@@ -36,6 +36,7 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public void Update(GameTime gameTime)
         {
+            this.hitbox.Position = this.position;
             this.position += this.speed;
         }
 

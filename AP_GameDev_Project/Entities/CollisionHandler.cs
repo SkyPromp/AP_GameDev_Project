@@ -4,7 +4,7 @@ using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
-
+using System.Diagnostics;
 
 namespace AP_GameDev_Project.Entities
 {

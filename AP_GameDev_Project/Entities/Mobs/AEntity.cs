@@ -74,22 +74,23 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
-            Rectangle hitbox = GetHitbox;
-            flip_texture = move_direction.X < hitbox.X + hitbox.Width / 2;
+            Rectangle hitbox = this.GetHitbox;
+            this.hitbox.Position = this.position;
+            this.flip_texture = move_direction.X < hitbox.X + hitbox.Width / 2;
 
-            if (Math.Abs(speed.X) < 0.1) speed.X = 0;
-            if (Math.Abs(speed.Y) < 0.1) speed.Y = 0;
+            if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
+            if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
-            if (speed.Length() < 0.1) current_animation = stand_animation;
-            else current_animation = walk_animation;
+            if (this.speed.Length() < 0.1) this.current_animation = this.stand_animation;
+            else this.current_animation = this.walk_animation;
 
-            current_animation.Update(gameTime);
-            position += speed;
+            this.current_animation.Update(gameTime);
+            this.position += this.speed;
 
-            speed *= 1 - speed_damping_factor;
+            this.speed *= 1 - this.speed_damping_factor;
 
-            if (bullet_cooldown > 0) bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            foreach (Bullet bullet in bullets) bullet.Update(gameTime);
+            if (this.bullet_cooldown > 0) this.bullet_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            foreach (Bullet bullet in this.bullets) bullet.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
@@ -99,7 +100,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
 
             //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
-            if (this.show_hitbox) { hitbox.Draw(spriteBatch, this.position); }
+            if (this.show_hitbox) { hitbox.Draw(spriteBatch); }
         }
 
 

@@ -53,7 +53,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             layerDepth: 0
             );
 
-            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch, this.position); }
+            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch); }
         }
     }
 }

@@ -1,6 +1,6 @@
-﻿using AP_GameDev_Project.Input_devices;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using System.Diagnostics;
+
 
 namespace AP_GameDev_Project.Entities.Mobs
 {

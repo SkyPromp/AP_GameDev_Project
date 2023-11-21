@@ -5,15 +5,18 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace AP_GameDev_Project.Entities
 {
     internal class CollisionHandler
     {
         private CollisionHelper collisionHelper;
+        private HitboxCollisionHelper hitboxCollisionHelper;
         public CollisionHandler()
         {
             this.collisionHelper = new CollisionHelper();
+            this.hitboxCollisionHelper = new HitboxCollisionHelper();
         }
 
         public void HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
@@ -57,11 +60,13 @@ namespace AP_GameDev_Project.Entities
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
             foreach (Rectangle hitbox in tile_hitboxes)
             {
-                this.collisionHelper.HandleHardCollison(entity, hitbox);
+                (Vector2 pos_delta, Vector2 speed_delta) = this.hitboxCollisionHelper.HandleHardCollison(entity.GetHitboxHitbox, hitbox);
+                entity.Position += pos_delta;
+                entity.Speed *= speed_delta;
 
                 foreach (Bullet bullet in entity.Bullets)
                 {
-                    if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
+                    if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).IsEmpty) entity_bullets.Remove(bullet);
                 }
             }
 

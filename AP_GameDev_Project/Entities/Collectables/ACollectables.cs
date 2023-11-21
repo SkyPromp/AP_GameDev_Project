@@ -24,7 +24,7 @@ namespace AP_GameDev_Project.Entities.Collectables
 
         public Vector2 GetCenter
         {
-            get { return position + this.NormalizedHitbox.Center.ToVector2(); }
+            get { return this.hitbox.GetHitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;
@@ -34,6 +34,7 @@ namespace AP_GameDev_Project.Entities.Collectables
             this.position = position;
             this.animation = animation;
             this.hitbox = hitbox;
+            this.hitbox.Position = position;
             this.show_hitbox = false;
         }
 

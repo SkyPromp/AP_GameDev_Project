@@ -59,6 +59,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.speed_damping_factor = speed_damping_factor;
 
             this.hitbox = hitbox;
+            this.hitbox.Position = position;
             this.show_hitbox = false;
 
             this.health = base_health;

@@ -24,7 +24,7 @@ namespace AP_GameDev_Project.Entities
 
             foreach (AEntity entity in new List<AEntity>(entities))  // One big foreach, for performance reasons
             {
-                Debug.WriteLine(entity.GetHitboxHitbox.GetHitbox.Location);
+                //Debug.WriteLine(entity.Position);
                 entity.Update(gameTime, is_player ? mouseHandler.MousePos : player_center);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
@@ -33,8 +33,6 @@ namespace AP_GameDev_Project.Entities
 
                 if (is_player)
                 {
-                    Debug.WriteLine(entity.GetHitboxHitbox.GetHitbox.Location);
-                    Debug.WriteLine("");
                     is_player = false;
                     continue;
                 }

@@ -18,11 +18,11 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected int health;
 
         private Vector2 position;
-        public Vector2 Position { get { return position; } set { position = value; this.hitbox.Position = value; } }
+        public Vector2 Position { get { return this.position; } set { this.position = value; this.hitbox.Position = value; } }
 
         private readonly float max_speed;
         private Vector2 speed;
-        public Vector2 Speed { get { return speed; } set { speed = value; } }
+        public Vector2 Speed { get { return this.speed; } set { this.speed = value; } }
         private float speed_damping_factor;
 
         private readonly Hitbox hitbox;
@@ -32,7 +32,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             get
             {
-                return new Rectangle((int)(position.X + this.NormalizedHitbox.X), (int)(position.Y + this.NormalizedHitbox.Y), this.NormalizedHitbox.Width, this.NormalizedHitbox.Height);
+                return new Rectangle((int)(this.position.X + this.NormalizedHitbox.X), (int)(this.position.Y + this.NormalizedHitbox.Y), this.NormalizedHitbox.Width, this.NormalizedHitbox.Height);
             }
         }
         public Vector2 GetCenter
@@ -95,29 +95,30 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            current_animation.Draw(spriteBatch, position, flip_texture);
+            Debug.WriteLine(this.Position);
+            this.current_animation.Draw(spriteBatch, this.position, this.flip_texture);
 
-            foreach (Bullet bullet in bullets) bullet.Draw(spriteBatch);
+            foreach (Bullet bullet in this.bullets) bullet.Draw(spriteBatch);
 
-            if (this.show_hitbox) { hitbox.Draw(spriteBatch); }
+            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch); }
         }
 
 
         public virtual void SpeedUp(Vector2 add_speed)
         {
-            speed += add_speed * (1 / 5f * max_speed) * (1 + speed_damping_factor);
+            this.speed += add_speed * (1 / 5f * this.max_speed) * (1 + this.speed_damping_factor);
 
-            if (speed.Length() >= max_speed)
+            if (this.speed.Length() >= this.max_speed)
             {
-                speed = Vector2.Normalize(speed) * max_speed;
+                this.speed = Vector2.Normalize(this.speed) * this.max_speed;
             }
         }
 
         public virtual int DoDamage(int damage = 1)
         {
-            health -= damage;
+            this.health -= damage;
 
-            return health;
+            return this.health;
         }
 
         public abstract void Attack(Vector2 player_center);

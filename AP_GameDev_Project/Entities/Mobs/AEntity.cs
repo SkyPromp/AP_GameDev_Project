@@ -18,7 +18,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected int health;
 
         private Vector2 position;
-        public Vector2 Position { get { return position; } set { position = value; } }
+        public Vector2 Position { get { return position; } set { position = value; this.hitbox.Position = value; } }
 
         private readonly float max_speed;
         private Vector2 speed;

@@ -31,6 +31,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.speed = speed;
             this.texture = contentManager.GetTextures["BULLET"];
             this.hitbox = new Hitbox().AddChild(new Rectangle(-2, -2, 4, 4));
+            this.hitbox.Position = position;
             this.show_hitbox = false;
         }
 

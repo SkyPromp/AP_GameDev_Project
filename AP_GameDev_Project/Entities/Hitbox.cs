@@ -2,8 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.DirectoryServices;
-using System.Linq;
 
 
 namespace AP_GameDev_Project.Entities

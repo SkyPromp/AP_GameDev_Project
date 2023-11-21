@@ -15,7 +15,7 @@ namespace AP_GameDev_Project.Entities
             {
                 (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
 
-                entity.Position += delta_pos;
+                entity.Position += delta_pos;    // Stuttering due to deltapos being a vector of ints
                 entity.Speed *= factor_speed;
             }
         }
@@ -28,7 +28,7 @@ namespace AP_GameDev_Project.Entities
             {
                 (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other);
 
-                entity.Position += delta_pos;
+                entity.Position += delta_pos;  // Stuttering due to deltapos being a vector of ints
                 entity.Speed *= factor_speed;
             }
         }

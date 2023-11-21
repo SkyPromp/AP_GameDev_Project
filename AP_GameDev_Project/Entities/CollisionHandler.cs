@@ -24,7 +24,6 @@ namespace AP_GameDev_Project.Entities
 
             foreach (AEntity entity in new List<AEntity>(entities))  // One big foreach, for performance reasons
             {
-                //Debug.WriteLine(entity.Position);
                 entity.Update(gameTime, is_player ? mouseHandler.MousePos : player_center);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 

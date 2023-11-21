@@ -95,7 +95,6 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            Debug.WriteLine(this.Position);
             this.current_animation.Draw(spriteBatch, this.position, this.flip_texture);
 
             foreach (Bullet bullet in this.bullets) bullet.Draw(spriteBatch);

@@ -14,8 +14,8 @@ namespace AP_GameDev_Project.Entities
             if (!self_hitbox.IsEmpty)
             {
                 (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
+
                 entity.Position += delta_pos;
-                //entity.Position = new Vector2((int)entity.Position.X, (int)entity.Position.Y) + delta_pos;
                 entity.Speed *= factor_speed;
             }
         }
@@ -29,7 +29,6 @@ namespace AP_GameDev_Project.Entities
                 (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other);
 
                 entity.Position += delta_pos;
-                //entity.Position = new Vector2((int)entity.Position.X, (int)entity.Position.Y) + delta_pos;
                 entity.Speed *= factor_speed;
             }
         }
@@ -77,8 +76,6 @@ namespace AP_GameDev_Project.Entities
                     test.Y = other.Bottom - self.Top;
                 }
             }
-
-            Debug.WriteLine(test);
 
             if ((test.X != 0) && Math.Abs(test.X) < Math.Abs(test.Y) || (test.Y == 0))
             {

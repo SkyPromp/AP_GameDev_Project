@@ -42,6 +42,7 @@ namespace AP_GameDev_Project.Entities
         {
             this.children.Add(new Hitbox(child_normalised_hitbox, this));
             this.UpdateParentHitbox(child_normalised_hitbox);
+            this.UpdatePosition(this.position);
 
             return this;
         }

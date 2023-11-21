@@ -37,7 +37,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         }
         public Vector2 GetCenter
         {
-            get { return position + this.hitbox.GetHitbox.Center.ToVector2(); }
+            get { return this.hitbox.GetHitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;
@@ -52,31 +52,31 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             this.position = position;
 
-            flip_texture = false;
+            this.flip_texture = false;
 
-            speed = Vector2.Zero;
+            this.speed = Vector2.Zero;
             this.max_speed = max_speed;
             this.speed_damping_factor = speed_damping_factor;
 
             this.hitbox = hitbox;
-            show_hitbox = false;
+            this.show_hitbox = false;
 
-            health = base_health;
+            this.health = base_health;
 
-            bullets = new List<Bullet>();
+            this.bullets = new List<Bullet>();
             this.bullet_speed = bullet_speed;
             this.bullet_max_cooldown = bullet_max_cooldown;
 
             this.stand_animation = stand_animation;
             this.walk_animation = walk_animation != null ? walk_animation : stand_animation;
-            current_animation = stand_animation;
+            this.current_animation = stand_animation;
         }
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
             Rectangle hitbox = this.GetHitbox;
             this.hitbox.Position = this.position;
-            this.flip_texture = move_direction.X < hitbox.X + hitbox.Width / 2;
+            this.flip_texture = move_direction.X < this.GetCenter.X;
 
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;

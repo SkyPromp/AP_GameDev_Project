@@ -21,7 +21,7 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public override void Update(GameTime gameTime, Vector2 move_direction)
         {
-            mouse_position = move_direction;
+            this.mouse_position = move_direction;
 
             base.Update(gameTime, move_direction);
         }
@@ -35,13 +35,13 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             if (bullet_cooldown <= 0)
             {
-                Vector2 center = GetCenter;
+                Vector2 center = base.GetCenter;
                 Vector2 bullet_position = center + new Vector2(mouse_pos.X < center.X ? -36 : 36, 3);
                 Vector2 angle = Vector2.Normalize(mouse_pos - bullet_position);  // TODO: correct bullet_position to the center of the bullet?
 
-                bullets.Add(new Bullet(bullet_position, angle * bullet_speed));
-                bullet_cooldown = bullet_max_cooldown;
-                contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
+                base.bullets.Add(new Bullet(bullet_position, angle * bullet_speed));
+                base.bullet_cooldown = base.bullet_max_cooldown;
+                this.contentManager.GetSoundEffects["BULLET_SHOOT"].Play();
             }
         }
 

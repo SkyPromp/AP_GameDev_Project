@@ -60,9 +60,7 @@ namespace AP_GameDev_Project.Entities
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
             foreach (Rectangle hitbox in tile_hitboxes)
             {
-                (Vector2 pos_delta, Vector2 speed_delta) = this.hitboxCollisionHelper.HandleHardCollison(entity.GetHitboxHitbox, hitbox);
-                entity.Position += pos_delta;
-                entity.Speed *= speed_delta;
+                this.hitboxCollisionHelper.HandleHardCollison(entity, hitbox);
 
                 foreach (Bullet bullet in entity.Bullets)
                 {

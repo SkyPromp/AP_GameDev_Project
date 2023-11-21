@@ -40,9 +40,10 @@ namespace AP_GameDev_Project.Entities
 
         public Hitbox AddChild(Rectangle child_normalised_hitbox)
         {
-            this.children.Add(new Hitbox(child_normalised_hitbox, this));
+            Hitbox child = new Hitbox(child_normalised_hitbox, this);
+            child.UpdatePosition(this.position);
+            this.children.Add(child);
             this.UpdateParentHitbox(child_normalised_hitbox);
-            this.UpdatePosition(this.position);
 
             return this;
         }

@@ -7,17 +7,16 @@ namespace AP_GameDev_Project.Entities
 {
     internal class HitboxCollisionHelper
     {
-        public void HandleHardCollison(AEntity entity, Rectangle other)  // self.position += output[0]; self.speed *= output[1]
+        public void HandleHardCollison(AEntity entity, Rectangle other)
         {
             Rectangle self_hitbox = entity.GetHitboxHitbox.DoesCollideR(other);
 
-            Vector2 delta_pos = Vector2.Zero;
-            Vector2 factor_speed = Vector2.One;
-
-            if (!self_hitbox.IsEmpty) (delta_pos, factor_speed) = this.HardCollide(self_hitbox, other);
-
-            entity.Position += delta_pos;
-            entity.Speed *= factor_speed;
+            if (!self_hitbox.IsEmpty)
+            {
+                (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other);
+                entity.Position += delta_pos;
+                entity.Speed *= factor_speed;
+            }
         }
 
         public (Vector2, Vector2) HandleHardCollison(Hitbox self, Rectangle other)  // self.position += output[0]; self.speed *= output[1]

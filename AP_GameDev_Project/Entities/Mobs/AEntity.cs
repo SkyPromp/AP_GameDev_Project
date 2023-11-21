@@ -75,7 +75,6 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
-            Rectangle hitbox = this.GetHitbox;
             this.hitbox.Position = this.position;
             this.flip_texture = move_direction.X < this.GetCenter.X;
 

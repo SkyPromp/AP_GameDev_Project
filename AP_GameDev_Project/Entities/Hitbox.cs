@@ -16,9 +16,7 @@ namespace AP_GameDev_Project.Entities
         public Rectangle GetHitbox { get { return this.hitbox; } }
 
         private Vector2 position;
-        public Vector2 Position { set {
-                this.UpdatePosition(value);
-            } }
+        public Vector2 Position { set { this.UpdatePosition(value); } }
 
         public Hitbox()
         {

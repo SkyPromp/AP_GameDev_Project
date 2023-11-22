@@ -50,7 +50,7 @@ namespace AP_GameDev_Project.Entities
         }
 
         private (Vector2, Vector2) HardCollide(Rectangle self, Rectangle other)  // self.position += output[0]; self.speed *= output[1]
-        {
+        {  // Make absolute instead of relative to avoid stuttering
             Vector2 test = Vector2.Zero;
 
             if (self.Left < other.Right && self.Right > other.Left)
@@ -78,6 +78,43 @@ namespace AP_GameDev_Project.Entities
             }
 
             if ((test.X != 0) && Math.Abs(test.X) < Math.Abs(test.Y) || (test.Y == 0))
+            {
+                return (new Vector2(test.X, 0), new Vector2(0, 1));
+            }
+
+            return (new Vector2(0, test.Y), new Vector2(1, 0));
+        }
+
+        private (Vector2, Vector2) HardCollideAbsolute(Rectangle self, Rectangle other, AEntity entity)  // self.position += output[0]; self.speed *= output[1]
+        {  // TODO: implement
+
+            Vector2 test = Vector2.Zero;
+
+            if (self.Left < other.Right && self.Right > other.Left)
+            {
+                if (self.Center.X < other.Center.X)  // move to the left
+                {
+                    test.X = other.Left - self.Right; // TODO make these with floats instead of ints
+                }
+                else  // move to the right
+                {
+                    test.X = other.Right - self.Left;// TODO make these with floats instead of ints
+                }
+            }
+
+            if (self.Top < other.Bottom && self.Bottom > other.Top)
+            {
+                if (self.Center.Y < other.Center.Y)  // move to the top
+                {
+                    test.Y = other.Top - self.Bottom;// TODO make these with floats instead of ints
+                }
+                else  // move to the bottom
+                {
+                    test.Y = other.Bottom - self.Top;// TODO make these with floats instead of ints
+                }
+            }
+
+            if ((test.X != 0) && Math.Abs(test.X) < Math.Abs(test.Y) || (test.Y == 0))  // TODO: update entity here
             {
                 return (new Vector2(test.X, 0), new Vector2(0, 1));
             }

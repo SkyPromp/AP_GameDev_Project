@@ -19,7 +19,7 @@ namespace AP_GameDev_Project
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
             graphics.PreferredBackBufferWidth = GlobalConstants.SCREEN_WIDTH;
             graphics.PreferredBackBufferHeight = GlobalConstants.SCREEN_HEIGHT;
 
@@ -45,6 +45,7 @@ namespace AP_GameDev_Project
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
+            this.contentManager.AddTexture("STARTSCREEN", Content.Load<Texture2D>("startscreen"));
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap_2"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("PLAYER_STANDSTILL", Content.Load<Texture2D>("short_stand_still3"));

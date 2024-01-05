@@ -13,11 +13,13 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private StateHandler stateHandler;
+        private ContentManager contentManager;
 
         public StartStateHandler()
         {
-            this.startButtonRect = new Rectangle(0, 0, 1920, 540);
-            this.mapMakeButtonRect = new Rectangle(0, 540, 1920, 540);
+            this.contentManager = ContentManager.getInstance;
+            this.startButtonRect = new Rectangle(248, 386, 1423, 253);
+            this.mapMakeButtonRect = new Rectangle(248, 712, 1423, 253);
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.is_init = false;
             this.stateHandler = StateHandler.getInstance;
@@ -47,7 +49,7 @@ namespace AP_GameDev_Project.State_handlers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-
+            spriteBatch.Draw(this.contentManager.GetTextures["STARTSCREEN"], new Vector2(0, 0), Color.White);
         }
     }
 }

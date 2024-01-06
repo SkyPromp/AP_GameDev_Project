@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 
@@ -17,6 +18,7 @@ namespace AP_GameDev_Project.Entities
 
         private Vector2 position;
         public Vector2 Position { set { this.UpdatePosition(value); } }
+        public bool is_flipped;
 
         public Hitbox()
         {
@@ -24,6 +26,7 @@ namespace AP_GameDev_Project.Entities
             this.children = new List<Hitbox>();
             this.parent = null;
             this.position = Vector2.Zero;
+            this.is_flipped = false;
         }
 
         private Hitbox(Rectangle normalised_hitbox, Hitbox parent=null)
@@ -32,6 +35,7 @@ namespace AP_GameDev_Project.Entities
             this.parent = parent;
             this.children = new List<Hitbox>();
             this.position = Vector2.Zero;
+            this.is_flipped = false;
         }
 
         public Hitbox AddChild(Rectangle child_normalised_hitbox)
@@ -140,6 +144,21 @@ namespace AP_GameDev_Project.Entities
 
             return this.children.Any(child_hitbox => child_hitbox.DoesCollide(other_hitbox));
         }*/
+
+        public void Flip(float X)
+        {
+            this.is_flipped = !this.is_flipped;
+
+            this.hitbox = new Rectangle(Math.Min(FlipPointLocation(X, this.hitbox.Left), FlipPointLocation(X, this.hitbox.Right)), this.hitbox.Y, this.hitbox.Width, this.hitbox.Height);
+            this.normalised_hitbox = new Rectangle(this.hitbox.X - (int)this.position.X, this.normalised_hitbox.Y, this.normalised_hitbox.Width, this.normalised_hitbox.Height);
+
+            foreach (Hitbox child in this.children) child.Flip(X);
+        }
+
+        private int FlipPointLocation(float Center, int other)
+        {
+            return (int)Math.Round(2 * Center) - other;
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

@@ -28,6 +28,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         private readonly Hitbox hitbox;
         public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
+        private readonly Vector2 hitbox_center;
         public Rectangle GetHitbox
         {
             get
@@ -48,7 +49,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f)
+        public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f, Vector2 hitbox_center = default)
         {
             this.position = position;
 
@@ -71,12 +72,20 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.stand_animation = stand_animation;
             this.walk_animation = walk_animation != null ? walk_animation : stand_animation;
             this.current_animation = stand_animation;
+            this.hitbox_center = hitbox_center;
+
+            if (this.hitbox_center == default) this.hitbox_center = new Vector2(this.hitbox.GetHitbox.Left + (float) this.hitbox.GetHitbox.Width / 2, this.hitbox.GetHitbox.Top + (float)this.hitbox.GetHitbox.Height / 2);
         }
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
             this.hitbox.Position = this.position;
             this.flip_texture = move_direction.X < this.GetCenter.X;
+
+            if (this.flip_texture != this.GetHitboxHitbox.is_flipped)
+            {
+                this.hitbox.Flip(this.hitbox_center.X + (int)this.Position.X);
+            }
 
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;

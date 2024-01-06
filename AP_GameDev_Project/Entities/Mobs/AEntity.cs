@@ -80,7 +80,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
             this.hitbox.Position = this.position;
-            this.flip_texture = move_direction.X < this.GetCenter.X;
+            this.flip_texture = move_direction.X < this.hitbox_center.X + (int)this.Position.X;
 
             if (this.flip_texture != this.GetHitboxHitbox.is_flipped)
             {

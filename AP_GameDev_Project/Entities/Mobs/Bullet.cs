@@ -11,6 +11,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         private Vector2 position;
         private readonly Vector2 speed;
         private readonly Hitbox hitbox;
+        public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
         public bool show_hitbox;
@@ -29,12 +30,14 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.position = position;
             this.speed = speed;
             this.texture = contentManager.GetTextures["BULLET"];
-            this.hitbox = new Hitbox(new Rectangle(-2, -2, 4, 4));
+            this.hitbox = new Hitbox().AddChild(new Rectangle(-2, -2, 4, 4));
+            this.hitbox.Position = position;
             this.show_hitbox = false;
         }
 
         public void Update(GameTime gameTime)
         {
+            this.hitbox.Position = this.position;
             this.position += this.speed;
         }
 
@@ -52,7 +55,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             layerDepth: 0
             );
 
-            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch, this.position); }
+            if (this.show_hitbox) { this.hitbox.Draw(spriteBatch); }
         }
     }
 }

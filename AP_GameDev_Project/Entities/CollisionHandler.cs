@@ -4,16 +4,17 @@ using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 
 namespace AP_GameDev_Project.Entities
 {
     internal class CollisionHandler
     {
-        private CollisionHelper collisionHelper;
+        private HitboxCollisionHelper hitboxCollisionHelper;
         public CollisionHandler()
         {
-            this.collisionHelper = new CollisionHelper();
+            this.hitboxCollisionHelper = new HitboxCollisionHelper();
         }
 
         public void HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
@@ -48,7 +49,7 @@ namespace AP_GameDev_Project.Entities
             foreach (AEntity entity2 in entities)
             {
                 if ((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
-                    this.collisionHelper.HandleHardCollison(entity, entity2);
+                    this.hitboxCollisionHelper.HandleHardCollison(entity, entity2); // average movement out
             }
         }
 
@@ -57,11 +58,11 @@ namespace AP_GameDev_Project.Entities
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
             foreach (Rectangle hitbox in tile_hitboxes)
             {
-                this.collisionHelper.HandleHardCollison(entity, hitbox);
+                this.hitboxCollisionHelper.HandleHardCollison(entity, hitbox);
 
                 foreach (Bullet bullet in entity.Bullets)
                 {
-                    if (hitbox.Intersects(bullet.GetHitbox)) entity_bullets.Remove(bullet);
+                    if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).IsEmpty) entity_bullets.Remove(bullet);
                 }
             }
 
@@ -72,10 +73,11 @@ namespace AP_GameDev_Project.Entities
         {
             List<Bullet> player_bullets = new List<Bullet>(player.Bullets);
             bool remove_entity = false;
+            Hitbox hitbox = entity.GetHitboxHitbox;
 
             foreach (Bullet bullet in player.Bullets)
             {
-                if (bullet.GetHitbox.Intersects(entity.GetHitbox))
+                if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).Item1.IsEmpty)
                 {
                     int health = entity.DoDamage();
                     player_bullets.Remove(bullet);
@@ -91,10 +93,11 @@ namespace AP_GameDev_Project.Entities
         private void EbPCollision(AEntity entity, Player player)
         {
             List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
+            Hitbox hitbox = player.GetHitboxHitbox;
 
             foreach (Bullet bullet in entity.Bullets)
             {
-                if (bullet.GetHitbox.Intersects(player.GetHitbox))
+                if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).Item1.IsEmpty)
                 {
                     int health = player.DoDamage();
                     entity_bullets.Remove(bullet);
@@ -111,11 +114,11 @@ namespace AP_GameDev_Project.Entities
 
         private void PCCollision(Player player, List<ACollectables> collectables)
         {
-            Rectangle player_hitbox = player.GetHitbox;
+            Hitbox player_hitbox = player.GetHitboxHitbox;
 
             foreach (ACollectables collectable in new List<ACollectables>(collectables))
             {
-                if (player_hitbox.Intersects(collectable.GetHitbox))
+                if (!collectable.GetHitboxHitbox.DoesCollideR(player_hitbox).Item1.IsEmpty)
                 {
                     collectable.OnCollision(player);
                     collectables.Remove(collectable);

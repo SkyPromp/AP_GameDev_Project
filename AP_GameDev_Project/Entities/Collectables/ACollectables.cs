@@ -12,6 +12,7 @@ namespace AP_GameDev_Project.Entities.Collectables
         public Vector2 Position { get { return position; } }
 
         private readonly Hitbox hitbox;
+        public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         public Rectangle GetHitbox
         {
@@ -23,7 +24,7 @@ namespace AP_GameDev_Project.Entities.Collectables
 
         public Vector2 GetCenter
         {
-            get { return position + this.NormalizedHitbox.Center.ToVector2(); }
+            get { return this.hitbox.GetHitbox.Center.ToVector2(); }
         }
 
         public bool show_hitbox;
@@ -33,11 +34,13 @@ namespace AP_GameDev_Project.Entities.Collectables
             this.position = position;
             this.animation = animation;
             this.hitbox = hitbox;
+            this.hitbox.Position = position;
             this.show_hitbox = false;
         }
 
         public void Update(GameTime gameTime)
         {
+            this.hitbox.Position = this.position;
             this.animation.Update(gameTime);
         }
 
@@ -46,7 +49,7 @@ namespace AP_GameDev_Project.Entities.Collectables
             this.animation.Draw(spriteBatch, this.position);
 
             //if (show_hitbox) this.hitboxDrawer.DrawHitbox(this.GetHitbox, spriteBatch);
-            if (this.show_hitbox) { hitbox.Draw(spriteBatch, this.position); }
+            if (this.show_hitbox) { hitbox.Draw(spriteBatch); }
         }
 
         public abstract void OnCollision(Player player);

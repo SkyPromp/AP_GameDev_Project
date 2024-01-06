@@ -18,7 +18,7 @@ namespace AP_GameDev_Project.Entities
                 if (delta_pos.X == 0) entity.Position = new Vector2(entity.Position.X, (float)Math.Floor(entity.Position.Y));
                 else entity.Position = new Vector2((float)Math.Floor(entity.Position.X), entity.Position.Y);
 
-                entity.Position += delta_pos;    // Stuttering due to deltapos being a vector of ints
+                entity.Position += delta_pos;
                 entity.Speed *= factor_speed;
             }
         }
@@ -34,29 +34,13 @@ namespace AP_GameDev_Project.Entities
                 if (delta_pos.X == 0) entity.Position = new Vector2(entity.Position.X, (float) Math.Floor(entity.Position.Y));
                 else entity.Position = new Vector2((float) Math.Floor(entity.Position.X), entity.Position.Y);
 
-                entity.Position += delta_pos;  // Stuttering due to deltapos being a vector of ints
+                entity.Position += delta_pos;
                 entity.Speed *= factor_speed;
             }
         }
 
-        public (Vector2, Vector2) HandleHardCollison(Hitbox self, Rectangle other)  // self.position += output[0]; self.speed *= output[1]
-        {
-            Rectangle self_hitbox = self.DoesCollideR(other);
-
-            if (!self_hitbox.IsEmpty) return this.HardCollide(self_hitbox, other);
-
-            return (Vector2.Zero, Vector2.One);
-        }
-
-        public (Vector2, Vector2) HandleHardCollison(Rectangle self, Rectangle other)  // self.position += output[0]; self.speed *= output[1]
-        {
-            if (self.Intersects(other)) return this.HardCollide(self, other);
-
-            return (Vector2.Zero, Vector2.One);
-        }
-
         private (Vector2, Vector2) HardCollide(Rectangle self, Rectangle other)  // self.position += output[0]; self.speed *= output[1]
-        {  // Make absolute instead of relative to avoid stuttering
+        {
             Vector2 test = Vector2.Zero;
 
             if (self.Left < other.Right && self.Right > other.Left)

@@ -74,7 +74,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.current_animation = stand_animation;
             this.hitbox_center = hitbox_center;
 
-            if (this.hitbox_center == default) this.hitbox_center = new Vector2(this.hitbox.GetHitbox.Left + (float) this.hitbox.GetHitbox.Width / 2, this.hitbox.GetHitbox.Top + (float)this.hitbox.GetHitbox.Height / 2);
+            if (this.hitbox_center == default) throw new NotImplementedException();//this.hitbox_center = new Vector2(this.hitbox.GetHitbox.Left + (float) this.hitbox.GetHitbox.Width / 2, this.hitbox.GetHitbox.Top + (float)this.hitbox.GetHitbox.Height / 2);
         }
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)

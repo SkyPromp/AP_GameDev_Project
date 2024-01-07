@@ -58,21 +58,35 @@ namespace AP_GameDev_Project
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate enemy1_walk = new Animate(2, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 128, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate player_walk = new Animate(0.5, 4, new Rectangle(0, 320, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+
             Animate enemy2_standstill = new Animate(0.5, 4, new Rectangle(0, 512, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate enemy2_walk = new Animate(1, 8, new Rectangle(0, 576, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+
+            Animate enemy3a_standstill = new Animate(0.5, 2, new Rectangle(0, 640, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy3a_walk = new Animate(1, 4, new Rectangle(0, 704, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy3b_standstill = new Animate(0.5, 2, new Rectangle(0, 768, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy3b_walk = new Animate(1, 4, new Rectangle(0, 832, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+
             Animate heart_collectable = new Animate(3.5, 4, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
             Animate strength_collectable = new Animate(3.5, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
 
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
+
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("ENEMY1_WALK", enemy1_walk);
+
             this.contentManager.AddAnimation("ENEMY2_STANDSTILL", enemy2_standstill);
             this.contentManager.AddAnimation("ENEMY2_WALK", enemy2_walk);
-            this.contentManager.AddAnimation("ENEMY3_STANDSTILL", enemy1_standstill); // TODO: Update
-            this.contentManager.AddAnimation("ENEMY3_WALK", enemy1_walk);  // TODO: Update
+
+            this.contentManager.AddAnimation("ENEMY3A_STANDSTILL", enemy3a_standstill);
+            this.contentManager.AddAnimation("ENEMY3A_WALK", enemy3a_walk);
+            this.contentManager.AddAnimation("ENEMY3B_STANDSTILL", enemy3b_standstill);
+            this.contentManager.AddAnimation("ENEMY3B_WALK", enemy3b_walk);
+
             this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);
             this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 

@@ -22,7 +22,6 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public override void Update(GameTime gameTime, Vector2 player_center)
         {
-            Attack(player_center);  // Add condition
             base.SpeedUp(Vector2.Normalize(player_center - GetCenter));
             base.Update(gameTime, player_center);
             Debug.WriteLine(this.is_attacking);

@@ -36,6 +36,14 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
         }
 
+        public override int DoDamage(int damage = 1)
+        {
+            if (damage < 0) health = 0;
+            else base.DoDamage(damage);
+
+            return base.health;
+        }
+
         public override void Die(ContentManager contentManager)
         {
             contentManager.GetSoundEffects["EXPLOSION"].Play();

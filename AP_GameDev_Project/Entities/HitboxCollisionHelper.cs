@@ -8,7 +8,7 @@ namespace AP_GameDev_Project.Entities
 {
     internal class HitboxCollisionHelper
     {
-        public bool HandleHardCollison(AEntity entity, AEntity other)  // Returns if other should die
+        public void HandleHardCollison(AEntity entity, AEntity other)  // Returns if other should die
         {
             (Rectangle self_hitbox, Rectangle other_hitbox) = entity.GetHitboxHitbox.DoesCollideR(other.GetHitboxHitbox);
 
@@ -16,19 +16,12 @@ namespace AP_GameDev_Project.Entities
             {
                 if (entity is Player && other is Enemy2 && ((Enemy2)other).IsAttacking)
                 {
-                    int health = entity.DoDamage(((Enemy2)other).Damage);
-
-                    if (health <= 0) ((Player)entity).Die(ContentManager.getInstance);
-
-                    ((Enemy2)other).Die(ContentManager.getInstance);
-
-                    return true;
+                    entity.DoDamage(other.Damage);
+                    other.DoDamage(-1);
                 } else if (entity is Player && other is Enemy3 && ((Enemy3)other).IsAttacking)
                 {
                     ((Enemy3)other).DealDamage();
-                    int health = entity.DoDamage(((Enemy3)other).Damage);
-
-                    if (health <= 0) ((Player)entity).Die(ContentManager.getInstance);
+                    entity.DoDamage(other.Damage);
                 }
                 else
                 {
@@ -41,8 +34,6 @@ namespace AP_GameDev_Project.Entities
                 entity.Speed *= factor_speed;
                 }
             }
-
-            return false;
         }
 
         public void HandleHardCollison(AEntity entity, Rectangle other)

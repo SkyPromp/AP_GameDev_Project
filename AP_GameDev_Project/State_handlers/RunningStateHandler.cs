@@ -41,7 +41,7 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
 
-            //tiles = this.Spawn<Enemy1, AEntity>(4, tiles, this.entities, new object[] { 5f, 5, 0.8f});
+            tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f});
             tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
             tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
             tiles = this.Spawn<HeartCollectable, ACollectables>(4, tiles, this.collectables, new object[] {});
@@ -84,7 +84,28 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.keyboardHandler.Update(gameTime);
             foreach (ACollectables collectable in this.collectables) collectable.Update(gameTime);
-            this.entities = this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes, this.mouseHandler);
+            this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes);
+
+            foreach (AEntity entity in new List<AEntity>(this.entities))
+            {
+                if (entity.Health <= 0)
+                {
+                    entity.Die(this.contentManager);
+                    this.entities.Remove(entity);
+                    if (entity is Player) return;
+                }
+                else
+                {
+                    entity.Update(gameTime, entity is Player ? mouseHandler.MousePos : this.Player.GetCenter);
+                }
+            }
+
+            if (entities.Count == 1)
+            {
+                StateHandler stateHandler = StateHandler.getInstance;
+                stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
+                ((EndStateHandler)stateHandler.States[StateHandler.states_enum.END]).Won = true;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

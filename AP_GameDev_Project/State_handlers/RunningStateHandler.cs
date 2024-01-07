@@ -42,7 +42,7 @@ namespace AP_GameDev_Project.State_handlers
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
 
             //tiles = this.Spawn<Enemy1, AEntity>(4, tiles, this.entities, new object[] { 5f, 5, 0.8f});
-            tiles = this.Spawn<Enemy2, AEntity>(3, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+            tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
             tiles = this.Spawn<HeartCollectable, ACollectables>(4, tiles, this.collectables, new object[] {});
             tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
         }

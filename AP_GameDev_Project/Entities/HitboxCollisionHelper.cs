@@ -21,6 +21,12 @@ namespace AP_GameDev_Project.Entities
                     if (health <= 0) entity.Die(ContentManager.getInstance);
 
                     return true;
+                } else if (entity is Player && other is Enemy3 && ((Enemy3)other).IsAttacking)
+                {
+                    ((Enemy3)other).DealDamage();
+                    int health = entity.DoDamage(((Enemy3)other).Damage);
+
+                    if (health <= 0) entity.Die(ContentManager.getInstance);
                 }
                 else
                 {

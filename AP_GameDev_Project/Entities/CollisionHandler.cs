@@ -1,6 +1,7 @@
 ﻿using AP_GameDev_Project.Entities.Collectables;
 using AP_GameDev_Project.Entities.Mobs;
 using AP_GameDev_Project.Input_devices;
+using AP_GameDev_Project.State_handlers;
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
@@ -12,9 +13,13 @@ namespace AP_GameDev_Project.Entities
     internal class CollisionHandler
     {
         private HitboxCollisionHelper hitboxCollisionHelper;
+        private ContentManager contentManager;
+        private StateHandler stateHandler;
         public CollisionHandler()
         {
+            this.contentManager = ContentManager.getInstance;
             this.hitboxCollisionHelper = new HitboxCollisionHelper();
+            this.stateHandler = StateHandler.getInstance;
         }
 
         public void HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
@@ -103,8 +108,8 @@ namespace AP_GameDev_Project.Entities
                     entity_bullets.Remove(bullet);
                     if (health <= 0)
                     {
-                        //this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
-                        throw new NotImplementedException("The player has died, a game over screen has not been implemented yet.");
+                        this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
+                        stateHandler.SetCurrentState(StateHandler.states_enum.GAME_OVER).Init();
                     }
                 }
             }

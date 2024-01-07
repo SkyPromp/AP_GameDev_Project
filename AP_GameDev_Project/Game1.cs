@@ -46,6 +46,7 @@ namespace AP_GameDev_Project
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
             this.contentManager.AddTexture("STARTSCREEN", Content.Load<Texture2D>("startscreen"));
+            this.contentManager.AddTexture("GAMEOVERSCREEN", Content.Load<Texture2D>("gameoverscreen"));
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap_2"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("TILEMAP_ENTITIES", Content.Load<Texture2D>("tilemap_entities"));
@@ -66,16 +67,18 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 
             this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
+            foreach (Room room in this.contentManager.GetRooms) room.Center();
 
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
+            this.stateHandler.Add(StateHandler.states_enum.GAME_OVER, new GameOverStateHandler());
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.F4))
+            if (Keyboard.GetState().IsKeyDown(Keys.F4) || this.stateHandler.ExitState)
                 Exit();
 
             if (!this.stateHandler.IsInit) this.stateHandler.Init();

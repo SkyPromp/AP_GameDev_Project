@@ -30,7 +30,6 @@ namespace AP_GameDev_Project.State_handlers
             this.contentManager = ContentManager.getInstance;
             this.collisionHandler = new CollisionHandler();
             this.current_room = this.contentManager.GetRooms[0];
-            this.current_room.Center();
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();

@@ -74,6 +74,18 @@
 /processorParam:TextureFormat=Color
 /build:gamedev_tilemap_2.png
 
+#begin gameoverscreen.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:gameoverscreen.png
+
 #begin shootsound.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor

@@ -25,6 +25,8 @@ namespace AP_GameDev_Project.State_handlers
             GAME_OVER
         }
         public bool IsInit { get { return current_state.IsInit; } }
+        private bool exit_state;
+        public bool ExitState { get { return exit_state; } set { this.exit_state = value; } }
 
         private StateHandler() { }
 
@@ -46,6 +48,7 @@ namespace AP_GameDev_Project.State_handlers
 
         public void InitStateHandler()
         {
+            this.exit_state = false;
             this.states = new Dictionary<states_enum, IStateHandler>();
         }
 
@@ -59,6 +62,11 @@ namespace AP_GameDev_Project.State_handlers
         public void Add(states_enum state_enum, IStateHandler state)
         {
             this.states.Add(state_enum, state);
+        }
+
+        public void ResetState(states_enum state_enum, IStateHandler state)
+        {
+            this.states[state_enum] = state;
         }
 
         public void Init()

@@ -1,20 +1,35 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AP_GameDev_Project.Input_devices;
+using Microsoft.Xna.Framework;
 using System.Diagnostics;
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
     internal class Enemy1 : AEntity
     {
+        MouseHandler mouseHandler;
+
         public Enemy1(Vector2 position, ContentManager contentManager, float max_speed, int base_health, float speed_damping_factor = 0.8f) :
             base(position, max_speed, new Hitbox().AddChild(new Rectangle(22, 10, 17, 43)), 10f, 1f, contentManager.GetAnimations["ENEMY1_STANDSTILL"], contentManager.GetAnimations["ENEMY1_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f), damage: 1)
         {
+            this.mouseHandler = MouseHandler.getInstance;
         }
 
         public override void Update(GameTime gameTime, Vector2 player_center)
         {
             Attack(player_center);  // Add condition
-            base.SpeedUp(Vector2.Normalize(player_center - GetCenter));
-            base.Update(gameTime, player_center);
+
+            Vector2 target = this.mouseHandler.MousePos;
+
+            if ((target - this.GetCenter).Length() > 1)
+            {
+                base.is_standing = false;
+                base.SpeedUp(Vector2.Normalize(target - this.GetCenter));
+                base.Update(gameTime, target);
+            }
+            else
+            {
+                base.is_standing = true;
+            }
         }
 
         public override void Attack(Vector2 player_center)

@@ -29,6 +29,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         public Hitbox GetHitboxHitbox { get { return this.hitbox; } }
         public Rectangle NormalizedHitbox { get { return this.hitbox.GetHitbox; } }
         private readonly Vector2 hitbox_center;
+        private int damage;
+        public int Damage { get { return this.damage; }  set { this.damage = value; } }
         public Rectangle GetHitbox
         {
             get
@@ -49,7 +51,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected double bullet_max_cooldown;
         protected double bullet_cooldown;
 
-        public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f, Vector2 hitbox_center = default)
+        public AEntity(Vector2 position, float max_speed, Hitbox hitbox, float bullet_speed, double bullet_max_cooldown, Animate stand_animation, Animate walk_animation = null, int base_health = 5, float speed_damping_factor = 0.95f, Vector2 hitbox_center = default, int damage = 1)
         {
             this.position = position;
 
@@ -75,6 +77,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.hitbox_center = hitbox_center;
 
             if (this.hitbox_center == default) throw new NotImplementedException();//this.hitbox_center = new Vector2(this.hitbox.GetHitbox.Left + (float) this.hitbox.GetHitbox.Width / 2, this.hitbox.GetHitbox.Top + (float)this.hitbox.GetHitbox.Height / 2);
+            this.damage = damage;
         }
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)

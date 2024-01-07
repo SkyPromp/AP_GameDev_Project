@@ -79,7 +79,7 @@ namespace AP_GameDev_Project.Entities
             {
                 if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).Item1.IsEmpty)
                 {
-                    int health = entity.DoDamage();
+                    int health = entity.DoDamage(bullet.Damage);
                     player_bullets.Remove(bullet);
                     remove_entity = health <= 0;
                 }
@@ -99,7 +99,7 @@ namespace AP_GameDev_Project.Entities
             {
                 if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).Item1.IsEmpty)
                 {
-                    int health = player.DoDamage();
+                    int health = player.DoDamage(bullet.Damage);
                     entity_bullets.Remove(bullet);
                     if (health <= 0)
                     {

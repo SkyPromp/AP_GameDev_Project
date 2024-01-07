@@ -6,7 +6,7 @@ namespace AP_GameDev_Project.Entities.Mobs
     internal class Enemy1 : AEntity
     {
         public Enemy1(Vector2 position, ContentManager contentManager, float max_speed, int base_health, float speed_damping_factor = 0.8f) :
-            base(position, max_speed, new Hitbox().AddChild(new Rectangle(22, 10, 17, 43)), 10f, 1f, contentManager.GetAnimations["ENEMY1_STANDSTILL"], contentManager.GetAnimations["ENEMY1_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f))
+            base(position, max_speed, new Hitbox().AddChild(new Rectangle(22, 10, 17, 43)), 10f, 1f, contentManager.GetAnimations["ENEMY1_STANDSTILL"], contentManager.GetAnimations["ENEMY1_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f), damage: 1)
         {
         }
 
@@ -26,7 +26,7 @@ namespace AP_GameDev_Project.Entities.Mobs
                 Vector2 bullet_position = weapon_offset + enemy_center;
                 Vector2 angle = Vector2.Normalize(player_center - bullet_position);    // TODO: correct bullet_position to the center of the bullet?
 
-                bullets.Add(new Bullet(bullet_position, angle * bullet_speed));
+                bullets.Add(new Bullet(bullet_position, angle * bullet_speed, base.Damage));
                 bullet_cooldown = bullet_max_cooldown;
             }
         }

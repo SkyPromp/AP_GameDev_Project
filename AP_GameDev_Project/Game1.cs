@@ -49,19 +49,21 @@ namespace AP_GameDev_Project
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap_2"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("TILEMAP_ENTITIES", Content.Load<Texture2D>("tilemap_entities"));
-            this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables"));
+            this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables2"));
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 128, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate player_walk = new Animate(0.5, 4, new Rectangle(0, 320, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate enemy1_walk = new Animate(2, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate heart_collectable = new Animate(3.5, 4, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
+            Animate strength_collectable = new Animate(3.5, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
 
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
             this.contentManager.AddAnimation("ENEMY1_WALK", enemy1_walk);
             this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);
+            this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 
             this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
 

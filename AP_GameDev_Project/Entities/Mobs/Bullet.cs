@@ -15,6 +15,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         private readonly Rectangle normalized_hitbox;
         private readonly Texture2D texture;
         public bool show_hitbox;
+        private readonly int damage;
+        public int Damage {  get { return damage; } }
 
         public Rectangle GetHitbox
         {
@@ -24,7 +26,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             }
         }
 
-        public Bullet(Vector2 position, Vector2 speed)
+        public Bullet(Vector2 position, Vector2 speed, int damage=1)
         {
             ContentManager contentManager = ContentManager.getInstance;
             this.position = position;
@@ -33,6 +35,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.hitbox = new Hitbox().AddChild(new Rectangle(-2, -2, 4, 4));
             this.hitbox.Position = position;
             this.show_hitbox = false;
+            this.damage = damage;
         }
 
         public void Update(GameTime gameTime)

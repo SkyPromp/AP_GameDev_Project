@@ -43,7 +43,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             if (base.bullet_cooldown <= 0)  // TODO: if no walls using ray marching
             {
-                this.is_attacking = !this.is_attacking;
+                this.is_attacking = true;
                 base.bullet_cooldown = base.bullet_max_cooldown;
             }
         }

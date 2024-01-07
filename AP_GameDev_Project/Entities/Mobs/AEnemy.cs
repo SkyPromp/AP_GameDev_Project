@@ -15,7 +15,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             Attack(player_center);
 
-            if ((this.target - this.GetCenter).Length() > 1)
+            if ((this.target - this.GetCenter).Length() > 3)
             {
                 base.is_standing = false;
                 base.SpeedUp(Vector2.Normalize(this.target - this.GetCenter));

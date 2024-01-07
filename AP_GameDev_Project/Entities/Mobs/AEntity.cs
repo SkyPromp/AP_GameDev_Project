@@ -87,17 +87,18 @@ namespace AP_GameDev_Project.Entities.Mobs
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
         {
             this.hitbox.Position = this.position;
-            this.flip_texture = move_direction.X < this.hitbox_center.X + (int)this.Position.X;
+            this.flip_texture = move_direction.X < this.hitbox_center.X + (int)this.Position.X && (move_direction - this.GetCenter).Length() > 10;
 
-            if (this.flip_texture != this.GetHitboxHitbox.is_flipped)
+            if ((this.flip_texture != this.GetHitboxHitbox.is_flipped))
             {
                 this.hitbox.Flip(this.hitbox_center.X + (int)this.Position.X);
+                Debug.WriteLine((move_direction - this.GetCenter).Length());
             }
 
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
-            if (this.speed.Length() < 0.1  || this.is_standing) this.current_animation = this.stand_animation;
+            if (this.speed.Length() < 0.1  || this.is_standing || (move_direction - this.GetCenter).Length() > 3) this.current_animation = this.stand_animation;
             else this.current_animation = this.walk_animation;
 
             this.current_animation.Update(gameTime);

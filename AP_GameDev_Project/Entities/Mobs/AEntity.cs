@@ -13,6 +13,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected Animate walk_animation;
         protected Animate current_animation;
 
+        protected bool is_standing;
+
         protected bool flip_texture;
 
         protected int health;
@@ -79,6 +81,7 @@ namespace AP_GameDev_Project.Entities.Mobs
 
             if (this.hitbox_center == default) throw new NotImplementedException();//this.hitbox_center = new Vector2(this.hitbox.GetHitbox.Left + (float) this.hitbox.GetHitbox.Width / 2, this.hitbox.GetHitbox.Top + (float)this.hitbox.GetHitbox.Height / 2);
             this.damage = damage;
+            this.is_standing = false;
         }
 
         public virtual void Update(GameTime gameTime, Vector2 move_direction)
@@ -94,7 +97,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;
 
-            if (this.speed.Length() < 0.1) this.current_animation = this.stand_animation;
+            if (this.speed.Length() < 0.1  || this.is_standing) this.current_animation = this.stand_animation;
             else this.current_animation = this.walk_animation;
 
             this.current_animation.Update(gameTime);

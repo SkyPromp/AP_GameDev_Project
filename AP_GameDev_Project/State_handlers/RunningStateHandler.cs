@@ -16,6 +16,7 @@ namespace AP_GameDev_Project.State_handlers
     {
         private Room current_room;
         private List<Rectangle> tile_hitboxes;
+        private List<Vector2> walkable_tile_centers;
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private List<AEntity> entities;
@@ -25,6 +26,7 @@ namespace AP_GameDev_Project.State_handlers
         private RunningKeyboardEventHandler keyboardHandler;
         private ContentManager contentManager;
         private CollisionHandler collisionHandler;
+        private Random random;
 
         public RunningStateHandler()
         {
@@ -41,14 +43,17 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // TODO: remove player spawnpoint tile (and the one above)
 
-            Random random = new Random();
+            this.random = new Random();
+
+            Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
+            this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
             ushort total_enemies = 5;
             ushort total_enemy_types = 3;
 
             for (int i = 1; i < total_enemies; i++)
             {
-                switch (random.Next(0, total_enemy_types))
+                switch (this.random.Next(0, total_enemy_types))
                 {
                     case 0:
                         tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f });
@@ -74,7 +79,6 @@ namespace AP_GameDev_Project.State_handlers
 
         private List<Rectangle> Spawn<T, A>(int amount, List<Rectangle> tiles, List<A> collection, Object[] constructor_parameters) where T: A where A : ISpawnable
         {
-            Random random = new Random();
             amount = Math.Min(amount, tiles.Count);
 
             Object[] default_parameters = { this.contentManager };
@@ -87,7 +91,7 @@ namespace AP_GameDev_Project.State_handlers
 
             for (int i = 0; i < amount; i++)
             {
-                Rectangle random_rect = tiles[random.Next(0, tiles.Count)];
+                Rectangle random_rect = tiles[this.random.Next(0, tiles.Count)];
                 parameters[0] = random_rect.Center.ToVector2() - offset;
                 T collectable = (T)Activator.CreateInstance(typeof(T), parameters);
                 collection.Add((A)collectable);
@@ -114,7 +118,16 @@ namespace AP_GameDev_Project.State_handlers
                     this.entities.Remove(entity);
                     if (entity is Player) return;
                 }
-                else entity.Update(gameTime, entity is Player ? mouseHandler.MousePos : this.Player.GetCenter);
+                else
+                {
+                    Vector2 target;
+                    if (entity is Player) target = mouseHandler.MousePos;
+                    else if (entity is Enemy2) target = this.walkable_tile_centers[random.Next(0, this.walkable_tile_centers.Count)];
+                    else target = this.Player.GetCenter;
+
+                    entity.Update(gameTime, target);
+
+                }
             }
 
             if (entities.Count == 1)

@@ -25,15 +25,14 @@ namespace AP_GameDev_Project.Input_devices
         public void Update(GameTime gameTime)
         {
             if (this.debug_cooldown > 0) this.debug_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            if (this.sound_cooldown > 0) this.sound_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-
-            if (this.debug_cooldown <= 0 && this.keyboardHandler.is_debug())
+            else if (this.keyboardHandler.is_debug())
             {
                 this.debug_cooldown = this.max_debug_cooldown;
                 this.stateHandler.ToggleDebug();
             }
 
-            if (this.sound_cooldown <= 0)
+            if (this.sound_cooldown > 0) this.sound_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            else
             {
                 this.sound_cooldown = this.max_sound_cooldown;
                 this.keyboardHandler.HandleSound();

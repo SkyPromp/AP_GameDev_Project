@@ -90,10 +90,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             this.flip_texture = move_direction.X < this.hitbox_center.X + (int)this.Position.X && (move_direction - this.GetCenter).Length() > 10;
 
             if ((this.flip_texture != this.GetHitboxHitbox.is_flipped))
-            {
                 this.hitbox.Flip(this.hitbox_center.X + (int)this.Position.X);
-                Debug.WriteLine((move_direction - this.GetCenter).Length());
-            }
 
             if (Math.Abs(this.speed.X) < 0.1) this.speed.X = 0;
             if (Math.Abs(this.speed.Y) < 0.1) this.speed.Y = 0;

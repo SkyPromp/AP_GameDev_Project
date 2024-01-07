@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
-    internal class Enemy2: AEntity
+    internal class Enemy2: AEnemy
     {
         private bool is_attacking;
-        private Vector2 target;
         private double max_target_cooldown;
         private double target_cooldown;
 
@@ -22,7 +21,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             base(position, max_speed, new Hitbox().AddChild(new Rectangle(15, 16, 33, 33)), 0f, 5f, contentManager.GetAnimations["ENEMY2_STANDSTILL"], contentManager.GetAnimations["ENEMY2_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f), damage: 2)
         {
             this.is_attacking = true;
-            this.target = position;
+            base.target = position;
             this.target_cooldown = 0;
             this.max_target_cooldown = 4;
         }
@@ -30,21 +29,13 @@ namespace AP_GameDev_Project.Entities.Mobs
         public override void Update(GameTime gameTime, Vector2 player_center)
         {
             if (this.target_cooldown > 0) this.target_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
-            else if (this.target != player_center)
+            else if (base.target != player_center)
             {
                 this.target_cooldown = this.max_target_cooldown;
-                this.target = player_center;
+                base.target = player_center;
             }
 
-            if ((this.target - this.GetCenter).Length() > 1)
-            {
-                base.is_standing = false;
-                base.SpeedUp(Vector2.Normalize(this.target - this.GetCenter));
-                base.Update(gameTime, player_center);
-            } else
-            {
-                base.is_standing = true;
-            }
+            base.Update(gameTime, player_center);
         }
 
         public override void Draw(SpriteBatch spriteBatch)

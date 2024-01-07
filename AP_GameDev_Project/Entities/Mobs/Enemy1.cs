@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
-    internal class Enemy1 : AEntity
+    internal class Enemy1 : AEnemy
     {
         MouseHandler mouseHandler;
 
@@ -18,18 +18,9 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             Attack(player_center);  // Add condition
 
-            Vector2 target = this.mouseHandler.MousePos;
+            base.target = this.mouseHandler.MousePos;
 
-            if ((target - this.GetCenter).Length() > 1)
-            {
-                base.is_standing = false;
-                base.SpeedUp(Vector2.Normalize(target - this.GetCenter));
-                base.Update(gameTime, target);
-            }
-            else
-            {
-                base.is_standing = true;
-            }
+            base.Update(gameTime, target);
         }
 
         public override void Attack(Vector2 player_center)

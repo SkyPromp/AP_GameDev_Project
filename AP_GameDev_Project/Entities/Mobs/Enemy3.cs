@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
-    internal class Enemy3: AEntity
+    internal class Enemy3: AEnemy
     {
         private bool is_attacking;
         private readonly Animate stand_no_spike;
@@ -31,9 +31,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         public override void Update(GameTime gameTime, Vector2 player_center)
         {
             Attack(player_center);
-            base.SpeedUp(Vector2.Normalize(player_center - GetCenter));
+            base.target = player_center;
             base.Update(gameTime, player_center);
-            Debug.WriteLine(this.is_attacking);
         }
 
         public void DealDamage()

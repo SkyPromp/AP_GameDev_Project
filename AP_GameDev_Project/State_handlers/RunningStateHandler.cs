@@ -56,7 +56,7 @@ namespace AP_GameDev_Project.State_handlers
                 switch (this.random.Next(0, total_enemy_types))
                 {
                     case 0:
-                        tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
                         break;
                     case 1:
                         tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });

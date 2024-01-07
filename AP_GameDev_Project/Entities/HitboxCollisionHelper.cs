@@ -18,7 +18,9 @@ namespace AP_GameDev_Project.Entities
                 {
                     int health = entity.DoDamage(((Enemy2)other).Damage);
 
-                    if (health <= 0) entity.Die(ContentManager.getInstance);
+                    if (health <= 0) ((Player)entity).Die(ContentManager.getInstance);
+
+                    ((Enemy2)other).Die(ContentManager.getInstance);
 
                     return true;
                 } else if (entity is Player && other is Enemy3 && ((Enemy3)other).IsAttacking)
@@ -26,11 +28,11 @@ namespace AP_GameDev_Project.Entities
                     ((Enemy3)other).DealDamage();
                     int health = entity.DoDamage(((Enemy3)other).Damage);
 
-                    if (health <= 0) entity.Die(ContentManager.getInstance);
+                    if (health <= 0) ((Player)entity).Die(ContentManager.getInstance);
                 }
                 else
                 {
-                    (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
+                (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
 
                 if (delta_pos.X == 0) entity.Position = new Vector2(entity.Position.X, (float)Math.Floor(entity.Position.Y));
                 else entity.Position = new Vector2((float)Math.Floor(entity.Position.X), entity.Position.Y);

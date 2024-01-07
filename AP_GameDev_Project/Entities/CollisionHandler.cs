@@ -54,7 +54,11 @@ namespace AP_GameDev_Project.Entities
                     continue;
                 }
 
-                if (PbECollision(entity, player)) entities.Remove(entity);
+                if (PbECollision(entity, player))
+                {
+                    entity.Die(this.contentManager);
+                    entities.Remove(entity);
+                }
 
                 EbPCollision(entity, player);
             }

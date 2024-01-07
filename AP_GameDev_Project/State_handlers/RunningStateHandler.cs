@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Xml.Schema;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -41,9 +42,26 @@ namespace AP_GameDev_Project.State_handlers
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
 
-            tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f});
-            tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
-            tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+            ushort total_enemies = 5;
+
+            Random random = new Random();
+
+            for (int i = 1; i < total_enemies; i++)
+            {
+                switch (random.Next(0, 3))
+                {
+                    case 0:
+                        tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        break;
+                    case 1:
+                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        break; 
+                    case 2:
+                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        break;
+                }
+            }
+
             tiles = this.Spawn<HeartCollectable, ACollectables>(4, tiles, this.collectables, new object[] {});
             tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
         }

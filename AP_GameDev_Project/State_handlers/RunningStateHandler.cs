@@ -84,7 +84,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler.Update();
             this.keyboardHandler.Update(gameTime);
             foreach (ACollectables collectable in this.collectables) collectable.Update(gameTime);
-            this.entities = this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes, this.mouseHandler);
+            this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes);
 
             foreach (AEntity entity in new List<AEntity>(this.entities))
             {

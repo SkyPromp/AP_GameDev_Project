@@ -24,18 +24,15 @@ namespace AP_GameDev_Project.Entities
     internal class CollisionHandler
     {
         private HitboxCollisionHelper hitboxCollisionHelper;
-        private ContentManager contentManager;
-        private StateHandler stateHandler;
+
         public CollisionHandler()
         {
-            this.contentManager = ContentManager.getInstance;
             this.hitboxCollisionHelper = new HitboxCollisionHelper();
-            this.stateHandler = StateHandler.getInstance;
         }
 
-        public List<AEntity> HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
+        public void HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes)
         {
-            foreach (AEntity entity in new List<AEntity>(entities))  // One big foreach, for performance reasons
+            foreach (AEntity entity in new List<AEntity>(entities))
             {
                 EECollision(entity, entities);
                 ETBCollision(entity, tile_hitboxes);
@@ -47,18 +44,14 @@ namespace AP_GameDev_Project.Entities
             }
 
             PCCollision(player, collectables);
-
-            return entities;
         }
 
         private void EECollision(AEntity entity, List<AEntity> entities)
         {
             List<AEntity> entities_list = new List<AEntity>(entities);
             foreach (AEntity entity2 in entities)
-            {
                 if ((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
                     this.hitboxCollisionHelper.HandleHardCollison(entity, entity2); // average movement out  
-            }
         }
 
         private void ETBCollision(AEntity entity, List<Rectangle> tile_hitboxes)
@@ -69,9 +62,7 @@ namespace AP_GameDev_Project.Entities
                 this.hitboxCollisionHelper.HandleHardCollison(entity, hitbox);
 
                 foreach (Bullet bullet in entity.Bullets)
-                {
                     if (!bullet.GetHitboxHitbox.DoesCollideR(hitbox).IsEmpty) entity_bullets.Remove(bullet);
-                }
             }
 
             entity.Bullets = entity_bullets;

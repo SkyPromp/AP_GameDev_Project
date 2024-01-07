@@ -66,6 +66,8 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("ENEMY1_WALK", enemy1_walk);
             this.contentManager.AddAnimation("ENEMY2_STANDSTILL", enemy1_standstill); // TODO: Update
             this.contentManager.AddAnimation("ENEMY2_WALK", enemy1_walk);  // TODO: Update
+            this.contentManager.AddAnimation("ENEMY3_STANDSTILL", enemy1_standstill); // TODO: Update
+            this.contentManager.AddAnimation("ENEMY3_WALK", enemy1_walk);  // TODO: Update
             this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);
             this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 

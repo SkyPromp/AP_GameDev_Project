@@ -15,7 +15,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         public bool IsAttacking { get { return this.is_attacking; } }
 
         public Enemy3(Vector2 position, ContentManager contentManager, float max_speed, int base_health, float speed_damping_factor = 0.8f) :
-            base(position, max_speed, new Hitbox().AddChild(new Rectangle(22, 10, 17, 43)), 0f, 1f, contentManager.GetAnimations["ENEMY2_STANDSTILL"], contentManager.GetAnimations["ENEMY2_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f), damage: 1)
+            base(position, max_speed, new Hitbox().AddChild(new Rectangle(22, 10, 17, 43)), 0f, 1f, contentManager.GetAnimations["ENEMY3_STANDSTILL"], contentManager.GetAnimations["ENEMY3_WALK"], base_health: base_health, speed_damping_factor: speed_damping_factor, hitbox_center: new Vector2(30.5f, 31.5f), damage: 1)
         {
             this.is_attacking = false;
         }

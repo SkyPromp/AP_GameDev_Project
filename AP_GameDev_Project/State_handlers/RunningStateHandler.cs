@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using System.Xml.Schema;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -40,15 +39,16 @@ namespace AP_GameDev_Project.State_handlers
 
             this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
 
-            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // remove player spawnpoint tile (and the one above)
-
-            ushort total_enemies = 5;
+            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // TODO: remove player spawnpoint tile (and the one above)
 
             Random random = new Random();
 
+            ushort total_enemies = 5;
+            ushort total_enemy_types = 3;
+
             for (int i = 1; i < total_enemies; i++)
             {
-                switch (random.Next(0, 3))
+                switch (random.Next(0, total_enemy_types))
                 {
                     case 0:
                         tiles = this.Spawn<Enemy1, AEntity>(2, tiles, this.entities, new object[] { 5f, 5, 0.8f });
@@ -101,7 +101,9 @@ namespace AP_GameDev_Project.State_handlers
         {
             this.mouseHandler.Update();
             this.keyboardHandler.Update(gameTime);
+
             foreach (ACollectables collectable in this.collectables) collectable.Update(gameTime);
+
             this.collisionHandler.HandleCollision(gameTime, this.Player, this.entities, this.collectables, this.tile_hitboxes);
 
             foreach (AEntity entity in new List<AEntity>(this.entities))
@@ -112,10 +114,7 @@ namespace AP_GameDev_Project.State_handlers
                     this.entities.Remove(entity);
                     if (entity is Player) return;
                 }
-                else
-                {
-                    entity.Update(gameTime, entity is Player ? mouseHandler.MousePos : this.Player.GetCenter);
-                }
+                else entity.Update(gameTime, entity is Player ? mouseHandler.MousePos : this.Player.GetCenter);
             }
 
             if (entities.Count == 1)

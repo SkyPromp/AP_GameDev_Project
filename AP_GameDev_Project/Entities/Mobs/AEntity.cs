@@ -16,6 +16,7 @@ namespace AP_GameDev_Project.Entities.Mobs
         protected bool flip_texture;
 
         protected int health;
+        public int Health { get { return this.health; } }
 
         private Vector2 position;
         public Vector2 Position { get { return this.position; } set { this.position = value; this.hitbox.Position = value; } }

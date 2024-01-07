@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Diagnostics;
-
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace AP_GameDev_Project.Entities.Mobs
 {
@@ -8,6 +9,7 @@ namespace AP_GameDev_Project.Entities.Mobs
     {
         private ContentManager contentManager;
         private readonly int max_health;
+        public int MaxHealth { get { return this.max_health; } }
         private bool has_invincibility;
         private Vector2 mouse_position;
 

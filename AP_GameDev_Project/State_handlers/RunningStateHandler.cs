@@ -7,7 +7,8 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-
+using System.Linq;
+using System.Text;
 
 namespace AP_GameDev_Project.State_handlers
 {
@@ -89,6 +90,14 @@ namespace AP_GameDev_Project.State_handlers
             this.current_room.Draw(spriteBatch);
             foreach (ACollectables collectable in this.collectables) collectable.Draw(spriteBatch);
             foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
+
+            String health_display = new StringBuilder().Append(this.Player.Health)
+                .Append("/")
+                .Append(this.Player.MaxHealth)
+                .ToString();
+
+            Vector2 half_text_size = this.contentManager.Font.MeasureString(health_display) / 2;
+            spriteBatch.DrawString(this.contentManager.Font, health_display, new Vector2(64 - half_text_size.Y, 64 - half_text_size.Y), Color.Black);
         }
 
         public void MovePlayer(Vector2 speed)

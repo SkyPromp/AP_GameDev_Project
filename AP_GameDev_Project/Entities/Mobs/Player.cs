@@ -70,7 +70,7 @@ namespace AP_GameDev_Project.Entities.Mobs
 
         public override void Die(ContentManager contentManager)
         {
-            base.Die(contentManager);
+            contentManager.GetSoundEffects["GAME_OVER"].Play();
 
             StateHandler stateHandler = StateHandler.getInstance;
             stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();

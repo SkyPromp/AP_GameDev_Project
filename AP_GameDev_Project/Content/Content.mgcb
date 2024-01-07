@@ -43,6 +43,12 @@
 /processorParam:Quality=Best
 /build:deathsound.wav
 
+#begin explosion_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:explosion_sound.wav
+
 #begin Font.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -61,6 +67,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:gamedev_tilemap_2.png
+
+#begin gameover_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:gameover_sound.wav
 
 #begin gameoverscreen.png
 /importer:TextureImporter

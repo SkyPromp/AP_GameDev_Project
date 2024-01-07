@@ -44,6 +44,9 @@ namespace AP_GameDev_Project
         {
             this.contentManager.AddSoundEffect("BULLET_SHOOT", Content.Load<SoundEffect>("shootsound"));
             this.contentManager.AddSoundEffect("PLAYER_DEATH", Content.Load<SoundEffect>("deathsound"));
+            this.contentManager.AddSoundEffect("GAME_OVER", Content.Load<SoundEffect>("gameover_sound"));
+            this.contentManager.AddSoundEffect("EXPLOSION", Content.Load<SoundEffect>("explosion_sound"));
+
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
             this.contentManager.AddTexture("STARTSCREEN", Content.Load<Texture2D>("startscreen"));
             this.contentManager.AddTexture("GAMEOVERSCREEN", Content.Load<Texture2D>("gameoverscreen"));

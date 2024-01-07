@@ -60,10 +60,12 @@ namespace AP_GameDev_Project
             Animate heart_collectable = new Animate(3.5, 4, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
             Animate strength_collectable = new Animate(3.5, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
 
-            this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("PLAYER_STANDSTILL", player_standstill);
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
+            this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("ENEMY1_WALK", enemy1_walk);
+            this.contentManager.AddAnimation("ENEMY2_STANDSTILL", enemy1_standstill); // TODO: Update
+            this.contentManager.AddAnimation("ENEMY2_WALK", enemy1_walk);  // TODO: Update
             this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);
             this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 

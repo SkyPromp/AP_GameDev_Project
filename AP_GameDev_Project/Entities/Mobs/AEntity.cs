@@ -133,6 +133,11 @@ namespace AP_GameDev_Project.Entities.Mobs
             return this.health;
         }
 
+        public virtual void Die(ContentManager contentManager)
+        {
+            contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
+        }
+
         public abstract void Attack(Vector2 player_center);
     }
 }

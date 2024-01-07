@@ -1,4 +1,5 @@
 ﻿using AP_GameDev_Project.Entities.Mobs;
+using AP_GameDev_Project.State_handlers;
 using Microsoft.Xna.Framework;
 using System;
 using System.Diagnostics;
@@ -7,20 +8,33 @@ namespace AP_GameDev_Project.Entities
 {
     internal class HitboxCollisionHelper
     {
-        public void HandleHardCollison(AEntity entity, AEntity other)
+        public bool HandleHardCollison(AEntity entity, AEntity other)  // Returns if other should die
         {
             (Rectangle self_hitbox, Rectangle other_hitbox) = entity.GetHitboxHitbox.DoesCollideR(other.GetHitboxHitbox);
 
             if (!self_hitbox.IsEmpty)
             {
-                (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
+                if (entity is Player && other is Enemy2 && ((Enemy2)other).IsAttacking)
+                {
+                    int health = entity.DoDamage(((Enemy2)other).Damage);
+
+                    if (health <= 0) entity.Die(ContentManager.getInstance);
+
+                    return true;
+                }
+                else
+                {
+                    (Vector2 delta_pos, Vector2 factor_speed) = this.HardCollide(self_hitbox, other_hitbox);
 
                 if (delta_pos.X == 0) entity.Position = new Vector2(entity.Position.X, (float)Math.Floor(entity.Position.Y));
                 else entity.Position = new Vector2((float)Math.Floor(entity.Position.X), entity.Position.Y);
 
                 entity.Position += delta_pos;
                 entity.Speed *= factor_speed;
+                }
             }
+
+            return false;
         }
 
         public void HandleHardCollison(AEntity entity, Rectangle other)

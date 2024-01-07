@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using AP_GameDev_Project.State_handlers;
+using Microsoft.Xna.Framework;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -59,12 +60,21 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             if (!has_invincibility) base.DoDamage(damage);
 
-            return health;
+            return this.health;
         }
 
         public void AddStrength(int bonus_damage = 1)
         {
             base.Damage += bonus_damage;
+        }
+
+        public override void Die(ContentManager contentManager)
+        {
+            base.Die(contentManager);
+
+            StateHandler stateHandler = StateHandler.getInstance;
+            stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
+            ((EndStateHandler)stateHandler.States[StateHandler.states_enum.END]).Won = false;
         }
     }
 }

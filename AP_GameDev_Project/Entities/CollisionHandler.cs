@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 
 namespace AP_GameDev_Project.Entities
@@ -22,17 +23,29 @@ namespace AP_GameDev_Project.Entities
             this.stateHandler = StateHandler.getInstance;
         }
 
-        public void HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
+        public List<AEntity> HandleCollision(GameTime gameTime, Player player, List<AEntity> entities, List<ACollectables> collectables, List<Rectangle> tile_hitboxes, MouseHandler mouseHandler)
         {
+            /*
+             E:  Enemy
+             P:  Player
+             B:  Bullet
+             C:  Collectable
+             T:  Tile
+             Pb: Player bullet
+             Eb: Enemy bullet
+             */
+
             Vector2 player_center = player.GetCenter;
             bool is_player = true;
+
+
 
             foreach (AEntity entity in new List<AEntity>(entities))  // One big foreach, for performance reasons
             {
                 entity.Update(gameTime, is_player ? mouseHandler.MousePos : player_center);
                 List<Bullet> entity_bullets = new List<Bullet>(entity.Bullets);
 
-                EECollision(entity, new List<AEntity>(entities));
+                entities = EECollision(entity, entities);
                 ETBCollision(entity, tile_hitboxes);
 
                 if (is_player)
@@ -53,15 +66,24 @@ namespace AP_GameDev_Project.Entities
                 this.stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
                 ((EndStateHandler)this.stateHandler.States[StateHandler.states_enum.END]).Won = true;
             }
+
+            return entities;
         }
 
-        private void EECollision(AEntity entity, List<AEntity> entities)
+        private List<AEntity> EECollision(AEntity entity, List<AEntity> entities)
         {
+            List<AEntity> entities_list = new List<AEntity>(entities);
             foreach (AEntity entity2 in entities)
             {
                 if ((entity2.GetHitbox.Center - entity.GetHitbox.Center).ToVector2().Length() > 1)
-                    this.hitboxCollisionHelper.HandleHardCollison(entity, entity2); // average movement out
+                {
+                    bool kill_entity2 = this.hitboxCollisionHelper.HandleHardCollison(entity, entity2); // average movement out
+
+                    if (kill_entity2) entities_list.Remove(entity2);
+                }     
             }
+
+            return entities_list;
         }
 
         private void ETBCollision(AEntity entity, List<Rectangle> tile_hitboxes)

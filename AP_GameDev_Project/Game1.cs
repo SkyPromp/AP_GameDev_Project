@@ -54,9 +54,11 @@ namespace AP_GameDev_Project
             this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables2"));
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy1_walk = new Animate(2, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate player_standstill = new Animate(1, 2, new Rectangle(0, 128, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate player_walk = new Animate(0.5, 4, new Rectangle(0, 320, 128, 192), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
-            Animate enemy1_walk = new Animate(2, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy2_standstill = new Animate(0.5, 4, new Rectangle(0, 512, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
+            Animate enemy2_walk = new Animate(1, 8, new Rectangle(0, 576, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate heart_collectable = new Animate(3.5, 4, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
             Animate strength_collectable = new Animate(3.5, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["COLLECTABLES"]);
 
@@ -64,8 +66,8 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("PLAYER_WALK", player_walk);
             this.contentManager.AddAnimation("ENEMY1_STANDSTILL", enemy1_standstill);
             this.contentManager.AddAnimation("ENEMY1_WALK", enemy1_walk);
-            this.contentManager.AddAnimation("ENEMY2_STANDSTILL", enemy1_standstill); // TODO: Update
-            this.contentManager.AddAnimation("ENEMY2_WALK", enemy1_walk);  // TODO: Update
+            this.contentManager.AddAnimation("ENEMY2_STANDSTILL", enemy2_standstill);
+            this.contentManager.AddAnimation("ENEMY2_WALK", enemy2_walk);
             this.contentManager.AddAnimation("ENEMY3_STANDSTILL", enemy1_standstill); // TODO: Update
             this.contentManager.AddAnimation("ENEMY3_WALK", enemy1_walk);  // TODO: Update
             this.contentManager.AddAnimation("HEART_COLLECTABLE", heart_collectable);

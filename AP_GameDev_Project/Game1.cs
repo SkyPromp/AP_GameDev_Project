@@ -47,6 +47,7 @@ namespace AP_GameDev_Project
             this.contentManager.Font = Content.Load<SpriteFont>("Font");
             this.contentManager.AddTexture("STARTSCREEN", Content.Load<Texture2D>("startscreen"));
             this.contentManager.AddTexture("GAMEOVERSCREEN", Content.Load<Texture2D>("gameoverscreen"));
+            this.contentManager.AddTexture("WINSCREEN", Content.Load<Texture2D>("gameoverscreen"));  // TODO: update texture
             this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap_2"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("TILEMAP_ENTITIES", Content.Load<Texture2D>("tilemap_entities"));
@@ -72,7 +73,7 @@ namespace AP_GameDev_Project
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
-            this.stateHandler.Add(StateHandler.states_enum.GAME_OVER, new GameOverStateHandler());
+            this.stateHandler.Add(StateHandler.states_enum.END, new EndStateHandler());
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }
 

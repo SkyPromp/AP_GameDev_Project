@@ -47,6 +47,12 @@ namespace AP_GameDev_Project.Entities
             }
 
             PCCollision(player, collectables);
+
+            if (entities.Count == 1)
+            {
+                this.stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
+                ((EndStateHandler)this.stateHandler.States[StateHandler.states_enum.END]).Won = true;
+            }
         }
 
         private void EECollision(AEntity entity, List<AEntity> entities)
@@ -109,7 +115,9 @@ namespace AP_GameDev_Project.Entities
                     if (health <= 0)
                     {
                         this.contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
-                        stateHandler.SetCurrentState(StateHandler.states_enum.GAME_OVER).Init();
+                        
+                        this.stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
+                        ((EndStateHandler) this.stateHandler.States[StateHandler.states_enum.END]).Won = false;
                     }
                 }
             }

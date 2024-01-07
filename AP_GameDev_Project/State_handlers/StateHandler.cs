@@ -22,7 +22,7 @@ namespace AP_GameDev_Project.State_handlers
             RUNNING,
             MAPMAKING,
             PAUSED,
-            GAME_OVER
+            END
         }
         public bool IsInit { get { return current_state.IsInit; } }
         private bool exit_state;

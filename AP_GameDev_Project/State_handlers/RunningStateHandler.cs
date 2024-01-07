@@ -91,7 +91,9 @@ namespace AP_GameDev_Project.State_handlers
             foreach (ACollectables collectable in this.collectables) collectable.Draw(spriteBatch);
             foreach (AEntity entity in this.entities) entity.Draw(spriteBatch);
 
-            String health_display = new StringBuilder().Append(this.Player.Health)
+            String health_display = new StringBuilder()
+                .Append("Health: ")
+                .Append(this.Player.Health)
                 .Append("/")
                 .Append(this.Player.MaxHealth)
                 .ToString();

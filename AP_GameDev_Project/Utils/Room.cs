@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 
 namespace AP_GameDev_Project.Utils
 {
@@ -19,6 +20,7 @@ namespace AP_GameDev_Project.Utils
         private Vector2 offset;
         private Vector2 player_spawnpoint;
         public Vector2 GetPlayerSpawnpoint { get { return player_spawnpoint; } }
+        private TileSelector tileSelector;
 
         public Room(string tilesFilename, int tile_size = 64)
         {
@@ -51,6 +53,8 @@ namespace AP_GameDev_Project.Utils
             Vector2 tile_center_coords = IndexToXY(player_spawnpoint) * this.tile_size + new Vector2(32, 32);
             Rectangle sprite_rectangle = new Rectangle(0, 0, 128, 192);  // DO MORE DYNAMICALLY
             this.player_spawnpoint = tile_center_coords - new Vector2(sprite_rectangle.Width / 2, 116);  // DO MORE DYNAMICALLY
+
+            this.tileSelector = new TileSelector(this.tiles, this.room_width);
         }
 
         public Room(List<byte> tiles, ushort room_width, int tile_size = 64)
@@ -60,6 +64,8 @@ namespace AP_GameDev_Project.Utils
             this.tiles = tiles;
             tilemap = contentManager.GetTextures["TILEMAP"];
             this.tile_size = tile_size;
+
+            this.tileSelector = new TileSelector(this.tiles, this.room_width);
         }
 
         public List<Rectangle> GetHitboxes(Func<byte, bool> filter = null)  // TODO Refactor away List<Byte>
@@ -75,7 +81,7 @@ namespace AP_GameDev_Project.Utils
                 screen_x += (int)offset.X;
                 screen_y += (int)offset.Y;
 
-                (int pattern, int angle) = GetPattern(i).GetileTile(i, tiles, room_width);
+                (int pattern, int angle) = this.tileSelector.GetPattern(i).GetileTile(i, tiles, room_width);
                 if (pattern == -1) continue;
                 if (filter != null && !filter(tiles[i])) continue;
 
@@ -97,7 +103,7 @@ namespace AP_GameDev_Project.Utils
                 screen_x += (int)offset.X;
                 screen_y += (int)offset.Y;
 
-                (int pattern, int angle) = GetPattern(i).GetileTile(i, tiles, room_width);
+                (int pattern, int angle) = this.tileSelector.GetPattern(i).GetileTile(i, tiles, room_width);
                 if (pattern == -1) continue;
 
                 int tilemap_x = pattern;
@@ -126,36 +132,6 @@ namespace AP_GameDev_Project.Utils
                 (GlobalConstants.SCREEN_WIDTH - tile_size * room_width) / 2,
                 (GlobalConstants.SCREEN_HEIGHT - tile_size * tiles.Count / room_width) / 2);
             player_spawnpoint += offset;
-        }
-
-        private ATileType GetPattern(int i)
-        {
-            byte center_tile = tiles[i];
-
-            if (center_tile == 0) return new BlankTileType();
-
-            TileHelper tileHelper = new TileHelper(room_width, tiles, i);
-
-            int left = tileHelper.IsCorrectTileAtPos(tileHelper.getLeftIndex(i)) ? 1 : 0;
-            int right = tileHelper.IsCorrectTileAtPos(tileHelper.getRightIndex(i)) ? 1 : 0;
-            int top = tileHelper.IsCorrectTileAtPos(tileHelper.getTopIndex(i)) ? 1 : 0;
-            int bottom = tileHelper.IsCorrectTileAtPos(tileHelper.getBottomIndex(i)) ? 1 : 0;
-
-            switch (left + right + top + bottom)
-            {
-                case 0:
-                    return new ZeroSide();
-                case 1:
-                    return new OneSide();
-                case 2:
-                    return new TwoSide();
-                case 3:
-                    return new ThreeSide();
-                case 4:
-                    return new FourSide();
-            }
-
-            throw new InvalidOperationException(string.Format("Unexpected sum of sides: ", left + right + top + bottom));
         }
 
         private Vector2 IndexToXY(int index)

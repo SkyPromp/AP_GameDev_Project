@@ -28,6 +28,7 @@ namespace AP_GameDev_Project.State_handlers
                 this.won = value; 
             } }
         private ushort difficulty;
+        public ushort Difficulty { get { return this.difficulty; } }
 
         public EndStateHandler()
         {
@@ -59,7 +60,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             if (gameOverState.homeButtonRect.Contains(gameOverState.mouseHandler.MousePos) && this.click_cooldown <= 0)
             {
-                this.stateHandler.ResetState(StateHandler.states_enum.RUNNING, new RunningStateHandler(this.difficulty));
+                this.stateHandler.ResetState(StateHandler.states_enum.RUNNING, new RunningStateHandler(this.difficulty, -1));
                 this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
             else if (gameOverState.ExitButtonRect.Contains(gameOverState.mouseHandler.MousePos) && this.click_cooldown <= 0)

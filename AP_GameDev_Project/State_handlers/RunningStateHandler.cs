@@ -30,12 +30,13 @@ namespace AP_GameDev_Project.State_handlers
         private Random random;
         EntityFactory ef;
 
-        public RunningStateHandler(ushort difficulty = 0)
+        public RunningStateHandler(ushort difficulty = 0, int room_id = -1)
         {
             this.random = new Random();
             this.contentManager = ContentManager.getInstance;
             this.collisionHandler = new CollisionHandler();
-            this.current_room = this.contentManager.GetRooms[this.random.Next(0, this.contentManager.GetRooms.Count)];
+            if (room_id < 0) this.current_room = this.contentManager.GetRooms[this.random.Next(0, this.contentManager.GetRooms.Count)];
+            else this.current_room = this.contentManager.GetRooms[(int)room_id];
             this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1  && tile != 3; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
@@ -50,7 +51,7 @@ namespace AP_GameDev_Project.State_handlers
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
             this.ef = new EntityFactory(this.entities, this.collectables, this.current_room);
-            this.ef.StartSpawn();
+            this.ef.StartSpawn(difficulty);
         }
 
         public void Init()

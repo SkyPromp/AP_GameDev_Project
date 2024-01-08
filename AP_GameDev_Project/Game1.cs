@@ -108,7 +108,7 @@ namespace AP_GameDev_Project
             foreach (Room room in this.contentManager.GetRooms) room.Center();
 
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
-            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler());
+            this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(0));
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
             this.stateHandler.Add(StateHandler.states_enum.END, new EndStateHandler());
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();

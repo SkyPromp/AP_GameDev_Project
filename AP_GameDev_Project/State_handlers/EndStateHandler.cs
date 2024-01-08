@@ -20,7 +20,13 @@ namespace AP_GameDev_Project.State_handlers
         private ContentManager contentManager;
         private double click_cooldown;
         private bool won;
-        public bool Won {  get { return this.won; } set { this.won = value; } }
+        public bool Won {  get { return this.won; } set {
+                if (value) { if (difficulty < 255) this.difficulty++; }
+                else difficulty = 0;
+
+                this.won = value; 
+            } }
+        private ushort difficulty;
 
         public EndStateHandler()
         {
@@ -31,6 +37,7 @@ namespace AP_GameDev_Project.State_handlers
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.is_init = false;
             this.stateHandler = StateHandler.getInstance;
+            difficulty = 0;
         }
 
         public void Init()
@@ -51,7 +58,7 @@ namespace AP_GameDev_Project.State_handlers
         {
             if (gameOverState.homeButtonRect.Contains(gameOverState.mouseHandler.MousePos) && this.click_cooldown <= 0)
             {
-                this.stateHandler.ResetState(StateHandler.states_enum.RUNNING, new RunningStateHandler());
+                this.stateHandler.ResetState(StateHandler.states_enum.RUNNING, new RunningStateHandler(this.difficulty));
                 this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
             }
             else if (gameOverState.ExitButtonRect.Contains(gameOverState.mouseHandler.MousePos) && this.click_cooldown <= 0)

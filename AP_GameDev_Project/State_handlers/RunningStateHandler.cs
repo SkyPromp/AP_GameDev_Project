@@ -29,7 +29,7 @@ namespace AP_GameDev_Project.State_handlers
         private CollisionHandler collisionHandler;
         private Random random;
 
-        public RunningStateHandler()
+        public RunningStateHandler(ushort difficulty = 0)
         {
             this.random = new Random();
             this.contentManager = ContentManager.getInstance;
@@ -48,14 +48,14 @@ namespace AP_GameDev_Project.State_handlers
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
-            this.StartSpawn();
+            this.StartSpawn(difficulty);
         }
 
-        private void StartSpawn()
+        private void StartSpawn(ushort difficulty = 0)
         {
             List<Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
 
-            ushort spawn_amount = 5;
+            ushort spawn_amount = (ushort)(4 + difficulty);
             ushort total_spawnable_types = 3;
 
             for (int i = 0; i < spawn_amount; i++)
@@ -63,13 +63,13 @@ namespace AP_GameDev_Project.State_handlers
                 switch (this.random.Next(0, total_spawnable_types))
                 {
                     case 0:
-                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, 100, 0.8f });  // Speed, health, damping factor 
+                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, (int)(100 * (1 + 0.2 * difficulty)), 0.8f });  // Speed, health, damping factor 
                         break;
                     case 1:
-                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 7f, 500, 0.8f });
+                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 7f, (int)(500 * (1 + 0.2 * difficulty)), 0.8f });
                         break;
                     case 2:
-                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 3f, 300, 0.8f });
+                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 3f, (int)(300 * (1 + 0.2 * difficulty)), 0.8f });
                         break;
                 }
             }
@@ -137,6 +137,15 @@ namespace AP_GameDev_Project.State_handlers
                     entity.Die(this.contentManager);
                     if (entity is Player) return;
                     this.entities.Remove(entity);
+
+                    if (entities.Count == 1)
+                    {
+                        StateHandler stateHandler = StateHandler.getInstance;
+                        stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
+                        ((EndStateHandler)stateHandler.States[StateHandler.states_enum.END]).Won = true;
+                        return;
+                    }
+
                     this.SpawnRandomCollectable(entity.Position);
                 }
                 else
@@ -147,15 +156,7 @@ namespace AP_GameDev_Project.State_handlers
                     else target = this.Player.GetCenter;
 
                     entity.Update(gameTime, target);
-
                 }
-            }
-
-            if (entities.Count == 1)
-            {
-                StateHandler stateHandler = StateHandler.getInstance;
-                stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
-                ((EndStateHandler)stateHandler.States[StateHandler.states_enum.END]).Won = true;
             }
         }
 

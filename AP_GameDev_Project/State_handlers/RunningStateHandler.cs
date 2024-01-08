@@ -4,7 +4,6 @@ using AP_GameDev_Project.Entities.Mobs;
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -28,6 +27,7 @@ namespace AP_GameDev_Project.State_handlers
         private ContentManager contentManager;
         private CollisionHandler collisionHandler;
         private Random random;
+        EntityFactory ef;
 
         public RunningStateHandler(ushort difficulty = 0)
         {
@@ -48,77 +48,14 @@ namespace AP_GameDev_Project.State_handlers
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
-            this.StartSpawn(difficulty);
-        }
-
-        private void StartSpawn(ushort difficulty = 0)
-        {
-            List<Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
-
-            ushort spawn_amount = (ushort)(4 + difficulty);
-            ushort total_spawnable_types = 3;
-
-            for (int i = 0; i < spawn_amount; i++)
-            {
-                switch (this.random.Next(0, total_spawnable_types))
-                {
-                    case 0:
-                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, (int)(100 * (1 + 0.2 * difficulty)), 0.8f });  // Speed, health, damping factor 
-                        break;
-                    case 1:
-                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 7f, (int)(500 * (1 + 0.2 * difficulty)), 0.8f });
-                        break;
-                    case 2:
-                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 3f, (int)(300 * (1 + 0.2 * difficulty)), 0.8f });
-                        break;
-                }
-            }
-
-            spawn_amount = 1;
-            total_spawnable_types = 2;
-
-            for (int i = 0; i < spawn_amount; i++)
-            {
-                switch (this.random.Next(0, total_spawnable_types))
-                {
-                    case 0:
-                        tiles = this.Spawn<HeartCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
-                        break;
-                    case 1:
-                        tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
-                        break;
-                }
-            }
+            this.ef = new EntityFactory(this.entities, this.collectables, this.current_room);
+            this.ef.StartSpawn();
         }
 
         public void Init()
         {
             this.is_init = true;
             this.mouseHandler.LeftClickHook = () => { if (this.mouseHandler.IsOnScreen) this.Player.Attack(this.mouseHandler.MousePos); };
-        }
-
-        private List<Rectangle> Spawn<T, A>(int amount, List<Rectangle> tiles, List<A> collection, Object[] constructor_parameters) where T: A where A : ISpawnable
-        {
-            amount = Math.Min(amount, tiles.Count);
-
-            Object[] default_parameters = { this.contentManager };
-            Object[] parameters = new object[default_parameters.Length + constructor_parameters.Length + 1];
-            default_parameters.CopyTo(parameters, 1);
-            constructor_parameters.CopyTo(parameters, default_parameters.Length + 1);
-
-            parameters[0] = Vector2.Zero;
-            Vector2 offset = ((T)Activator.CreateInstance(typeof(T), parameters)).GetCenter;
-
-            for (int i = 0; i < amount; i++)
-            {
-                Rectangle random_rect = tiles[this.random.Next(0, tiles.Count)];
-                parameters[0] = random_rect.Center.ToVector2() - offset;
-                T collectable = (T)Activator.CreateInstance(typeof(T), parameters);
-                collection.Add((A)collectable);
-                tiles.Remove(random_rect);
-            }
-
-            return tiles;
         }
 
         public void Update(GameTime gameTime)
@@ -146,7 +83,7 @@ namespace AP_GameDev_Project.State_handlers
                         return;
                     }
 
-                    this.SpawnRandomCollectable(entity.Position);
+                    this.ef.SpawnRandomCollectable(entity.Position);
                 }
                 else
                 {
@@ -157,23 +94,6 @@ namespace AP_GameDev_Project.State_handlers
 
                     entity.Update(gameTime, target);
                 }
-            }
-        }
-
-        private void SpawnRandomCollectable(Vector2 position)
-        {
-            int total_spawnable_types = 2;
-
-            switch (this.random.Next(0, total_spawnable_types + 1))
-            {
-                case 0:
-                    this.collectables.Add(new HeartCollectable(position, this.contentManager));
-                    break;
-                case 1:
-                    this.collectables.Add(new StrengthCollectable(position, this.contentManager));
-                    break;
-                case 2:
-                    break;
             }
         }
 

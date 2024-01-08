@@ -103,6 +103,7 @@ namespace AP_GameDev_Project
 
             this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
             this.contentManager.AddRoom(new Room("Rooms\\BeanRoom.room"));
+            this.contentManager.AddRoom(new Room("Rooms\\PyramidRoom.room"));
             this.contentManager.AddRoom(new Room("Rooms\\VillaRoom.room"));
             foreach (Room room in this.contentManager.GetRooms) room.Center();
 

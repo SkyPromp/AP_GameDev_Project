@@ -25,7 +25,7 @@ namespace AP_GameDev_Project.State_handlers
         private List<ACollectables> collectables;
         private MouseHandler mouseHandler;
         private RunningKeyboardEventHandler keyboardHandler;
-        private ContentManager contentManager;
+        private IContentManager contentManager;
         private CollisionHandler collisionHandler;
         private Random random;
         EntityFactory ef;
@@ -42,14 +42,14 @@ namespace AP_GameDev_Project.State_handlers
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
             this.collectables = new List<ACollectables>();
 
-            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager));
+            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, this.contentManager));
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });
 
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
-            this.ef = new EntityFactory(this.entities, this.collectables, this.current_room);
+            this.ef = new EntityFactory(this.entities, this.collectables, this.current_room, this.contentManager);
             this.ef.StartSpawn();
         }
 

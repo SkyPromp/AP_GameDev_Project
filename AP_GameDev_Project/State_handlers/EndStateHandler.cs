@@ -18,7 +18,7 @@ namespace AP_GameDev_Project.State_handlers
         private bool is_init;
         public bool IsInit { get { return this.is_init; } }
         private StateHandler stateHandler;
-        private ContentManager contentManager;
+        private IContentManager contentManager;
         private double click_cooldown;
         private bool won;
         public bool Won {  get { return this.won; } set {
@@ -29,9 +29,9 @@ namespace AP_GameDev_Project.State_handlers
             } }
         private ushort difficulty;
 
-        public EndStateHandler()
+        public EndStateHandler(IContentManager contentManager)
         {
-            this.contentManager = ContentManager.getInstance;
+            this.contentManager = contentManager;
             this.homeButtonRect = new Rectangle(248, 386, 1423, 253);
             this.ExitButtonRect = new Rectangle(248, 712, 1423, 253);
             this.won = false;

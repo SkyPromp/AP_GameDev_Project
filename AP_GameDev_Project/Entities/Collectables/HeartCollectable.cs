@@ -9,7 +9,7 @@ namespace AP_GameDev_Project.Entities.Collectables
     {
         private readonly int healing_amount;
 
-        public HeartCollectable(Vector2 position, ContentManager contentManager) : base(position, contentManager.GetAnimations["HEART_COLLECTABLE"], new Hitbox().AddChild(new Rectangle(16, 11, 32, 35)))
+        public HeartCollectable(Vector2 position, IContentManager contentManager) : base(position, contentManager.GetAnimations["HEART_COLLECTABLE"], new Hitbox().AddChild(new Rectangle(16, 11, 32, 35)))
         {
             this.healing_amount = 20;
         }

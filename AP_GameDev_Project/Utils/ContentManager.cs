@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace AP_GameDev_Project.Utils
 {
-    internal class ContentManager
+    internal class ContentManager: IContentManager
     {
         private Dictionary<string, SoundEffect> sound_effects;
         public Dictionary<string, SoundEffect> GetSoundEffects { get { return sound_effects; } }

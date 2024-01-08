@@ -135,7 +135,7 @@ namespace AP_GameDev_Project.Entities.Mobs
             return this.health;
         }
 
-        public virtual void Die(ContentManager contentManager)
+        public virtual void Die(IContentManager contentManager)
         {
             contentManager.GetSoundEffects["PLAYER_DEATH"].Play();
         }

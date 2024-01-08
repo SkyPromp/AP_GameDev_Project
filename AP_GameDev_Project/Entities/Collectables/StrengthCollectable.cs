@@ -14,7 +14,7 @@ namespace AP_GameDev_Project.Entities.Collectables
     {
         private readonly int strengthen_amount;
 
-        public StrengthCollectable(Vector2 position, ContentManager contentManager) : base(position, contentManager.GetAnimations["STRENGTH_COLLECTABLE"], new Hitbox().AddChild(new Rectangle(16, 11, 32, 35)))
+        public StrengthCollectable(Vector2 position, IContentManager contentManager) : base(position, contentManager.GetAnimations["STRENGTH_COLLECTABLE"], new Hitbox().AddChild(new Rectangle(16, 11, 32, 35)))
         {
             this.strengthen_amount = 10;
         }

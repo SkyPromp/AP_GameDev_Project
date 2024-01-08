@@ -13,17 +13,17 @@ namespace AP_GameDev_Project.Entities
 {
     internal class EntityFactory
     {
-        ContentManager contentManager;
+        IContentManager contentManager;
         Random random;
 
         private List<AEntity> entities;
         private List<ACollectables> collectables; 
         private Room current_room;
 
-        public EntityFactory(List<AEntity> entities, List<ACollectables> collectables, Room current_room)
+        public EntityFactory(List<AEntity> entities, List<ACollectables> collectables, Room current_room, IContentManager contentManager)
         {
             random = new Random();
-            contentManager = ContentManager.getInstance;
+            this.contentManager = contentManager;
 
             this.entities = entities;
             this.collectables = collectables;

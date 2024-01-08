@@ -15,7 +15,7 @@ namespace AP_GameDev_Project
         private SpriteBatch _spriteBatch;
 
         private StateHandler stateHandler;
-        private ContentManager contentManager;
+        private IContentManager contentManager;
         private double max_sound_cooldown;
         private double sound_cooldown;
 
@@ -118,7 +118,7 @@ namespace AP_GameDev_Project
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());
             this.stateHandler.Add(StateHandler.states_enum.RUNNING, new RunningStateHandler(0));
             this.stateHandler.Add(StateHandler.states_enum.MAPMAKING, new MapMakingStateHandler(this.GraphicsDevice));
-            this.stateHandler.Add(StateHandler.states_enum.END, new EndStateHandler());
+            this.stateHandler.Add(StateHandler.states_enum.END, new EndStateHandler(this.contentManager));
             this.stateHandler.SetCurrentState(StateHandler.states_enum.START).Init();
         }
 

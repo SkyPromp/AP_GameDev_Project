@@ -55,6 +55,7 @@ namespace AP_GameDev_Project
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("TILEMAP_ENTITIES", Content.Load<Texture2D>("tilemap_entities"));
             this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables2"));
+            this.contentManager.AddTexture("BACKGROUND", Content.Load<Texture2D>("background"));
 
             // Get player standstill texture out of tilemap_entities for mapmaker
             Rectangle sourceRectangle = new Rectangle(0, 320, 128, 192);
@@ -128,7 +129,11 @@ namespace AP_GameDev_Project
 
         protected override void Draw(GameTime gameTime)
         {
-            this.GraphicsDevice.Clear(Color.Wheat);
+            this._spriteBatch.Begin();
+
+            this._spriteBatch.Draw(this.contentManager.GetTextures["BACKGROUND"], Vector2.Zero, Color.White);
+
+            this._spriteBatch.End();
 
             this._spriteBatch.Begin();
 

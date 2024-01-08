@@ -65,22 +65,6 @@ namespace AP_GameDev_Project.State_handlers
                         break;
                 }
             }
-
-            spawn_amount = 5;
-            total_spawnable_types = 2;
-
-            for (int i = 1; i < spawn_amount; i++)
-            {
-                switch (this.random.Next(0, total_spawnable_types))
-                {
-                    case 0:
-                        tiles = this.Spawn<HeartCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
-                        break;
-                    case 1:
-                        tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
-                        break;
-                }
-            }
         }
 
         public void Init()
@@ -127,8 +111,22 @@ namespace AP_GameDev_Project.State_handlers
                 if (entity.Health <= 0)
                 {
                     entity.Die(this.contentManager);
-                    this.entities.Remove(entity);
                     if (entity is Player) return;
+                    this.entities.Remove(entity);
+
+                    int total_spawnable_types = 2;
+
+                    switch (this.random.Next(0, total_spawnable_types + 1))
+                    {
+                        case 0:
+                            this.collectables.Add(new HeartCollectable(entity.Position, this.contentManager));
+                            break;
+                        case 1:
+                            this.collectables.Add(new StrengthCollectable(entity.Position, this.contentManager));
+                            break;
+                        case 2:
+                            break;
+                    }
                 }
                 else
                 {

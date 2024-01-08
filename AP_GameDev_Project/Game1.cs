@@ -51,10 +51,21 @@ namespace AP_GameDev_Project
             this.contentManager.AddTexture("STARTSCREEN", Content.Load<Texture2D>("startscreen"));
             this.contentManager.AddTexture("GAMEOVERSCREEN", Content.Load<Texture2D>("gameoverscreen"));
             this.contentManager.AddTexture("WINSCREEN", Content.Load<Texture2D>("winscreen"));
-            this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("gamedev_tilemap_2"));
+            this.contentManager.AddTexture("TILEMAP", Content.Load<Texture2D>("tilemap"));
             this.contentManager.AddTexture("BULLET", Content.Load<Texture2D>("bullet"));
             this.contentManager.AddTexture("TILEMAP_ENTITIES", Content.Load<Texture2D>("tilemap_entities"));
             this.contentManager.AddTexture("COLLECTABLES", Content.Load<Texture2D>("collectables2"));
+
+            // Get player standstill texture out of tilemap_entities for mapmaker
+            Rectangle sourceRectangle = new Rectangle(0, 320, 128, 192);
+            RenderTarget2D resultTexture = new RenderTarget2D(GraphicsDevice, sourceRectangle.Width, sourceRectangle.Height);
+            GraphicsDevice.SetRenderTarget(resultTexture);
+            GraphicsDevice.Clear(Color.Transparent);
+            this._spriteBatch.Begin();
+                this._spriteBatch.Draw(this.contentManager.GetTextures["TILEMAP_ENTITIES"], Vector2.Zero, sourceRectangle, Color.White);
+            this._spriteBatch.End();
+            GraphicsDevice.SetRenderTarget(null);
+            this.contentManager.AddTexture("PLAYER_STANDSTILL", resultTexture);
 
             Animate enemy1_standstill = new Animate(1, 2, new Rectangle(0, 0, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
             Animate enemy1_walk = new Animate(2, 4, new Rectangle(0, 64, 64, 64), this.contentManager.GetTextures["TILEMAP_ENTITIES"]);
@@ -91,6 +102,8 @@ namespace AP_GameDev_Project
             this.contentManager.AddAnimation("STRENGTH_COLLECTABLE", strength_collectable);
 
             this.contentManager.AddRoom(new Room("Rooms\\BigRoom.room"));
+            this.contentManager.AddRoom(new Room("Rooms\\BeanRoom.room"));
+            this.contentManager.AddRoom(new Room("Rooms\\VillaRoom.room"));
             foreach (Room room in this.contentManager.GetRooms) room.Center();
 
             this.stateHandler.Add(StateHandler.states_enum.START, new StartStateHandler());

@@ -30,10 +30,11 @@ namespace AP_GameDev_Project.State_handlers
 
         public RunningStateHandler()
         {
+            this.random = new Random();
             this.contentManager = ContentManager.getInstance;
             this.collisionHandler = new CollisionHandler();
-            this.current_room = this.contentManager.GetRooms[0];
-            this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1; });
+            this.current_room = this.contentManager.GetRooms[this.random.Next(0, this.contentManager.GetRooms.Count)];
+            this.tile_hitboxes = this.current_room.GetHitboxes((Byte tile) => { return tile > 1  && tile != 3; });
             this.mouseHandler = MouseHandler.getInstance.Init();
             this.entities = new List<AEntity>();
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
@@ -41,9 +42,7 @@ namespace AP_GameDev_Project.State_handlers
 
             this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
 
-            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1; });  // TODO: remove player spawnpoint tile (and the one above)
-
-            this.random = new Random();
+            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
 
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();

@@ -14,8 +14,8 @@ namespace AP_GameDev_Project.Entities.Mobs
         private bool has_invincibility;
         private Vector2 mouse_position;
 
-        public Player(Vector2 position, ContentManager contentManager, float max_speed = 5f, int max_health = 3, float speed_damping_factor = 0.10f) :
-            base(position, max_speed, new Hitbox().AddChild(new Rectangle(47, 35, 35, 107)).AddChild(new Rectangle(82, 73, 20, 30)), 10f, 0.2f, contentManager.GetAnimations["PLAYER_STANDSTILL"], contentManager.GetAnimations["PLAYER_WALK"], max_health, speed_damping_factor, hitbox_center: new Vector2(64.5f, 88.5f), damage: 1)
+        public Player(Vector2 position, ContentManager contentManager, float max_speed = 5f, int max_health = 100, float speed_damping_factor = 0.10f) :
+            base(position, max_speed, new Hitbox().AddChild(new Rectangle(47, 35, 35, 107)).AddChild(new Rectangle(82, 73, 20, 30)), 10f, 0.2f, contentManager.GetAnimations["PLAYER_STANDSTILL"], contentManager.GetAnimations["PLAYER_WALK"], max_health, speed_damping_factor, hitbox_center: new Vector2(64.5f, 88.5f), damage: 40)
         {
             this.contentManager = ContentManager.getInstance;
             this.max_health = max_health;

@@ -40,34 +40,47 @@ namespace AP_GameDev_Project.State_handlers
             this.keyboardHandler = new RunningKeyboardEventHandler(this);
             this.collectables = new List<ACollectables>();
 
-            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager, 5f));
+            this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager));
 
             List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
 
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
-            ushort total_enemies = 5;
-            ushort total_enemy_types = 3;
+            ushort spawn_amount = 5;
+            ushort total_spawnable_types = 3;
 
-            for (int i = 1; i < total_enemies; i++)
+            for (int i = 1; i < spawn_amount; i++)
             {
-                switch (this.random.Next(0, total_enemy_types))
+                switch (this.random.Next(0, total_spawnable_types))
                 {
                     case 0:
-                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        tiles = this.Spawn<Enemy1, AEntity>(1, tiles, this.entities, new object[] { 5f, 100, 0.8f });  // Speed, health, damping factor 
                         break;
                     case 1:
-                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 7f, 500, 0.8f });
                         break; 
                     case 2:
-                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 5f, 5, 0.8f });
+                        tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 3f, 300, 0.8f });
                         break;
                 }
             }
 
-            tiles = this.Spawn<HeartCollectable, ACollectables>(4, tiles, this.collectables, new object[] {});
-            tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
+            spawn_amount = 5;
+            total_spawnable_types = 2;
+
+            for (int i = 1; i < spawn_amount; i++)
+            {
+                switch (this.random.Next(0, total_spawnable_types))
+                {
+                    case 0:
+                        tiles = this.Spawn<HeartCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
+                        break;
+                    case 1:
+                        tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
+                        break;
+                }
+            }
         }
 
         public void Init()

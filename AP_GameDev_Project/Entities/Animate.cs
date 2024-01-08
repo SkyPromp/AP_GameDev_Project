@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 
 
-namespace AP_GameDev_Project
+namespace AP_GameDev_Project.Entities
 {
     internal class Animate
     {
@@ -12,37 +12,37 @@ namespace AP_GameDev_Project
         private double cooldown;
         private readonly Rectangle frame_size;
         private Texture2D spritemap;
-     
-        public Animate(double animation_length, int total_frames, Rectangle frame_size, Texture2D spritemap) 
+
+        public Animate(double animation_length, int total_frames, Rectangle frame_size, Texture2D spritemap)
         {
             this.animation_length = animation_length;
             this.total_frames = total_frames;
-            this.cooldown = animation_length / total_frames;
-            this.current_frame = 0;
+            cooldown = animation_length / total_frames;
+            current_frame = 0;
             this.frame_size = frame_size;
             this.spritemap = spritemap;
         }
 
         public int Update(GameTime gameTime)
         {
-            this.cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
 
-            if (this.cooldown <= 0)
+            if (cooldown <= 0)
             {
-                this.cooldown = animation_length / total_frames;
-                this.current_frame = (this.current_frame + 1) % this.total_frames;
+                cooldown = animation_length / total_frames;
+                current_frame = (current_frame + 1) % total_frames;
             }
 
-            return this.current_frame;
+            return current_frame;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip_texture=false)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, bool flip_texture = false)
         {
-            Rectangle drawRect = this.frame_size;  // Refactor this away by removing this.current_frame
-            drawRect.X = drawRect.Width * this.current_frame;
+            Rectangle drawRect = frame_size;  // Refactor this away by removing this.current_frame
+            drawRect.X = drawRect.Width * current_frame;
 
             spriteBatch.Draw(
-            texture: this.spritemap,
+            texture: spritemap,
             position: position,
             sourceRectangle: drawRect,
             color: Color.White,

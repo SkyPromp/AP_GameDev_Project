@@ -16,6 +16,8 @@ namespace AP_GameDev_Project
 
         private StateHandler stateHandler;
         private ContentManager contentManager;
+        private double max_sound_cooldown;
+        private double sound_cooldown;
 
         public Game1()
         {
@@ -37,6 +39,8 @@ namespace AP_GameDev_Project
             this.contentManager.Init();
 
             SoundEffect.MasterVolume = 1.0f;
+            this.sound_cooldown = 0;
+            this.max_sound_cooldown = 0.3;
 
             base.Initialize();
         }
@@ -123,6 +127,13 @@ namespace AP_GameDev_Project
             if (Keyboard.GetState().IsKeyDown(Keys.F4) || this.stateHandler.ExitState)
                 Exit();
 
+            if (this.sound_cooldown > 0) this.sound_cooldown -= gameTime.ElapsedGameTime.TotalSeconds;
+            else
+            {
+                this.sound_cooldown = this.max_sound_cooldown;
+                this.HandleSound();
+            }
+
             if (!this.stateHandler.IsInit) this.stateHandler.Init();
 
             this.stateHandler.Update(gameTime);
@@ -145,6 +156,14 @@ namespace AP_GameDev_Project
             this._spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+        public void HandleSound()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.M))
+            {
+                SoundEffect.MasterVolume = System.Math.Abs(SoundEffect.MasterVolume - 1f);
+            }
         }
     }
 }

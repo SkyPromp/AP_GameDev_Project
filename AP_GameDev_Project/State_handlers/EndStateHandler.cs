@@ -71,6 +71,14 @@ namespace AP_GameDev_Project.State_handlers
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(this.contentManager.GetTextures[this.won ? "WINSCREEN" : "GAMEOVERSCREEN"], new Vector2(0, 0), Color.White);
+
+            String health_display = new StringBuilder()
+                .Append("Level: ")
+                .Append(this.difficulty)
+                .ToString();
+
+            Vector2 half_text_size = this.contentManager.Font.MeasureString(health_display) / 2;
+            spriteBatch.DrawString(this.contentManager.Font, health_display, new Vector2(GlobalConstants.SCREEN_WIDTH / 2 - half_text_size.X, 300 - half_text_size.Y), Color.Black);
         }
     }
 }

@@ -29,14 +29,6 @@ namespace AP_GameDev_Project.Input_devices
             }
         }
 
-        public void HandleSound()
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.M))
-            {
-                SoundEffect.MasterVolume = Math.Abs(SoundEffect.MasterVolume - 1f);
-            }
-        }
-
         public Vector2 Move()
         {
             Vector2 addSpeed = Vector2.Zero;

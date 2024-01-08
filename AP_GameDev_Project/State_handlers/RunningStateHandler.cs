@@ -65,6 +65,22 @@ namespace AP_GameDev_Project.State_handlers
                         break;
                 }
             }
+
+            spawn_amount = 1;
+            total_spawnable_types = 2;
+
+            for (int i = 1; i < spawn_amount; i++)
+            {
+                switch (this.random.Next(0, total_spawnable_types))
+                {
+                    case 0:
+                        tiles = this.Spawn<HeartCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
+                        break;
+                    case 1:
+                        tiles = this.Spawn<StrengthCollectable, ACollectables>(1, tiles, this.collectables, new object[] { });
+                        break;
+                }
+            }
         }
 
         public void Init()
@@ -113,20 +129,7 @@ namespace AP_GameDev_Project.State_handlers
                     entity.Die(this.contentManager);
                     if (entity is Player) return;
                     this.entities.Remove(entity);
-
-                    int total_spawnable_types = 2;
-
-                    switch (this.random.Next(0, total_spawnable_types + 1))
-                    {
-                        case 0:
-                            this.collectables.Add(new HeartCollectable(entity.Position, this.contentManager));
-                            break;
-                        case 1:
-                            this.collectables.Add(new StrengthCollectable(entity.Position, this.contentManager));
-                            break;
-                        case 2:
-                            break;
-                    }
+                    this.SpawnRandomCollectable(entity.Position);
                 }
                 else
                 {
@@ -145,6 +148,23 @@ namespace AP_GameDev_Project.State_handlers
                 StateHandler stateHandler = StateHandler.getInstance;
                 stateHandler.SetCurrentState(StateHandler.states_enum.END).Init();
                 ((EndStateHandler)stateHandler.States[StateHandler.states_enum.END]).Won = true;
+            }
+        }
+
+        private void SpawnRandomCollectable(Vector2 position)
+        {
+            int total_spawnable_types = 2;
+
+            switch (this.random.Next(0, total_spawnable_types + 1))
+            {
+                case 0:
+                    this.collectables.Add(new HeartCollectable(position, this.contentManager));
+                    break;
+                case 1:
+                    this.collectables.Add(new StrengthCollectable(position, this.contentManager));
+                    break;
+                case 2:
+                    break;
             }
         }
 

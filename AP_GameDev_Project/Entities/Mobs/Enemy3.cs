@@ -58,5 +58,10 @@ namespace AP_GameDev_Project.Entities.Mobs
                 base.bullet_cooldown = base.bullet_max_cooldown;
             }
         }
+
+        public override void Die(ContentManager contentManager)
+        {
+            contentManager.GetSoundEffects["CACTUS_DEATH"].Play();
+        }
     }
 }

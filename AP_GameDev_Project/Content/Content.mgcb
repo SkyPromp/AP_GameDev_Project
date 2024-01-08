@@ -37,6 +37,18 @@
 /processorParam:TextureFormat=Color
 /build:bullet.png
 
+#begin cactus_death_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:cactus_death_sound.wav
+
+#begin collectable_sound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:collectable_sound.wav
+
 #begin collectables2.png
 /importer:TextureImporter
 /processor:TextureProcessor

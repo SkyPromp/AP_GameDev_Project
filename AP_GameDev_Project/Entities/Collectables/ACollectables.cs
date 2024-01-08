@@ -1,5 +1,6 @@
 ﻿using AP_GameDev_Project.Entities.Mobs;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 
@@ -52,6 +53,9 @@ namespace AP_GameDev_Project.Entities.Collectables
             if (this.show_hitbox) { hitbox.Draw(spriteBatch); }
         }
 
-        public abstract void OnCollision(Player player);
+        public virtual void OnCollision(Player player)
+        {
+            ContentManager.getInstance.GetSoundEffects["PICKUP"].Play();
+        }
     }
 }

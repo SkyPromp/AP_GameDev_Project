@@ -16,6 +16,7 @@ namespace AP_GameDev_Project.Entities.Collectables
         public override void OnCollision(Player player)
         {
             player.Heal(this.healing_amount);
+            base.OnCollision(player);
         }
     }
 }

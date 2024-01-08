@@ -21,6 +21,7 @@ namespace AP_GameDev_Project.Entities.Collectables
         public override void OnCollision(Player player)
         {
             player.AddStrength(this.strengthen_amount);
+            base.OnCollision(player);
         }
     }
 }

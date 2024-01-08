@@ -14,14 +14,9 @@ namespace AP_GameDev_Project.Entities
 
             if (!self_hitbox.IsEmpty)
             {
-                if (entity is Player && other is Enemy2 && ((Enemy2)other).IsAttacking)
+                if (entity is Player && other is AEnemy)
                 {
-                    entity.DoDamage(other.Damage);
-                    other.DoDamage(-1);
-                } else if (entity is Player && other is Enemy3 && ((Enemy3)other).IsAttacking)
-                {
-                    ((Enemy3)other).DealDamage();
-                    entity.DoDamage(other.Damage);
+                    ((AEnemy)other).CollideWithPlayer(entity);
                 }
                 else
                 {

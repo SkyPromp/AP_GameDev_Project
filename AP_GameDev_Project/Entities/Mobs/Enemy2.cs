@@ -60,5 +60,14 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             contentManager.GetSoundEffects["EXPLOSION"].Play();
         }
+
+        public override void CollideWithPlayer(AEntity player)
+        {
+            if (this.is_attacking)
+            {
+                player.DoDamage(this.Damage);
+                this.DoDamage(-1);
+            }
+        }
     }
 }

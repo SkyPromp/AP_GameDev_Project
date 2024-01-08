@@ -64,5 +64,14 @@ namespace AP_GameDev_Project.Entities.Mobs
         {
             contentManager.GetSoundEffects["CACTUS_DEATH"].Play();
         }
+
+        public override void CollideWithPlayer(AEntity player)
+        {
+            if (this.is_attacking)
+            {
+                this.DealDamage();
+                player.DoDamage(this.Damage);
+            }
+        }
     }
 }

@@ -29,5 +29,9 @@ namespace AP_GameDev_Project.Entities.Mobs
         }
 
         public abstract override void Attack(Vector2 player_center);
+
+        public virtual void CollideWithPlayer(AEntity player)
+        {
+        }
     }
 }

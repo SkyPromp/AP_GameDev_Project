@@ -4,6 +4,7 @@ using AP_GameDev_Project.Entities.Mobs;
 using AP_GameDev_Project.Input_devices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using SharpDX.Direct3D11;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -42,15 +43,22 @@ namespace AP_GameDev_Project.State_handlers
 
             this.entities.Add(new Player(this.current_room.GetPlayerSpawnpoint, contentManager));
 
-            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
+            List <Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });
 
             Vector2 offset = new Enemy2(Vector2.Zero, this.contentManager, 0, 0).GetCenter;
             this.walkable_tile_centers = tiles.Select(tile => tile.Center.ToVector2() - offset).ToList();
 
+            this.StartSpawn();
+        }
+
+        private void StartSpawn()
+        {
+            List<Rectangle> tiles = this.current_room.GetHitboxes((Byte tile) => { return tile == 1 || tile == 3; });  // TODO: remove player spawnpoint tile (and the one above)
+
             ushort spawn_amount = 5;
             ushort total_spawnable_types = 3;
 
-            for (int i = 1; i < spawn_amount; i++)
+            for (int i = 0; i < spawn_amount; i++)
             {
                 switch (this.random.Next(0, total_spawnable_types))
                 {
@@ -59,7 +67,7 @@ namespace AP_GameDev_Project.State_handlers
                         break;
                     case 1:
                         tiles = this.Spawn<Enemy2, AEntity>(1, tiles, this.entities, new object[] { 7f, 500, 0.8f });
-                        break; 
+                        break;
                     case 2:
                         tiles = this.Spawn<Enemy3, AEntity>(1, tiles, this.entities, new object[] { 3f, 300, 0.8f });
                         break;
@@ -69,7 +77,7 @@ namespace AP_GameDev_Project.State_handlers
             spawn_amount = 1;
             total_spawnable_types = 2;
 
-            for (int i = 1; i < spawn_amount; i++)
+            for (int i = 0; i < spawn_amount; i++)
             {
                 switch (this.random.Next(0, total_spawnable_types))
                 {
